@@ -1,0 +1,19 @@
+{
+  "name": "grzegorz-jamroz/php-common",
+  "description": "Collection of common interfaces shared between projects",
+  "homepage": "https://rockujemy.pl",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Ifrost\\Common\\": "src/"
+    }
+  },
+  "require": {
+    "doctrine/collections": "^1.6",
+    "ext-json": "*"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^0.12.87",
+    "friendsofphp/php-cs-fixer": "^3.0"
+  }
+}
