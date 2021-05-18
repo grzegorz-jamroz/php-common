@@ -9,5 +9,5 @@ interface ArrayConstructable
     /**
      * @param array<string, mixed> $data
      */
-    public static function createFromArray(array $data): self;
+    public static function createFromArray(array $data = []): static;
 }
