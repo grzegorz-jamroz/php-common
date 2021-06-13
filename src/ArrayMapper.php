@@ -6,6 +6,11 @@ namespace Ifrost\Common;
 
 class ArrayMapper
 {
+    /**
+     * @param array<mixed, mixed> $array
+     *
+     * @return array<mixed, mixed>
+     */
     public static function orderBy(
         array $array,
         string $fieldName,
