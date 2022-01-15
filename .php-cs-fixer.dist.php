@@ -1,8 +1,16 @@
 <?php
 
-$config = new PhpCsFixer\Config();
-return $config->setRules([
-        '@PSR2' => true,
+$finder = (new PhpCsFixer\Finder())
+    ->in(
+        [
+            __DIR__ . '/src',
+        ]
+    )
+;
+
+return (new PhpCsFixer\Config())
+    ->setRules([
+        '@PSR12' => true,
         '@Symfony' => true,
         'array_syntax' => ['syntax' => 'short'],
         'braces' => ['allow_single_line_closure' => true],
@@ -18,4 +26,6 @@ return $config->setRules([
         'no_whitespace_in_blank_line' => true,
         'return_type_declaration' => ['space_before' => 'none'],
         'single_trait_insert_per_statement' => true,
-    ]);
+        'yoda_style' => false,
+    ])
+    ->setFinder($finder);
