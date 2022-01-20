@@ -1,5 +1,9 @@
 .idea
 .php-cs-fixer.cache
 .phpunit.result.cache
-vendor
+
 composer.phar
+
+vendor
+data
+!tests/data
