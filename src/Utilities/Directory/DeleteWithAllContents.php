@@ -38,13 +38,13 @@ class DeleteWithAllContents implements HandleInterface
                 try {
                     unlink($file);
                 } catch (\Exception $e) {
-                    throw new \Exception(sprintf('Unable remove file "%s".', $file));
+                    throw new \RuntimeException(sprintf('Unable remove file "%s".', $file));
                 }
             }
         }
 
         if (!rmdir($dirPath)) {
-            throw new \Exception(sprintf('Unable remove directory "%s".', $dirPath));
+            throw new \RuntimeException(sprintf('Unable remove directory "%s".', $dirPath));
         }
     }
 }
