@@ -9,40 +9,37 @@ use PHPUnit\Framework\TestCase;
 
 class GetDirectoryPathFromFilenameTest extends TestCase
 {
-    public function testShouldReturnSlashWhenFilenameIndicateToRoot()
+    public function testShouldReturnDirectoryPathForGivenFilename()
     {
         // Given
-        $filename = '/test.txt';
+        $filename1 = '/test.txt';
+        $filename2 = '/a';
+        $filename3 = '/data/test/text.txt';
+        $filename4 = '\var\www/data/test/text.txt';
 
         // When
-        $actual = (new GetDirectoryPathFromFilename($filename))->acquire();
+        $actual1 = (new GetDirectoryPathFromFilename($filename1))->acquire();
+        $actual2 = (new GetDirectoryPathFromFilename($filename2))->acquire();
+        $actual3 = (new GetDirectoryPathFromFilename($filename3))->acquire();
+        $actual4 = (new GetDirectoryPathFromFilename($filename4))->acquire();
 
         // Then
-        $this->assertEquals('/', $actual);
+        $this->assertEquals('/', $actual1);
+        $this->assertEquals('/', $actual2);
+        $this->assertEquals('/data/test', $actual3);
+        $this->assertEquals('\var\www/data/test', $actual4);
     }
 
-    public function testShouldReturnDirectoryPathWithoutLastSlashForGivenFilename()
+    public function testShouldThrowInvalidArgumentExceptionWhenFilenameLengthIsLowerThanTwoCharacters()
     {
+        // Expect
+        $this->expectException(\InvalidArgumentException::class);
+
         // Given
-        $filename = '/data/test/text.txt';
+        $filename = '/';
 
-        // When
-        $actual = (new GetDirectoryPathFromFilename($filename))->acquire();
-
-        // Then
-        $this->assertEquals('/data/test', $actual);
-    }
-
-    public function testShouldReturnDirectoryPathWhenFilenameContainsBackslash()
-    {
-        // Given
-        $filename = '\var\www/data/test/text.txt';
-
-        // When
-        $actual = (new GetDirectoryPathFromFilename($filename))->acquire();
-
-        // Then
-        $this->assertEquals('\var\www/data/test', $actual);
+        // When & Then
+        (new GetDirectoryPathFromFilename($filename))->acquire();
     }
 
     public function testShouldThrowInvalidArgumentExceptionWhenFilenameDoesNotContainAnyTrailingSlashes()

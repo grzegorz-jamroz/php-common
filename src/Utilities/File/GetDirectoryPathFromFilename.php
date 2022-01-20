@@ -30,6 +30,10 @@ class GetDirectoryPathFromFilename implements Acquirable
             throw new \InvalidArgumentException(sprintf('Invalid filename "%s". Filename has to contain at least one Trailing Slash "/" character.', $this->filename));
         }
 
+        if (strlen($this->filename) <= 1) {
+            throw new \InvalidArgumentException(sprintf('Invalid filename "%s". Filename has to contain at least two characters.', $this->filename));
+        }
+
         if ($pos === 0) {
             return '/';
         }
