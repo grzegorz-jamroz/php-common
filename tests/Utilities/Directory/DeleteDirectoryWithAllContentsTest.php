@@ -5,6 +5,7 @@ namespace Tests\Utilities\Directory;
 
 use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
 use Ifrost\Common\Utilities\Directory\DeleteDirectoryWithAllContents;
+use Ifrost\Common\Utilities\File\CreateFileIfNotExists;
 use PHPUnit\Framework\TestCase;
 
 class DeleteDirectoryWithAllContentsTest extends TestCase
@@ -13,10 +14,10 @@ class DeleteDirectoryWithAllContentsTest extends TestCase
     {
         // Given
         $directoryPath = sprintf('%s/empty-directory', DATA_DIRECTORY);
-        (new CreateDirectoryIfNotExists($directoryPath))->handle();
+        (new CreateDirectoryIfNotExists($directoryPath))->execute();
 
         // When
-        (new DeleteDirectoryWithAllContents(DATA_DIRECTORY))->handle();
+        (new DeleteDirectoryWithAllContents(DATA_DIRECTORY))->execute();
 
         // Then
         $this->assertEquals(false, file_exists($directoryPath));
@@ -29,8 +30,9 @@ class DeleteDirectoryWithAllContentsTest extends TestCase
 
         // Given
         $directoryPath = sprintf('%s/test.txt', DATA_DIRECTORY);
+        (new CreateFileIfNotExists($directoryPath))->execute();
 
         // When
-        (new DeleteDirectoryWithAllContents($directoryPath))->handle();
+        (new DeleteDirectoryWithAllContents($directoryPath))->execute();
     }
 }

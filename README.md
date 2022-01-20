@@ -15,6 +15,6 @@ composer require grzegorz-jamroz/php-common
 Run all tests
 
 ```
-vendor/bin/phpunit
+bin/test
 ```
 

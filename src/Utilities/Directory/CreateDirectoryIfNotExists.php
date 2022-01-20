@@ -1,11 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Ifrost\Common\Utilities\Directory;
 
-use Ifrost\Common\HandleInterface;
+use Ifrost\Common\Executable;
 
-class CreateDirectoryIfNotExists implements HandleInterface
+class CreateDirectoryIfNotExists implements Executable
 {
     private string $path;
 
@@ -14,14 +15,14 @@ class CreateDirectoryIfNotExists implements HandleInterface
         $this->path = $path;
     }
 
-    public function handle(): void
+    public function execute(): void
     {
         if (file_exists($this->path)) {
             return;
         }
 
         if (!mkdir($this->path, 0777, true)) {
-            throw new \Exception(sprintf('Unable to create directory "%s".', $this->path));
+            throw new \RuntimeException(sprintf('Unable to create directory "%s".', $this->path));
         }
     }
 }
