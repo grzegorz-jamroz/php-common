@@ -5,7 +5,7 @@ namespace Ifrost\Common\Utilities\Directory;
 
 use Ifrost\Common\HandleInterface;
 
-class CreateIfNotExists implements HandleInterface
+class CreateDirectoryIfNotExists implements HandleInterface
 {
     private string $path;
 

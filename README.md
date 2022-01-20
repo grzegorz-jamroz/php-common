@@ -9,3 +9,12 @@ Collection of common interfaces shared between projects
 ```
 composer require grzegorz-jamroz/php-common
 ```
+
+## Commands
+
+Run all tests
+
+```
+vendor/bin/phpunit
+```
+

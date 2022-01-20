@@ -5,7 +5,7 @@ namespace Ifrost\Common\Utilities\Directory;
 
 use Ifrost\Common\HandleInterface;
 
-class DeleteWithAllContents implements HandleInterface
+class DeleteDirectoryWithAllContents implements HandleInterface
 {
     private string $path;
 
