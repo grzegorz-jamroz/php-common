@@ -44,7 +44,7 @@ class DeleteDirectoryWithAllContents implements Executable
             }
 
             if (!unlink($file)) {
-                throw new \RuntimeException(sprintf('Unable remove directory "%s".', $dirPath));
+                throw new \RuntimeException(sprintf('Unable remove file "%s".', $dirPath));
             }
         }
 
