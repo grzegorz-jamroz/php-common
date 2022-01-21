@@ -22,6 +22,10 @@ class DeleteDirectoryWithAllContents implements Executable
 
     private function delete(string $dirPath): void
     {
+        if (!file_exists($dirPath)) {
+            return;
+        }
+
         if (!is_dir($dirPath)) {
             throw new \InvalidArgumentException(sprintf('%s is not directory.', $dirPath));
         }

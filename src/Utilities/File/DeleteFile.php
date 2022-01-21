@@ -24,6 +24,10 @@ class DeleteFile implements Executable
             return;
         }
 
-        unlink($this->filename);
+        try {
+            unlink($this->filename) ?: throw new \RuntimeException();
+        } catch (\Exception) {
+            throw new \RuntimeException(sprintf('Unable remove file "%s". ', $this->filename));
+        }
     }
 }

@@ -27,9 +27,6 @@ class CreateFileIfNotExists implements Executable
 
         $directoryPath = (new GetDirectoryPathFromFilename($this->filename))->acquire();
         (new CreateDirectoryIfNotExists($directoryPath))->execute();
-
-        if (file_put_contents($this->filename, '') === false) {
-            throw new \RuntimeException(sprintf('Unable to create file "%s".', $this->filename));
-        }
+        file_put_contents($this->filename, '');
     }
 }

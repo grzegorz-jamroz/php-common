@@ -19,7 +19,7 @@ class DeleteFileTest extends TestCase
         // When
         try {
             (new DeleteFile($filename))->execute();
-        } catch(\Exception $e) {
+        } catch(\Exception) {
             $this->assertEquals(1, 1);
         }
 
@@ -39,5 +39,20 @@ class DeleteFileTest extends TestCase
 
         // Then
         $this->assertFileDoesNotExist($filename);
+    }
+
+    /*
+     * immutable_file.txt should be created with `comand sudo chattr +i immutable_file.txt`
+     * it probably only works on ext2/ext3/ext4 filesystems but I didn't have better idea how to test it
+     */
+    public function testShouldThrowRuntimeExceptionWhenUnableToDeleteFile()
+    {
+        // Expect & Given
+        $this->expectException(\RuntimeException::class);
+        $filename = sprintf('%s/immutable_file.txt', TESTS_DATA_DIRECTORY);
+        $this->assertFileExists($filename);
+
+        // When & Then
+        (new DeleteFile($filename))->execute();
     }
 }
