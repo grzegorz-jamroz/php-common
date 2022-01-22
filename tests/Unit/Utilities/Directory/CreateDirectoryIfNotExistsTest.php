@@ -19,8 +19,8 @@ class CreateDirectoryIfNotExistsTest extends TestCase
     public function testShouldLetNothingHappenWhenDirectoryExists()
     {
         // Expect & Given
-        $directoryPath = sprintf('%s/sample_%s', DATA_DIRECTORY, time());
-        mkdir($directoryPath);
+        $directoryPath = sprintf('%s/directory/create-directory/sample_%s', DATA_DIRECTORY, time());
+        mkdir($directoryPath, 0777, true);
         $this->assertDirectoryExists($directoryPath);
 
         // When
@@ -37,7 +37,7 @@ class CreateDirectoryIfNotExistsTest extends TestCase
     public function testShouldCreateDirectoryInNotExistedDirectory()
     {
         // Expect & Given
-        $directoryPath = sprintf('%s/sample_%s/test', DATA_DIRECTORY, time());
+        $directoryPath = sprintf('%s/directory/create-directory/sample_%s/test', DATA_DIRECTORY, time());
 
         // When
         (new CreateDirectoryIfNotExists($directoryPath))->execute();

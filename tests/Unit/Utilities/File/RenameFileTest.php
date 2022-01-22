@@ -20,8 +20,8 @@ class RenameFileTest extends TestCase
     public function testShouldRenameFileInsideSameDirectory()
     {
         // Expect & Given
-        $oldFilename = sprintf('%s/exists_old.txt', DATA_DIRECTORY);
-        $newFilename = sprintf('%s/exists_new.txt', DATA_DIRECTORY);
+        $oldFilename = sprintf('%s/file/rename-file/exists_old.txt', DATA_DIRECTORY);
+        $newFilename = sprintf('%s/file/rename-file/exists_new.txt', DATA_DIRECTORY);
         (new CreateFileIfNotExists($oldFilename))->execute();
         (new DeleteFile($newFilename))->execute();
         $this->assertFileExists($oldFilename);
@@ -38,8 +38,8 @@ class RenameFileTest extends TestCase
     public function testShouldRenameFileAndMoveToNewNotExistedDirectory()
     {
         // Expect & Given
-        $oldFilename = sprintf('%s/exists_old.txt', DATA_DIRECTORY);
-        $newFilename = sprintf('%s/new_directory/exists_new.txt', DATA_DIRECTORY);
+        $oldFilename = sprintf('%s/file/rename-file/exists_old.txt', DATA_DIRECTORY);
+        $newFilename = sprintf('%s/file/rename-file/new_directory/exists_new.txt', DATA_DIRECTORY);
         (new CreateFileIfNotExists($oldFilename))->execute();
         (new DeleteFile($newFilename))->execute();
         $this->assertFileExists($oldFilename);
@@ -58,8 +58,8 @@ class RenameFileTest extends TestCase
         // Expect & Given
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessageMatches('/Old file does not exist./');
-        $oldFilename = sprintf('%s/exists_old.txt', DATA_DIRECTORY);
-        $newFilename = sprintf('%s/exists_new.txt', DATA_DIRECTORY);
+        $oldFilename = sprintf('%s/file/rename-file/exists_old.txt', DATA_DIRECTORY);
+        $newFilename = sprintf('%s/file/rename-file/exists_new.txt', DATA_DIRECTORY);
         (new DeleteFile($oldFilename))->execute();
         (new DeleteFile($newFilename))->execute();
         $this->assertFileDoesNotExist($oldFilename);
@@ -74,8 +74,8 @@ class RenameFileTest extends TestCase
         // Expect & Given
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessageMatches('/New file already exists./');
-        $oldFilename = sprintf('%s/exists_old.txt', DATA_DIRECTORY);
-        $newFilename = sprintf('%s/exists_new.txt', DATA_DIRECTORY);
+        $oldFilename = sprintf('%s/file/rename-file/exists_old.txt', DATA_DIRECTORY);
+        $newFilename = sprintf('%s/file/rename-file/exists_new.txt', DATA_DIRECTORY);
         (new CreateFileIfNotExists($oldFilename))->execute();
         (new CreateFileIfNotExists($newFilename))->execute();
         $this->assertFileExists($oldFilename);

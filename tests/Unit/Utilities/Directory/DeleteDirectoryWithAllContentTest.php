@@ -20,7 +20,7 @@ class DeleteDirectoryWithAllContentTest extends TestCase
     public function testShouldLetNothingHappenWhenDirectoryNotExists()
     {
         // Expect & Given
-        $directoryPath = sprintf('%s/%s', DATA_DIRECTORY, time());
+        $directoryPath = sprintf('%s/directory/delete-directory/sample_%s', DATA_DIRECTORY, time());
         $this->assertDirectoryDoesNotExist($directoryPath);
 
         // When
@@ -37,7 +37,7 @@ class DeleteDirectoryWithAllContentTest extends TestCase
     public function testShouldRemoveEmptyDirectory()
     {
         // Expect & Given
-        $directoryPath = sprintf('%s/empty-directory', DATA_DIRECTORY);
+        $directoryPath = sprintf('%s/directory/delete-directory/empty-directory', DATA_DIRECTORY);
         (new CreateDirectoryIfNotExists($directoryPath))->execute();
 
         // When
@@ -50,7 +50,7 @@ class DeleteDirectoryWithAllContentTest extends TestCase
     public function testShouldRemoveDirectoryWithOneFileInside()
     {
         // Expect & Given
-        $directoryPath = sprintf('%s/one-file-inside', DATA_DIRECTORY);
+        $directoryPath = sprintf('%s/directory/delete-directory/one-file-inside', DATA_DIRECTORY);
         $filename = sprintf('%s/something.txt', $directoryPath);
         (new CreateFileIfNotExists($filename))->execute();
         $files = glob($directoryPath . '/*', GLOB_MARK);
@@ -67,7 +67,7 @@ class DeleteDirectoryWithAllContentTest extends TestCase
     public function testShouldRemoveDirectoryWithTwoFilesInside()
     {
         // Expect & Given
-        $directoryPath = sprintf('%s/two-files-inside', DATA_DIRECTORY);
+        $directoryPath = sprintf('%s/directory/delete-directory/two-files-inside', DATA_DIRECTORY);
         $filename1 = sprintf('%s/something1.txt', $directoryPath);
         $filename2 = sprintf('%s/something2.txt', $directoryPath);
         (new CreateFileIfNotExists($filename1))->execute();
@@ -87,7 +87,7 @@ class DeleteDirectoryWithAllContentTest extends TestCase
     public function testShouldRemoveDirectoryWithSubDirectoriesAndAllContent()
     {
         // Expect & Given
-        $mainDirectoryPath = sprintf('%s/dir-to-remove', DATA_DIRECTORY);
+        $mainDirectoryPath = sprintf('%s/directory/delete-directory/dir-to-remove', DATA_DIRECTORY);
         $directoryPath2 = sprintf('%s/nested1/nested', $mainDirectoryPath);
         $directoryPath3 = sprintf('%s/nested2', $mainDirectoryPath);
         $filenames = [
@@ -122,7 +122,7 @@ class DeleteDirectoryWithAllContentTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
 
         // Given
-        $directoryPath = sprintf('%s/some-dir', DATA_DIRECTORY);
+        $directoryPath = sprintf('%s/directory/delete-directory/some-dir', DATA_DIRECTORY);
         $filename = sprintf('%s/test.txt', $directoryPath);
         (new CreateFileIfNotExists($filename))->execute();
         $this->assertFileExists($filename);

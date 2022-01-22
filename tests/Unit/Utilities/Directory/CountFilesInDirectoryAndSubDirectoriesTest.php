@@ -20,7 +20,7 @@ class CountFilesInDirectoryAndSubDirectoriesTest extends TestCase
     public function testShouldReturnIntegerZeroWhenDirectoryDoesNotContainAnyFiles()
     {
         // Expect & Given
-        $directoryPath = sprintf('%s/empty', DATA_DIRECTORY);
+        $directoryPath = sprintf('%s/directory/count-files/empty', DATA_DIRECTORY);
         (new DeleteDirectoryWithAllContent($directoryPath))->execute();
         (new CreateDirectoryIfNotExists($directoryPath))->execute();
         $this->assertDirectoryExists($directoryPath);
@@ -37,7 +37,7 @@ class CountFilesInDirectoryAndSubDirectoriesTest extends TestCase
     public function testShouldReturnIntegerOneWhenDirectoryContainsOneFile()
     {
         // Expect & Given
-        $directoryPath = sprintf('%s/one-file-inside', DATA_DIRECTORY);
+        $directoryPath = sprintf('%s/directory/count-files/one-file-inside', DATA_DIRECTORY);
         $filename = sprintf('%s/something.txt', $directoryPath);
         (new DeleteDirectoryWithAllContent($directoryPath))->execute();
         (new CreateFileIfNotExists($filename))->execute();
@@ -54,7 +54,7 @@ class CountFilesInDirectoryAndSubDirectoriesTest extends TestCase
     public function testShouldReturnIntegerOneWhenDirectoryContainsOneFileAndEmptySubdirectory()
     {
         // Expect & Given
-        $directoryPath = sprintf('%s/one-file-inside-and-empty-dir', DATA_DIRECTORY);
+        $directoryPath = sprintf('%s/directory/count-files/one-file-inside-and-empty-dir', DATA_DIRECTORY);
         $subDirectoryPath = sprintf('%s/empty', $directoryPath);
         $filename = sprintf('%s/something.txt', $directoryPath);
         (new CreateFileIfNotExists($filename))->execute();
@@ -72,7 +72,7 @@ class CountFilesInDirectoryAndSubDirectoriesTest extends TestCase
     public function testShouldReturnIntegerSixWhenWhenDirectoryContainsSixFilesAndSomeOfThemAreInSubDirectories()
     {
         // Expect & Given
-        $mainDirectoryPath = sprintf('%s/main', DATA_DIRECTORY);
+        $mainDirectoryPath = sprintf('%s/directory/count-files/main', DATA_DIRECTORY);
         $directoryPath2 = sprintf('%s/nested1/nested', $mainDirectoryPath);
         $directoryPath3 = sprintf('%s/nested2', $mainDirectoryPath);
         $filenames = [
@@ -100,7 +100,7 @@ class CountFilesInDirectoryAndSubDirectoriesTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
 
         // Given
-        $directoryPath = sprintf('%s/some-dir', DATA_DIRECTORY);
+        $directoryPath = sprintf('%s/directory/count-files/some-dir', DATA_DIRECTORY);
         $filename = sprintf('%s/test.txt', $directoryPath);
         (new CreateFileIfNotExists($filename))->execute();
         $this->assertFileExists($filename);

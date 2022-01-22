@@ -35,7 +35,7 @@ class CreateFileIfNotExistsTest extends TestCase
     public function testShouldCreateFileInNotExistedDirectory()
     {
         // Expect & Given
-        $directoryPath = sprintf('%s/not_exists/folder', DATA_DIRECTORY);
+        $directoryPath = sprintf('%s/file/create-file/not_exists/folder', DATA_DIRECTORY);
         $filename = sprintf('%s/test.txt', $directoryPath);
         (new DeleteDirectoryWithAllContent($directoryPath))->execute();
         $this->assertDirectoryDoesNotExist($directoryPath);
@@ -51,7 +51,7 @@ class CreateFileIfNotExistsTest extends TestCase
     public function testShouldCreateFileInExistedDirectory()
     {
         // Expect & Given
-        $directoryPath = sprintf('%s/dir_exists', DATA_DIRECTORY);
+        $directoryPath = sprintf('%s/file/create-file/dir_exists', DATA_DIRECTORY);
         $filename = sprintf('%s/test.txt', $directoryPath);
         (new CreateDirectoryIfNotExists($directoryPath))->execute();
         (new DeleteFile($filename))->execute();

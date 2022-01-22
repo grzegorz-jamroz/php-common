@@ -20,7 +20,7 @@ class OverwriteFileTest extends TestCase
     public function testShouldOverwriteExistedFileWithEmptyString()
     {
         // Expect & Given
-        $filename = sprintf('%s/overwrite-file/test.txt', DATA_DIRECTORY);
+        $filename = sprintf('%s/file/overwrite-file/test.txt', DATA_DIRECTORY);
         (new CreateFileIfNotExists($filename))->execute();
         file_put_contents($filename, 'something');
         $this->assertFileExists($filename);
@@ -36,7 +36,7 @@ class OverwriteFileTest extends TestCase
     public function testShouldOverwriteExistedFileWithGivenContent()
     {
         // Expect & Given
-        $filename = sprintf('%s/overwrite-file/test2.txt', DATA_DIRECTORY);
+        $filename = sprintf('%s/file/overwrite-file/test2.txt', DATA_DIRECTORY);
         (new CreateFileIfNotExists($filename))->execute();
         file_put_contents($filename, 'something2');
         $this->assertFileExists($filename);
@@ -52,7 +52,7 @@ class OverwriteFileTest extends TestCase
     public function testShouldCreateNotExistedFileAndWriteGivenContent()
     {
         // Expect & Given
-        $filename = sprintf('%s/overwrite-file/test3.txt', DATA_DIRECTORY);
+        $filename = sprintf('%s/file/overwrite-file/test3.txt', DATA_DIRECTORY);
         (new DeleteFile($filename))->execute();
         $this->assertFileDoesNotExist($filename);
 

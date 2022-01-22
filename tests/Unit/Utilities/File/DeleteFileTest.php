@@ -19,7 +19,7 @@ class DeleteFileTest extends TestCase
     public function testShouldLetNothingHappenWhenFileNotExists()
     {
         // Expect & Given
-        $filename = sprintf('%s/test/not_exists.txt', DATA_DIRECTORY);
+        $filename = sprintf('%s/file/delete-file/test/not_exists.txt', DATA_DIRECTORY);
         $this->assertFileDoesNotExist($filename);
 
         // When
@@ -36,7 +36,7 @@ class DeleteFileTest extends TestCase
     public function testShouldDeleteFileWhenItExists()
     {
         // Expect & Given
-        $filename = sprintf('%s/file.txt', DATA_DIRECTORY);
+        $filename = sprintf('%s/file/delete-file/file.txt', DATA_DIRECTORY);
         (new CreateFileIfNotExists($filename))->execute();
         $this->assertFileExists($filename);
 
