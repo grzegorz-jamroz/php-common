@@ -31,9 +31,10 @@ class File implements FileInterface
         (new DeleteFile($this->filename))->execute();
     }
 
-    public function rename(): void
+    public function rename(string $newFilename): void
     {
-        // TODO: Implement rename() method.
+        (new RenameFile($this->filename, $newFilename))->execute();
+        $this->filename = $newFilename;
     }
 
     public function getDirectoryPath(): string
@@ -58,6 +59,6 @@ class File implements FileInterface
 
     public function getExtension(): string
     {
-        // TODO: Implement getExtension() method.
+        return (new GetFileExtension($this->filename))->acquire();
     }
 }

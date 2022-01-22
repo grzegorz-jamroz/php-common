@@ -55,6 +55,7 @@ class DeleteFileTest extends TestCase
     {
         // Expect & Given
         $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessageMatches('/Unable remove file/');
         $filename = sprintf('%s/immutable_file.txt', TESTS_DATA_DIRECTORY);
         $this->assertFileExists($filename);
 
