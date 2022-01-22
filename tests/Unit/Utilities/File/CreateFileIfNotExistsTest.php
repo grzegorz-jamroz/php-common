@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Utilities\File;
+namespace Tests\Unit\Utilities\File;
 
 use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
 use Ifrost\Common\Utilities\Directory\DeleteDirectoryWithAllContent;
@@ -12,6 +12,11 @@ use PHPUnit\Framework\TestCase;
 
 class CreateFileIfNotExistsTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        (new CreateDirectoryIfNotExists(DATA_DIRECTORY))->execute();
+    }
+
     public function testShouldLetNothingHappenWhenFileExists()
     {
         // Expect & Given
@@ -58,5 +63,23 @@ class CreateFileIfNotExistsTest extends TestCase
 
         // Then
         $this->assertFileExists($filename);
+    }
+
+    /*
+     * immutable_dir should be created with command `sudo chattr -R +i immutable_dir`
+     * it probably only works on ext2/ext3/ext4 filesystems but I didn't have better idea how to test it
+     */
+    public function testShouldThrowRuntimeExceptionWhenUnableToCreateFile()
+    {
+        // Expect & Given
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessageMatches('/Unable to create file/');
+        $directoryPath = sprintf('%s/immutable_dir', TESTS_DATA_DIRECTORY);
+        $filename = sprintf('%s/sample_%s.txt', $directoryPath, time());
+        $this->assertDirectoryExists($directoryPath);
+        $this->assertFileDoesNotExist($filename);
+
+        // When & Then
+        (new CreateFileIfNotExists($filename))->execute();
     }
 }

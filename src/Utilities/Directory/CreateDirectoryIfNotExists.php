@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Ifrost\Common\Utilities\Directory;
 
-use Ifrost\Common\Executable;
+use Ifrost\Common\Interface\Executable;
 
 class CreateDirectoryIfNotExists implements Executable
 {
-    private string $path;
-
-    public function __construct(string $path)
-    {
-        $this->path = $path;
+    public function __construct(
+        private string $path,
+        private int $permissions = 0777,
+        private bool $recursive = true,
+    ) {
     }
 
     public function execute(): void
@@ -21,7 +21,9 @@ class CreateDirectoryIfNotExists implements Executable
             return;
         }
 
-        if (!mkdir($this->path, 0777, true)) {
+        try {
+            mkdir($this->path, $this->permissions, $this->recursive) ?: throw new \RuntimeException();
+        } catch (\Exception) {
             throw new \RuntimeException(sprintf('Unable to create directory "%s".', $this->path));
         }
     }

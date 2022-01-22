@@ -2,13 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Tests\Utilities\File;
+namespace Tests\Unit\Utilities\File;
 
+use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
 use Ifrost\Common\Utilities\File\GetDirectoryPathFromFilename;
 use PHPUnit\Framework\TestCase;
 
 class GetDirectoryPathFromFilenameTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        (new CreateDirectoryIfNotExists(DATA_DIRECTORY))->execute();
+    }
+
     public function testShouldReturnDirectoryPathForGivenFilename()
     {
         // Given

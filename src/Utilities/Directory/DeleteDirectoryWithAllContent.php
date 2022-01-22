@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ifrost\Common\Utilities\Directory;
 
-use Ifrost\Common\Executable;
+use Ifrost\Common\Interface\Executable;
 use Ifrost\Common\Utilities\File\DeleteFile;
 
 class DeleteDirectoryWithAllContent implements Executable

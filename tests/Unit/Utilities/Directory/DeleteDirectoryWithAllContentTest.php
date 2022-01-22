@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Utilities\Directory;
+namespace Tests\Unit\Utilities\Directory;
 
 use Ifrost\Common\Utilities\Directory\CountFilesInDirectoryAndSubDirectories;
 use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
@@ -12,6 +12,11 @@ use PHPUnit\Framework\TestCase;
 
 class DeleteDirectoryWithAllContentTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        (new CreateDirectoryIfNotExists(DATA_DIRECTORY))->execute();
+    }
+
     public function testShouldLetNothingHappenWhenDirectoryNotExists()
     {
         // Expect & Given
