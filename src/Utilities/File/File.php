@@ -21,9 +21,9 @@ class File implements FileInterface
         (new CreateFileIfNotExists($this->filename))->execute();
     }
 
-    public function overwrite(): void
+    public function overwrite(string $content): void
     {
-        // TODO: Implement edit() method.
+        (new OverwriteFile($this->filename, $content))->execute();
     }
 
     public function delete(): void
