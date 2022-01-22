@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ifrost\Common\Utilities\Directory;
 
-use Ifrost\Common\Interface\Executable;
+use Ifrost\Common\Interfaces\Executable;
 
 class CreateDirectoryIfNotExists implements Executable
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ifrost\Common\Utilities\File;
 
-use Ifrost\Common\Interface\Executable;
+use Ifrost\Common\Interfaces\Executable;
 
 class DeleteFile implements Executable
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ifrost\Common\Utilities\File;
 
-use Ifrost\Common\Interface\Executable;
+use Ifrost\Common\Interfaces\Executable;
 use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
 
 class CreateFileIfNotExists implements Executable
@@ -25,7 +25,7 @@ class CreateFileIfNotExists implements Executable
             return;
         }
 
-        $directoryPath = (new GetDirectoryPathFromFilename($this->filename))->acquire();
+        $directoryPath = (new GetDirectoryPath($this->filename))->acquire();
         (new CreateDirectoryIfNotExists($directoryPath))->execute();
 
         try {

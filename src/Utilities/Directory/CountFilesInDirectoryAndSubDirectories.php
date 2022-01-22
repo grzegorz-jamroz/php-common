@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ifrost\Common\Utilities\Directory;
 
-use Ifrost\Common\Interface\Acquirable;
+use Ifrost\Common\Interfaces\Acquirable;
 
 class CountFilesInDirectoryAndSubDirectories implements Acquirable
 {

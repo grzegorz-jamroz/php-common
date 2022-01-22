@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Ifrost\Common\Utilities\File;
 
-use Ifrost\Common\Interface\Acquirable;
+use Ifrost\Common\Interfaces\Acquirable;
 
-class GetFileNameFromFilenameWithFullPath implements Acquirable
+class GetFileFullName implements Acquirable
 {
     /**
      * @var string fully path to file
@@ -20,7 +20,7 @@ class GetFileNameFromFilenameWithFullPath implements Acquirable
 
     public function acquire(): string
     {
-        $directoryPath = (new GetDirectoryPathFromFilename($this->filename))->acquire();
+        $directoryPath = (new GetDirectoryPath($this->filename))->acquire();
         $length = strlen($directoryPath);
 
         if ($length > 1) {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ifrost\Common\Utilities\Arrays;
 
-use Ifrost\Common\Interface\Acquirable;
+use Ifrost\Common\Interfaces\Acquirable;
 
 class OrderArrayBy implements Acquirable
 {

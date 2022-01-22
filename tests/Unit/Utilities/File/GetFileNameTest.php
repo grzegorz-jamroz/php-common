@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\Utilities\File;
 
 use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
-use Ifrost\Common\Utilities\File\GetDirectoryPathFromFilename;
+use Ifrost\Common\Utilities\File\GetFileName;
 use PHPUnit\Framework\TestCase;
 
-class GetDirectoryPathFromFilenameTest extends TestCase
+class GetFileNameTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -20,20 +20,20 @@ class GetDirectoryPathFromFilenameTest extends TestCase
         // Given
         $filename1 = '/test.txt';
         $filename2 = '/a';
-        $filename3 = '/data/test/text.txt';
-        $filename4 = '\var\www/data/test/text.txt';
+        $filename3 = '/data/test/ab.txt';
+        $filename4 = '\var\www/data/test/ab_c.txt';
 
         // When
-        $actual1 = (new GetDirectoryPathFromFilename($filename1))->acquire();
-        $actual2 = (new GetDirectoryPathFromFilename($filename2))->acquire();
-        $actual3 = (new GetDirectoryPathFromFilename($filename3))->acquire();
-        $actual4 = (new GetDirectoryPathFromFilename($filename4))->acquire();
+        $actual1 = (new GetFileName($filename1))->acquire();
+        $actual2 = (new GetFileName($filename2))->acquire();
+        $actual3 = (new GetFileName($filename3))->acquire();
+        $actual4 = (new GetFileName($filename4))->acquire();
 
         // Then
-        $this->assertEquals('/', $actual1);
-        $this->assertEquals('/', $actual2);
-        $this->assertEquals('/data/test', $actual3);
-        $this->assertEquals('\var\www/data/test', $actual4);
+        $this->assertEquals('test', $actual1);
+        $this->assertEquals('a', $actual2);
+        $this->assertEquals('ab', $actual3);
+        $this->assertEquals('ab_c', $actual4);
     }
 
     public function testShouldThrowInvalidArgumentExceptionWhenFilenameLengthIsLowerThanTwoCharacters()
@@ -45,7 +45,7 @@ class GetDirectoryPathFromFilenameTest extends TestCase
         $filename = '/';
 
         // When & Then
-        (new GetDirectoryPathFromFilename($filename))->acquire();
+        (new GetFileName($filename))->acquire();
     }
 
     public function testShouldThrowInvalidArgumentExceptionWhenFilenameDoesNotContainAnyTrailingSlashes()
@@ -57,6 +57,18 @@ class GetDirectoryPathFromFilenameTest extends TestCase
         $filename = 'text.txt';
 
         // When & Then
-        (new GetDirectoryPathFromFilename($filename))->acquire();
+        (new GetFileName($filename))->acquire();
+    }
+
+    public function testShouldThrowInvalidArgumentExceptionWhenFilenameDoesNotContainAnyFileName()
+    {
+        // Expect
+        $this->expectException(\InvalidArgumentException::class);
+
+        // Given
+        $filename = '\data/test/';
+
+        // When & Then
+        (new GetFileName($filename))->acquire();
     }
 }

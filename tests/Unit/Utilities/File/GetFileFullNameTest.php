@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\Utilities\File;
 
 use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
-use Ifrost\Common\Utilities\File\GetFileNameFromFilenameWithFullPath;
+use Ifrost\Common\Utilities\File\GetFileFullName;
 use PHPUnit\Framework\TestCase;
 
-class GetFileNameFromFilenameWithFullPathTest extends TestCase
+class GetFileFullNameTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -24,10 +24,10 @@ class GetFileNameFromFilenameWithFullPathTest extends TestCase
         $filename4 = '\var\www/data/test/four.txt';
 
         // When
-        $actual1 = (new GetFileNameFromFilenameWithFullPath($filename1))->acquire();
-        $actual2 = (new GetFileNameFromFilenameWithFullPath($filename2))->acquire();
-        $actual3 = (new GetFileNameFromFilenameWithFullPath($filename3))->acquire();
-        $actual4 = (new GetFileNameFromFilenameWithFullPath($filename4))->acquire();
+        $actual1 = (new GetFileFullName($filename1))->acquire();
+        $actual2 = (new GetFileFullName($filename2))->acquire();
+        $actual3 = (new GetFileFullName($filename3))->acquire();
+        $actual4 = (new GetFileFullName($filename4))->acquire();
 
         // Then
         $this->assertEquals('one.txt', $actual1);
@@ -45,7 +45,7 @@ class GetFileNameFromFilenameWithFullPathTest extends TestCase
         $filename = '/';
 
         // When & Then
-        (new GetFileNameFromFilenameWithFullPath($filename))->acquire();
+        (new GetFileFullName($filename))->acquire();
     }
 
     public function testShouldThrowInvalidArgumentExceptionWhenFilenameDoesNotContainAnyTrailingSlashes()
@@ -57,6 +57,6 @@ class GetFileNameFromFilenameWithFullPathTest extends TestCase
         $filename = 'text.txt';
 
         // When & Then
-        (new GetFileNameFromFilenameWithFullPath($filename))->acquire();
+        (new GetFileFullName($filename))->acquire();
     }
 }
