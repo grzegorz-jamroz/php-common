@@ -42,7 +42,7 @@ class DeleteFileTest extends TestCase
     }
 
     /*
-     * immutable_file.txt should be created with `comand sudo chattr +i immutable_file.txt`
+     * immutable_file.txt should be created with command `sudo chattr +i immutable_file.txt`
      * it probably only works on ext2/ext3/ext4 filesystems but I didn't have better idea how to test it
      */
     public function testShouldThrowRuntimeExceptionWhenUnableToDeleteFile()

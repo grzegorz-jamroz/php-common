@@ -7,7 +7,7 @@ namespace Ifrost\Common\Utilities\Directory;
 use Ifrost\Common\Executable;
 use Ifrost\Common\Utilities\File\DeleteFile;
 
-class DeleteDirectoryWithAllContents implements Executable
+class DeleteDirectoryWithAllContent implements Executable
 {
     private string $path;
 
@@ -35,11 +35,7 @@ class DeleteDirectoryWithAllContents implements Executable
             $dirPath .= '/';
         }
 
-        $files = glob($dirPath . '*', GLOB_MARK);
-
-        if ($files === false) {
-            throw new \RuntimeException(sprintf('Unable to find files inside "%s".', $dirPath));
-        }
+        $files = glob($dirPath . '*', GLOB_MARK) ?: [];
 
         foreach ($files as $file) {
             if (is_dir($file)) {

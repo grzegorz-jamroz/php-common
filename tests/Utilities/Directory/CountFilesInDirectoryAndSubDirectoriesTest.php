@@ -6,17 +6,17 @@ namespace Tests\Utilities\Directory;
 
 use Ifrost\Common\Utilities\Directory\CountFilesInDirectoryAndSubDirectories;
 use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
-use Ifrost\Common\Utilities\Directory\DeleteDirectoryWithAllContents;
+use Ifrost\Common\Utilities\Directory\DeleteDirectoryWithAllContent;
 use Ifrost\Common\Utilities\File\CreateFileIfNotExists;
 use PHPUnit\Framework\TestCase;
 
 class CountFilesInDirectoryAndSubDirectoriesTest extends TestCase
 {
-    public function testShouldReturnIntegerZeroWhenCountFilesInDirectory()
+    public function testShouldReturnIntegerZeroWhenDirectoryDoesNotContainAnyFiles()
     {
         // Expect & Given
         $directoryPath = sprintf('%s/empty', DATA_DIRECTORY);
-        (new DeleteDirectoryWithAllContents($directoryPath))->execute();
+        (new DeleteDirectoryWithAllContent($directoryPath))->execute();
         (new CreateDirectoryIfNotExists($directoryPath))->execute();
         $this->assertDirectoryExists($directoryPath);
         $files = glob($directoryPath . '/*', GLOB_MARK);
@@ -29,11 +29,12 @@ class CountFilesInDirectoryAndSubDirectoriesTest extends TestCase
         $this->assertEquals(0, $actual);
     }
 
-    public function testShouldReturnIntegerOneWhenCountFilesInDirectory()
+    public function testShouldReturnIntegerOneWhenDirectoryContainsOneFile()
     {
         // Expect & Given
         $directoryPath = sprintf('%s/one-file-inside', DATA_DIRECTORY);
         $filename = sprintf('%s/something.txt', $directoryPath);
+        (new DeleteDirectoryWithAllContent($directoryPath))->execute();
         (new CreateFileIfNotExists($filename))->execute();
         $files = glob($directoryPath . '/*', GLOB_MARK);
         $this->assertEquals(1, count($files));
@@ -45,10 +46,10 @@ class CountFilesInDirectoryAndSubDirectoriesTest extends TestCase
         $this->assertEquals(1, $actual);
     }
 
-    public function testShouldReturnIntegerOneWhenCountFilesInDirectoryAndItContainsEmptySubdirectory()
+    public function testShouldReturnIntegerOneWhenDirectoryContainsOneFileAndEmptySubdirectory()
     {
         // Expect & Given
-        $directoryPath = sprintf('%s/one-file-inside', DATA_DIRECTORY);
+        $directoryPath = sprintf('%s/one-file-inside-and-empty-dir', DATA_DIRECTORY);
         $subDirectoryPath = sprintf('%s/empty', $directoryPath);
         $filename = sprintf('%s/something.txt', $directoryPath);
         (new CreateFileIfNotExists($filename))->execute();
@@ -63,7 +64,7 @@ class CountFilesInDirectoryAndSubDirectoriesTest extends TestCase
         $this->assertEquals(1, $actual);
     }
 
-    public function testShouldReturnIntegerSixWhenCountFilesInDirectoryAndSubDirectories()
+    public function testShouldReturnIntegerSixWhenWhenDirectoryContainsSixFilesAndSomeOfThemAreInSubDirectories()
     {
         // Expect & Given
         $mainDirectoryPath = sprintf('%s/main', DATA_DIRECTORY);

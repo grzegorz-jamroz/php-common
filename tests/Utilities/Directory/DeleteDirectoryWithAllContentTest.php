@@ -1,16 +1,34 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Utilities\Directory;
 
 use Ifrost\Common\Utilities\Directory\CountFilesInDirectoryAndSubDirectories;
 use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
-use Ifrost\Common\Utilities\Directory\DeleteDirectoryWithAllContents;
+use Ifrost\Common\Utilities\Directory\DeleteDirectoryWithAllContent;
 use Ifrost\Common\Utilities\File\CreateFileIfNotExists;
 use PHPUnit\Framework\TestCase;
 
-class DeleteDirectoryWithAllContentsTest extends TestCase
+class DeleteDirectoryWithAllContentTest extends TestCase
 {
+    public function testShouldLetNothingHappenWhenDirectoryNotExists()
+    {
+        // Expect & Given
+        $directoryPath = sprintf('%s/%s', DATA_DIRECTORY, time());
+        $this->assertDirectoryDoesNotExist($directoryPath);
+
+        // When
+        try {
+            (new DeleteDirectoryWithAllContent($directoryPath))->execute();
+        } catch (\Exception) {
+            $this->assertEquals(1, 1);
+        }
+
+        // Then
+        $this->assertEquals(1, $this->getCount());
+    }
+
     public function testShouldRemoveEmptyDirectory()
     {
         // Expect & Given
@@ -18,7 +36,7 @@ class DeleteDirectoryWithAllContentsTest extends TestCase
         (new CreateDirectoryIfNotExists($directoryPath))->execute();
 
         // When
-        (new DeleteDirectoryWithAllContents($directoryPath))->execute();
+        (new DeleteDirectoryWithAllContent($directoryPath))->execute();
 
         // Then
         $this->assertEquals(false, file_exists($directoryPath));
@@ -34,7 +52,7 @@ class DeleteDirectoryWithAllContentsTest extends TestCase
         $this->assertEquals(1, count($files));
 
         // When
-        (new DeleteDirectoryWithAllContents($directoryPath))->execute();
+        (new DeleteDirectoryWithAllContent($directoryPath))->execute();
 
         // Then
         $this->assertDirectoryDoesNotExist($directoryPath);
@@ -53,7 +71,7 @@ class DeleteDirectoryWithAllContentsTest extends TestCase
         $this->assertEquals(2, count($files));
 
         // When
-        (new DeleteDirectoryWithAllContents($directoryPath))->execute();
+        (new DeleteDirectoryWithAllContent($directoryPath))->execute();
 
         // Then
         $this->assertDirectoryDoesNotExist($directoryPath);
@@ -61,7 +79,7 @@ class DeleteDirectoryWithAllContentsTest extends TestCase
         $this->assertFileDoesNotExist($filename2);
     }
 
-    public function testShouldRemoveDirectoryWithNestedDirectoriesWhichContainFiles()
+    public function testShouldRemoveDirectoryWithSubDirectoriesAndAllContent()
     {
         // Expect & Given
         $mainDirectoryPath = sprintf('%s/dir-to-remove', DATA_DIRECTORY);
@@ -83,15 +101,14 @@ class DeleteDirectoryWithAllContentsTest extends TestCase
         $this->assertEquals(6, (new CountFilesInDirectoryAndSubDirectories($mainDirectoryPath))->acquire());
 
         // When
-        (new DeleteDirectoryWithAllContents($mainDirectoryPath))->execute();
+        (new DeleteDirectoryWithAllContent($mainDirectoryPath))->execute();
 
         // Then
-        $this->assertDirectoryDoesNotExist($mainDirectoryPath);
         foreach ($filenames as $filename) {
-            $this->assertFileDoesNotExist($filename1);
+            $this->assertFileDoesNotExist($filename);
         }
-        $this->assertFileDoesNotExist($filename1);
-        $this->assertFileDoesNotExist($filename2);
+
+        $this->assertDirectoryDoesNotExist($mainDirectoryPath);
     }
 
     public function testShouldThrowInvalidArgumentExceptionWhenPathIsFile()
@@ -106,6 +123,22 @@ class DeleteDirectoryWithAllContentsTest extends TestCase
         $this->assertFileExists($filename);
 
         // When
-        (new DeleteDirectoryWithAllContents($directoryPath))->execute();
+        (new DeleteDirectoryWithAllContent($filename))->execute();
+    }
+
+    /*
+     * immutable_dir should be created with command `sudo chattr -R +i immutable_dir`
+     * it probably only works on ext2/ext3/ext4 filesystems but I didn't have better idea how to test it
+     */
+    public function testShouldThrowRuntimeExceptionWhenUnableToDeleteDirectory()
+    {
+        // Expect & Given
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessageMatches('/Unable remove directory/');
+        $directoryPath = sprintf('%s/immutable_dir', TESTS_DATA_DIRECTORY);
+        $this->assertDirectoryExists($directoryPath);
+
+        // When & Then
+        (new DeleteDirectoryWithAllContent($directoryPath))->execute();
     }
 }
