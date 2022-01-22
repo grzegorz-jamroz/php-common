@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\Utilities\File;
 
 use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
-use Ifrost\Common\Utilities\File\GetDirectoryPath;
+use Ifrost\Common\Utilities\File\GetFileExtension;
 use PHPUnit\Framework\TestCase;
 
-class GetDirectoryPathTest extends TestCase
+class GetFileExtensionTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -20,33 +20,32 @@ class GetDirectoryPathTest extends TestCase
         // Given
         $filename1 = '/test.txt';
         $filename2 = '/a';
-        $filename3 = '/data/test/text.txt';
-        $filename4 = '\var\www/data/test/text.txt';
+        $filename3 = '/data/test/ab.jpeg';
+        $filename4 = '\var\www/data/test/ab_c.docx';
 
         // When
-        $actual1 = (new GetDirectoryPath($filename1))->acquire();
-        $actual2 = (new GetDirectoryPath($filename2))->acquire();
-        $actual3 = (new GetDirectoryPath($filename3))->acquire();
-        $actual4 = (new GetDirectoryPath($filename4))->acquire();
+        $actual1 = (new GetFileExtension($filename1))->acquire();
+        $actual2 = (new GetFileExtension($filename2))->acquire();
+        $actual3 = (new GetFileExtension($filename3))->acquire();
+        $actual4 = (new GetFileExtension($filename4))->acquire();
 
         // Then
-        $this->assertEquals('/', $actual1);
-        $this->assertEquals('/', $actual2);
-        $this->assertEquals('/data/test', $actual3);
-        $this->assertEquals('\var\www/data/test', $actual4);
+        $this->assertEquals('txt', $actual1);
+        $this->assertEquals('', $actual2);
+        $this->assertEquals('jpeg', $actual3);
+        $this->assertEquals('docx', $actual4);
     }
 
     public function testShouldThrowInvalidArgumentExceptionWhenFilenameLengthIsLowerThanTwoCharacters()
     {
         // Expect
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageMatches('/Filename has to contain string after last Trailing Slash./');
 
         // Given
         $filename = '/';
 
         // When & Then
-        (new GetDirectoryPath($filename))->acquire();
+        (new GetFileExtension($filename))->acquire();
     }
 
     public function testShouldThrowInvalidArgumentExceptionWhenFilenameDoesNotContainAnyTrailingSlashes()
@@ -58,19 +57,18 @@ class GetDirectoryPathTest extends TestCase
         $filename = 'text.txt';
 
         // When & Then
-        (new GetDirectoryPath($filename))->acquire();
+        (new GetFileExtension($filename))->acquire();
     }
 
     public function testShouldThrowInvalidArgumentExceptionWhenFilenameDoesNotContainAnyFileName()
     {
         // Expect
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageMatches('/Filename has to contain string after last Trailing Slash/');
 
         // Given
         $filename = '\data/test/';
 
         // When & Then
-        (new GetDirectoryPath($filename))->acquire();
+        (new GetFileExtension($filename))->acquire();
     }
 }
