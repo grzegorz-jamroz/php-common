@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Ifrost\Common\Utilities\Directory;
 
 use Ifrost\Common\Executable;
+use Ifrost\Common\Utilities\File\DeleteFile;
 
 class DeleteDirectoryWithAllContents implements Executable
 {
@@ -47,12 +48,12 @@ class DeleteDirectoryWithAllContents implements Executable
                 continue;
             }
 
-            if (!unlink($file)) {
-                throw new \RuntimeException(sprintf('Unable remove file "%s".', $dirPath));
-            }
+            (new DeleteFile($file))->execute();
         }
 
-        if (!rmdir($dirPath)) {
+        try {
+            rmdir($dirPath) ?: throw new \RuntimeException();
+        } catch (\Exception) {
             throw new \RuntimeException(sprintf('Unable remove directory "%s".', $dirPath));
         }
     }

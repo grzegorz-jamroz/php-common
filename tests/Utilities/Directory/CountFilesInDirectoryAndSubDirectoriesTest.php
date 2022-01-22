@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Utilities\Directory;
@@ -9,22 +10,26 @@ use Ifrost\Common\Utilities\Directory\DeleteDirectoryWithAllContents;
 use Ifrost\Common\Utilities\File\CreateFileIfNotExists;
 use PHPUnit\Framework\TestCase;
 
-class DeleteDirectoryWithAllContentsTest extends TestCase
+class CountFilesInDirectoryAndSubDirectoriesTest extends TestCase
 {
-    public function testShouldRemoveEmptyDirectory()
+    public function testShouldReturnIntegerZeroWhenCountFilesInDirectory()
     {
         // Expect & Given
-        $directoryPath = sprintf('%s/empty-directory', DATA_DIRECTORY);
+        $directoryPath = sprintf('%s/empty', DATA_DIRECTORY);
+        (new DeleteDirectoryWithAllContents($directoryPath))->execute();
         (new CreateDirectoryIfNotExists($directoryPath))->execute();
+        $this->assertDirectoryExists($directoryPath);
+        $files = glob($directoryPath . '/*', GLOB_MARK);
+        $this->assertEquals(0, count($files));
 
         // When
-        (new DeleteDirectoryWithAllContents($directoryPath))->execute();
+        $actual = (new CountFilesInDirectoryAndSubDirectories($directoryPath))->acquire();
 
         // Then
-        $this->assertEquals(false, file_exists($directoryPath));
+        $this->assertEquals(0, $actual);
     }
 
-    public function testShouldRemoveDirectoryWithOneFileInside()
+    public function testShouldReturnIntegerOneWhenCountFilesInDirectory()
     {
         // Expect & Given
         $directoryPath = sprintf('%s/one-file-inside', DATA_DIRECTORY);
@@ -34,37 +39,34 @@ class DeleteDirectoryWithAllContentsTest extends TestCase
         $this->assertEquals(1, count($files));
 
         // When
-        (new DeleteDirectoryWithAllContents($directoryPath))->execute();
+        $actual = (new CountFilesInDirectoryAndSubDirectories($directoryPath))->acquire();
 
         // Then
-        $this->assertDirectoryDoesNotExist($directoryPath);
-        $this->assertFileDoesNotExist($filename);
+        $this->assertEquals(1, $actual);
     }
 
-    public function testShouldRemoveDirectoryWithTwoFilesInside()
+    public function testShouldReturnIntegerOneWhenCountFilesInDirectoryAndItContainsEmptySubdirectory()
     {
         // Expect & Given
-        $directoryPath = sprintf('%s/two-files-inside', DATA_DIRECTORY);
-        $filename1 = sprintf('%s/something1.txt', $directoryPath);
-        $filename2 = sprintf('%s/something2.txt', $directoryPath);
-        (new CreateFileIfNotExists($filename1))->execute();
-        (new CreateFileIfNotExists($filename2))->execute();
-        $files = glob($directoryPath . '/*', GLOB_MARK);
-        $this->assertEquals(2, count($files));
+        $directoryPath = sprintf('%s/one-file-inside', DATA_DIRECTORY);
+        $subDirectoryPath = sprintf('%s/empty', $directoryPath);
+        $filename = sprintf('%s/something.txt', $directoryPath);
+        (new CreateFileIfNotExists($filename))->execute();
+        (new CreateDirectoryIfNotExists($subDirectoryPath))->execute();
+        $this->assertFileExists($filename);
+        $this->assertDirectoryExists($subDirectoryPath);
 
         // When
-        (new DeleteDirectoryWithAllContents($directoryPath))->execute();
+        $actual = (new CountFilesInDirectoryAndSubDirectories($directoryPath))->acquire();
 
         // Then
-        $this->assertDirectoryDoesNotExist($directoryPath);
-        $this->assertFileDoesNotExist($filename1);
-        $this->assertFileDoesNotExist($filename2);
+        $this->assertEquals(1, $actual);
     }
 
-    public function testShouldRemoveDirectoryWithNestedDirectoriesWhichContainFiles()
+    public function testShouldReturnIntegerSixWhenCountFilesInDirectoryAndSubDirectories()
     {
         // Expect & Given
-        $mainDirectoryPath = sprintf('%s/dir-to-remove', DATA_DIRECTORY);
+        $mainDirectoryPath = sprintf('%s/main', DATA_DIRECTORY);
         $directoryPath2 = sprintf('%s/nested1/nested', $mainDirectoryPath);
         $directoryPath3 = sprintf('%s/nested2', $mainDirectoryPath);
         $filenames = [
@@ -80,18 +82,10 @@ class DeleteDirectoryWithAllContentsTest extends TestCase
             (new CreateFileIfNotExists($filename))->execute();
         }
 
-        $this->assertEquals(6, (new CountFilesInDirectoryAndSubDirectories($mainDirectoryPath))->acquire());
-
         // When
-        (new DeleteDirectoryWithAllContents($mainDirectoryPath))->execute();
+        $actual = (new CountFilesInDirectoryAndSubDirectories($mainDirectoryPath))->acquire();
 
-        // Then
-        $this->assertDirectoryDoesNotExist($mainDirectoryPath);
-        foreach ($filenames as $filename) {
-            $this->assertFileDoesNotExist($filename1);
-        }
-        $this->assertFileDoesNotExist($filename1);
-        $this->assertFileDoesNotExist($filename2);
+        $this->assertEquals(6, $actual);
     }
 
     public function testShouldThrowInvalidArgumentExceptionWhenPathIsFile()
@@ -106,6 +100,6 @@ class DeleteDirectoryWithAllContentsTest extends TestCase
         $this->assertFileExists($filename);
 
         // When
-        (new DeleteDirectoryWithAllContents($directoryPath))->execute();
+        (new CountFilesInDirectoryAndSubDirectories($filename))->acquire();
     }
 }
