@@ -7,6 +7,17 @@ namespace Ifrost\Common\Utilities\File;
 class TextFile extends File implements TextFileInterface
 {
     /**
+     * Creates a new file if it does not exist.
+     * The method will create the missing directories if necessary.
+     *
+     * @throws \Exception when file already exists
+     */
+    public function create(string $content = ''): void
+    {
+        (new CreateFileIfNotExists($this->filename, $content))->execute();
+    }
+
+    /**
      * The method will add new content to the end of the file.
      * The method will create a new file if it does not exist with given content.
      * The method will create the missing directories if necessary.

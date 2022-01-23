@@ -10,6 +10,12 @@ interface JsonFileInterface extends FileInterface
      * @param array<string, mixed> $data
      * @param int<1, max>          $depth
      */
+    public function create(array $data = [], int $flags = 0, int $depth = 512): void;
+
+    /**
+     * @param array<string, mixed> $data
+     * @param int<1, max>          $depth
+     */
     public function overwrite(array $data, int $flags = 0, int $depth = 512): void;
 
     /**
