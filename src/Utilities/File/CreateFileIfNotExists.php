@@ -6,6 +6,7 @@ namespace Ifrost\Common\Utilities\File;
 
 use Ifrost\Common\Interfaces\Executable;
 use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
+use Ifrost\Common\Utilities\File\Exception\FileAlreadyExists;
 
 class CreateFileIfNotExists implements Executable
 {
@@ -27,7 +28,7 @@ class CreateFileIfNotExists implements Executable
     public function execute(): void
     {
         if (is_file($this->filename)) {
-            throw new \Exception(sprintf('Unable to create file "%s". File already exists.', $this->filename));
+            throw new FileAlreadyExists(sprintf('Unable to create file "%s". File already exists.', $this->filename));
         }
 
         $directoryPath = (new GetDirectoryPath($this->filename))->acquire();

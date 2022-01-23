@@ -8,6 +8,7 @@ use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
 use Ifrost\Common\Utilities\Directory\DeleteDirectoryWithAllContent;
 use Ifrost\Common\Utilities\File\CreateFileIfNotExists;
 use Ifrost\Common\Utilities\File\DeleteFile;
+use Ifrost\Common\Utilities\File\Exception\FileAlreadyExists;
 use PHPUnit\Framework\TestCase;
 
 class CreateFileIfNotExistsTest extends TestCase
@@ -50,12 +51,11 @@ class CreateFileIfNotExistsTest extends TestCase
         $this->assertFileExists($filename);
     }
 
-    public function testShouldThrowExceptionWhenFileExists()
+    public function testShouldThrowFileAlreadyExistsWhenFileExists()
     {
         // Expect & Given
         $filename = sprintf('%s/exists.txt', TESTS_DATA_DIRECTORY);
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage(sprintf('Unable to create file "%s". File already exists.', $filename));
+        $this->expectException(FileAlreadyExists::class);
         $this->assertFileExists($filename);
 
         // When & Then
