@@ -9,6 +9,8 @@ interface JsonFileInterface extends FileInterface
     /**
      * @param array<string, mixed> $data
      * @param int<1, max>          $depth
+     *
+     * @throws \Exception when file already exists
      */
     public function create(array $data = [], int $flags = 0, int $depth = 512): void;
 
