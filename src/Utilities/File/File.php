@@ -31,6 +31,11 @@ class File implements FileInterface
         (new DeleteFile($this->filename))->execute();
     }
 
+    public function read(): string
+    {
+        return (new ReadFile($this->filename))->acquire();
+    }
+
     public function rename(string $newFilename): void
     {
         (new RenameFile($this->filename, $newFilename))->execute();

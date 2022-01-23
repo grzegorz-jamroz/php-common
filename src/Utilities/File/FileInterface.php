@@ -9,6 +9,7 @@ interface FileInterface
     public function create(): void;
     public function overwrite(string $content): void;
     public function delete(): void;
+    public function read(): string;
     public function rename(string $newFilename): void;
     public function getDirectoryPath(): string;
     public function getFilename(): string;
