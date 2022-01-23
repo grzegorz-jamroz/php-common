@@ -20,6 +20,10 @@ class GetFileNumberOfLines implements Acquirable
 
     public function acquire(): int
     {
+        if (!is_file($this->filename)) {
+            throw new \RuntimeException(sprintf('Unable to read file. File %s not exist.', $this->filename));
+        }
+
         $count = 0;
 
         try {
