@@ -16,8 +16,13 @@ class GetFileLine implements Acquirable
 
     public function acquire(): string
     {
+        if (!is_file($this->filename)) {
+            throw new \RuntimeException(sprintf('Unable to read file. File %s not exist.', $this->filename));
+        }
+
         $count = 0;
         $this->lineNumber > 0 ?: throw new \InvalidArgumentException('Line number has to be greater than 0".');
+
         try {
             $file = fopen($this->filename, 'r') ?: throw new \RuntimeException();
         } catch (\Exception) {

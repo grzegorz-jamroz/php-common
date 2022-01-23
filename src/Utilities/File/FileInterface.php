@@ -18,4 +18,5 @@ interface FileInterface
     public function getName(): string;
     public function getExtension(): string;
     public function getNumberOfLines(): int;
+    public function getLine(int $lineNumber): string;
 }

@@ -76,4 +76,9 @@ class File implements FileInterface
     {
         return (new GetFileNumberOfLines($this->filename))->acquire();
     }
+
+    public function getLine(int $lineNumber): string
+    {
+        return (new GetFileLine($this->filename, $lineNumber))->acquire();
+    }
 }
