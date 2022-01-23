@@ -19,9 +19,9 @@ class File implements FileInterface
      *
      * @throws \Exception when file already exists
      */
-    public function create(): void
+    public function create(string $content = ''): void
     {
-        (new CreateFileIfNotExists($this->filename))->execute();
+        (new CreateFileIfNotExists($this->filename, $content))->execute();
     }
 
     public function delete(): void

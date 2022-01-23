@@ -6,7 +6,7 @@ namespace Ifrost\Common\Utilities\File;
 
 interface FileInterface
 {
-    public function create(): void;
+    public function create(string $content = ''): void;
     public function delete(): void;
     public function rename(string $newFilename): void;
     public function getDirectoryPath(): string;
