@@ -16,6 +16,8 @@ class File implements FileInterface
     /**
      * Creates a new file if it does not exist.
      * The method will create the missing directories if necessary.
+     *
+     * @throws \Exception when file already exists
      */
     public function create(): void
     {

@@ -22,7 +22,10 @@ class RenameFileTest extends TestCase
         // Expect & Given
         $oldFilename = sprintf('%s/file/rename-file/exists_old.txt', DATA_DIRECTORY);
         $newFilename = sprintf('%s/file/rename-file/exists_new.txt', DATA_DIRECTORY);
-        (new CreateFileIfNotExists($oldFilename))->execute();
+        try {
+            (new CreateFileIfNotExists($oldFilename))->execute();
+        } catch (\Exception) {
+        }
         (new DeleteFile($newFilename))->execute();
         $this->assertFileExists($oldFilename);
         $this->assertFileDoesNotExist($newFilename);

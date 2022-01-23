@@ -17,21 +17,6 @@ class CreateFileIfNotExistsTest extends TestCase
         (new CreateDirectoryIfNotExists(DATA_DIRECTORY))->execute();
     }
 
-    public function testShouldLetNothingHappenWhenFileExists()
-    {
-        // Expect & Given
-        $filename = sprintf('%s/exists.txt', TESTS_DATA_DIRECTORY);
-        $this->assertFileExists($filename);
-        $expectedFileContent = 'some text';
-        file_put_contents($filename, $expectedFileContent);
-
-        // When
-        (new CreateFileIfNotExists($filename))->execute();
-
-        // Then
-        $this->assertEquals($expectedFileContent, file_get_contents($filename));
-    }
-
     public function testShouldCreateFileInNotExistedDirectory()
     {
         // Expect & Given
@@ -63,6 +48,18 @@ class CreateFileIfNotExistsTest extends TestCase
 
         // Then
         $this->assertFileExists($filename);
+    }
+
+    public function testShouldThrowExceptionWhenFileExists()
+    {
+        // Expect & Given
+        $filename = sprintf('%s/exists.txt', TESTS_DATA_DIRECTORY);
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage(sprintf('Unable to create file "%s". File already exists.', $filename));
+        $this->assertFileExists($filename);
+
+        // When & Then
+        (new CreateFileIfNotExists($filename))->execute();
     }
 
     /*

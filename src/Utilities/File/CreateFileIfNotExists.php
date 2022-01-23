@@ -21,11 +21,13 @@ class CreateFileIfNotExists implements Executable
     /**
      * Creates a new file if it does not exist.
      * The method will create the missing directories if necessary.
+     *
+     * @throws \Exception when file already exists
      */
     public function execute(): void
     {
         if (is_file($this->filename)) {
-            return;
+            throw new \Exception(sprintf('Unable to create file "%s". File already exists.', $this->filename));
         }
 
         $directoryPath = (new GetDirectoryPath($this->filename))->acquire();
