@@ -18,6 +18,11 @@ class RenameFile implements Executable
         private string $newFilename,
     ) {}
 
+    /**
+     * Renames a file if it exists.
+     * The new filename cannot exist.
+     * The method will create the missing directories if necessary.
+     */
     public function execute(): void
     {
         if (!is_file($this->oldFilename)) {

@@ -18,6 +18,10 @@ class CreateFileIfNotExists implements Executable
     ) {
     }
 
+    /**
+     * Creates a new file if it does not exist.
+     * The method will create the missing directories if necessary.
+     */
     public function execute(): void
     {
         if (is_file($this->filename)) {

@@ -9,23 +9,17 @@ class File implements FileInterface
     /**
      * @param string $filename fully path to file
      */
-    public function __construct(private string $filename)
+    public function __construct(protected string $filename)
     {
     }
 
+    /**
+     * Creates a new file if it does not exist.
+     * The method will create the missing directories if necessary.
+     */
     public function create(): void
     {
         (new CreateFileIfNotExists($this->filename))->execute();
-    }
-
-    public function write(string $content): void
-    {
-        (new WriteFile($this->filename, $content))->execute();
-    }
-
-    public function overwrite(string $content): void
-    {
-        (new OverwriteFile($this->filename, $content))->execute();
     }
 
     public function delete(): void
@@ -33,11 +27,11 @@ class File implements FileInterface
         (new DeleteFile($this->filename))->execute();
     }
 
-    public function read(): string
-    {
-        return (new ReadFile($this->filename))->acquire();
-    }
-
+    /**
+     * Renames a file if it exists.
+     * The new filename cannot exist.
+     * The method will create the missing directories if necessary.
+     */
     public function rename(string $newFilename): void
     {
         (new RenameFile($this->filename, $newFilename))->execute();

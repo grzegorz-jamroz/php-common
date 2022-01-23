@@ -29,7 +29,7 @@ class WriteFile implements Executable
             throw new \RuntimeException(sprintf('Unable to write to file %s.', $this->filename));
         }
 
-        fputs($file, $this->content);
+        fwrite($file, $this->content);
         fclose($file);
     }
 }
