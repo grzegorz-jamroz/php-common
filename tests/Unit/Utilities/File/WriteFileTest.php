@@ -7,6 +7,7 @@ namespace Tests\Unit\Utilities\File;
 use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
 use Ifrost\Common\Utilities\File\CreateFileIfNotExists;
 use Ifrost\Common\Utilities\File\DeleteFile;
+use Ifrost\Common\Utilities\File\GetFileLine;
 use Ifrost\Common\Utilities\File\GetFileNumberOfLines;
 use Ifrost\Common\Utilities\File\WriteFile;
 use PHPUnit\Framework\TestCase;
@@ -60,10 +61,11 @@ class WriteFileTest extends TestCase
         // When
         (new WriteFile($filename, "line one\n"))->execute();
         (new WriteFile($filename, "line two\n"))->execute();
-        (new WriteFile($filename, "line three"))->execute();
+        (new WriteFile($filename, 'line three'))->execute();
 
         // Then
         $this->assertEquals(3, (new GetFileNumberOfLines($filename))->acquire());
+        $this->assertEquals('line three', (new GetFileLine($filename, 3))->acquire());
     }
 
     public function testShouldCreateFileWhichContainsThreeLinesAndLastLineIsEmpty()
@@ -80,6 +82,7 @@ class WriteFileTest extends TestCase
 
         // Then
         $this->assertEquals(4, (new GetFileNumberOfLines($filename))->acquire());
+        $this->assertEquals('', (new GetFileLine($filename, 4))->acquire());
     }
 
     public function testShouldAddTwoNewStringsToExistedFile()
