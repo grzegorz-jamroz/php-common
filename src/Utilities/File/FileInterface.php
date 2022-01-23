@@ -7,6 +7,7 @@ namespace Ifrost\Common\Utilities\File;
 interface FileInterface
 {
     public function create(): void;
+    public function write(string $content): void;
     public function overwrite(string $content): void;
     public function delete(): void;
     public function read(): string;
