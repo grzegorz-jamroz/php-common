@@ -7,13 +7,10 @@ namespace Ifrost\Common\Utilities\File;
 class File implements FileInterface
 {
     /**
-     * @var string fully path to file
+     * @param string $filename fully path to file
      */
-    private string $filename;
-
-    public function __construct(string $filename)
+    public function __construct(private string $filename)
     {
-        $this->filename = $filename;
     }
 
     public function create(): void
