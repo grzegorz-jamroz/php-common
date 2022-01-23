@@ -51,7 +51,7 @@ class File implements FileInterface
 
     public function getFilename(): string
     {
-        return (new GetDirectoryPath($this->filename))->acquire();
+        return $this->filename;
     }
 
     public function getFullName(): string
