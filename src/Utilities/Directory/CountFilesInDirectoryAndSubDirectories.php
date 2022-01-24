@@ -20,7 +20,7 @@ class CountFilesInDirectoryAndSubDirectories implements Acquirable
         return $this->count($this->path, 0);
     }
 
-    private function count(string $dirPath, $counter): int
+    private function count(string $dirPath, int $counter): int
     {
         if (!is_dir($dirPath)) {
             throw new \InvalidArgumentException(sprintf('%s is not directory.', $dirPath));

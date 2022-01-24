@@ -4,8 +4,44 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5cf13846c411ef90dd3aa0bf0b388fde",
-    "packages": [],
+    "content-hash": "40e50538b841e9d406efac6b8d00da67",
+    "packages": [
+        {
+            "name": "grzegorz-jamroz/plain-data-transformer",
+            "version": "0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/grzegorz-jamroz/plain-data-transformer.git",
+                "reference": "114317280fa175b402e1979a70ccef03d65077b7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/grzegorz-jamroz/plain-data-transformer/zipball/114317280fa175b402e1979a70ccef03d65077b7",
+                "reference": "114317280fa175b402e1979a70ccef03d65077b7",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.18",
+                "phpstan/phpstan": "^0.12.78"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PlainDataTransformer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Library allow to transform various data to specific format.",
+            "support": {
+                "issues": "https://github.com/grzegorz-jamroz/plain-data-transformer/issues",
+                "source": "https://github.com/grzegorz-jamroz/plain-data-transformer/tree/0.0.1"
+            },
+            "time": "2021-03-14T19:51:16+00:00"
+        }
+    ],
     "packages-dev": [
         {
             "name": "composer/pcre",
