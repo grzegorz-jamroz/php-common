@@ -11,9 +11,12 @@ use Ifrost\Common\Utilities\File\GetFileLine;
 use Ifrost\Common\Utilities\File\GetFileNumberOfLines;
 use Ifrost\Common\Utilities\File\WriteFile;
 use PHPUnit\Framework\TestCase;
+use Tests\Traits\PhpOsCheck;
 
 class WriteFileTest extends TestCase
 {
+    use PhpOsCheck;
+
     protected function setUp(): void
     {
         (new CreateDirectoryIfNotExists(DATA_DIRECTORY))->execute();
@@ -122,6 +125,8 @@ class WriteFileTest extends TestCase
      */
     public function testShouldThrowRuntimeExceptionWhenUnableToReadFile()
     {
+        $this->endTestIfWindowsOs($this);
+
         // Expect & Given
         $filename = sprintf('%s/immutable_file.txt', TESTS_DATA_DIRECTORY);
         $this->expectException(\RuntimeException::class);
@@ -138,6 +143,12 @@ class WriteFileTest extends TestCase
      */
     public function testShouldThrowRuntimeExceptionWhenTryingToWriteToReadOnlyFile()
     {
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            $this->assertEquals(1, 1);
+
+            return;
+        }
+
         // Expect & Given
         $filename = sprintf('%s/read-only.txt', TESTS_DATA_DIRECTORY);
         $this->expectException(\RuntimeException::class);
