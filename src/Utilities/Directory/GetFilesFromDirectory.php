@@ -7,7 +7,7 @@ namespace Ifrost\Common\Utilities\Directory;
 use Ifrost\Common\Interfaces\Acquirable;
 use PlainDataTransformer\Transform;
 
-class GetFilesInDirectory implements Acquirable
+class GetFilesFromDirectory implements Acquirable
 {
     public function __construct(
         private string $directoryPath,
