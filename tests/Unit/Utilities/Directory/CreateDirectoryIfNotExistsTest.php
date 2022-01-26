@@ -47,9 +47,8 @@ class CreateDirectoryIfNotExistsTest extends TestCase
         $this->assertDirectoryExists($directoryPath);
     }
 
-    /*
-     * immutable_dir should be created with command `sudo chattr -R +i immutable_dir`
-     * it probably only works on ext2/ext3/ext4 filesystems but I didn't have better idea how to test it
+    /**
+     * it probably only works on ext2/ext3/ext4 filesystems.
      */
     public function testShouldThrowRuntimeExceptionWhenUnableToCreateDirectory()
     {
@@ -61,6 +60,7 @@ class CreateDirectoryIfNotExistsTest extends TestCase
         $this->expectExceptionMessageMatches('/Unable to create directory/');
         $directoryPath = sprintf('%s/immutable_dir', TESTS_DATA_DIRECTORY);
         $directoryPath2 = sprintf('%s/sample_%s', $directoryPath, time());
+        $this->createImmutableDirectory($directoryPath);
         $this->assertDirectoryExists($directoryPath);
         $this->assertDirectoryDoesNotExist($directoryPath2);
 

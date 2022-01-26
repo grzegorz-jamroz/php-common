@@ -134,9 +134,8 @@ class DeleteDirectoryWithAllContentTest extends TestCase
         (new DeleteDirectoryWithAllContent($filename))->execute();
     }
 
-    /*
-     * immutable_dir should be created with command `sudo chattr -R +i immutable_dir`
-     * it probably only works on ext2/ext3/ext4 filesystems but I didn't have better idea how to test it
+    /**
+     * it probably only works on ext2/ext3/ext4 filesystems.
      */
     public function testShouldThrowRuntimeExceptionWhenUnableToDeleteDirectory()
     {
@@ -147,6 +146,7 @@ class DeleteDirectoryWithAllContentTest extends TestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessageMatches('/Unable remove directory/');
         $directoryPath = sprintf('%s/immutable_dir', TESTS_DATA_DIRECTORY);
+        $this->createImmutableDirectory($directoryPath);
         $this->assertDirectoryExists($directoryPath);
 
         // When & Then
