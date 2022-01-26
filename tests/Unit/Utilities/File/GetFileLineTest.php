@@ -10,9 +10,12 @@ use Ifrost\Common\Utilities\File\DeleteFile;
 use Ifrost\Common\Utilities\File\GetFileLine;
 use Ifrost\Common\Utilities\File\ReadFile;
 use PHPUnit\Framework\TestCase;
+use Tests\Traits\PhpOsCheck;
 
 class GetFileLineTest extends TestCase
 {
+    use PhpOsCheck;
+
     protected function setUp(): void
     {
         (new CreateDirectoryIfNotExists(DATA_DIRECTORY))->execute();
@@ -79,6 +82,8 @@ class GetFileLineTest extends TestCase
      */
     public function testShouldThrowRuntimeExceptionWhenUnableToReadFile()
     {
+        $this->endTestIfWindowsOs($this);
+
         // Expect & Given
         $filename = sprintf('%s/protected.txt', TESTS_DATA_DIRECTORY);
         $this->expectException(\RuntimeException::class);

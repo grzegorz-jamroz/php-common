@@ -8,9 +8,12 @@ use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
 use Ifrost\Common\Utilities\Directory\DeleteDirectoryWithAllContent;
 use Ifrost\Common\Utilities\File\CreateFileIfNotExists;
 use PHPUnit\Framework\TestCase;
+use Tests\Traits\PhpOsCheck;
 
 class CreateDirectoryIfNotExistsTest extends TestCase
 {
+    use PhpOsCheck;
+
     protected function setUp(): void
     {
         (new CreateDirectoryIfNotExists(DATA_DIRECTORY))->execute();
@@ -52,6 +55,8 @@ class CreateDirectoryIfNotExistsTest extends TestCase
      */
     public function testShouldThrowRuntimeExceptionWhenUnableToCreateDirectory()
     {
+        $this->endTestIfWindowsOs($this);
+
         // Expect & Given
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessageMatches('/Unable to create directory/');

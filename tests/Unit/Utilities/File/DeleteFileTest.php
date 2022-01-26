@@ -8,9 +8,12 @@ use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
 use Ifrost\Common\Utilities\File\CreateFileIfNotExists;
 use Ifrost\Common\Utilities\File\DeleteFile;
 use PHPUnit\Framework\TestCase;
+use Tests\Traits\PhpOsCheck;
 
 class DeleteFileTest extends TestCase
 {
+    use PhpOsCheck;
+
     protected function setUp(): void
     {
         (new CreateDirectoryIfNotExists(DATA_DIRECTORY))->execute();
@@ -53,6 +56,8 @@ class DeleteFileTest extends TestCase
      */
     public function testShouldThrowRuntimeExceptionWhenUnableToDeleteFile()
     {
+        $this->endTestIfWindowsOs($this);
+
         // Expect & Given
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessageMatches('/Unable remove file/');

@@ -143,11 +143,7 @@ class WriteFileTest extends TestCase
      */
     public function testShouldThrowRuntimeExceptionWhenTryingToWriteToReadOnlyFile()
     {
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-            $this->assertEquals(1, 1);
-
-            return;
-        }
+        $this->endTestIfWindowsOs($this);
 
         // Expect & Given
         $filename = sprintf('%s/read-only.txt', TESTS_DATA_DIRECTORY);

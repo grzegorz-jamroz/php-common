@@ -9,9 +9,12 @@ use Ifrost\Common\Utilities\File\CreateFileIfNotExists;
 use Ifrost\Common\Utilities\File\DeleteFile;
 use Ifrost\Common\Utilities\File\OverwriteFile;
 use PHPUnit\Framework\TestCase;
+use Tests\Traits\PhpOsCheck;
 
 class OverwriteFileTest extends TestCase
 {
+    use PhpOsCheck;
+
     protected function setUp(): void
     {
         (new CreateDirectoryIfNotExists(DATA_DIRECTORY))->execute();
@@ -69,6 +72,8 @@ class OverwriteFileTest extends TestCase
      */
     public function testShouldThrowRuntimeExceptionWhenUnableToReadFile()
     {
+        $this->endTestIfWindowsOs($this);
+
         // Expect & Given
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessageMatches('/Unable to overwrite file/');
@@ -85,6 +90,8 @@ class OverwriteFileTest extends TestCase
      */
     public function testShouldThrowRuntimeExceptionWhenTryingToWriteToReadOnlyFile()
     {
+        $this->endTestIfWindowsOs($this);
+
         // Expect & Given
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessageMatches('/Unable to overwrite file/');

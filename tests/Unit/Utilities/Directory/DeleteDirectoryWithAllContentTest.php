@@ -9,9 +9,12 @@ use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
 use Ifrost\Common\Utilities\Directory\DeleteDirectoryWithAllContent;
 use Ifrost\Common\Utilities\File\CreateFileIfNotExists;
 use PHPUnit\Framework\TestCase;
+use Tests\Traits\PhpOsCheck;
 
 class DeleteDirectoryWithAllContentTest extends TestCase
 {
+    use PhpOsCheck;
+
     protected function setUp(): void
     {
         (new CreateDirectoryIfNotExists(DATA_DIRECTORY))->execute();
@@ -137,6 +140,8 @@ class DeleteDirectoryWithAllContentTest extends TestCase
      */
     public function testShouldThrowRuntimeExceptionWhenUnableToDeleteDirectory()
     {
+        $this->endTestIfWindowsOs($this);
+
         // Expect & Given
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessageMatches('/Unable remove directory/');
