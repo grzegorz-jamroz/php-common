@@ -82,7 +82,7 @@ class GetFileLineTest extends TestCase
     public function testShouldThrowRuntimeExceptionWhenUnableToReadFile()
     {
         $this->endTestIfWindowsOs($this);
-        $this->endTestIfEnvMissing($this, ['PASSWORD']);
+        $this->endTestIfEnvMissing($this, ['SUDOER_PASSWORD']);
 
         // Expect & Given
         $filename = sprintf('%s/protected.txt', TESTS_DATA_DIRECTORY);

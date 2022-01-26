@@ -72,7 +72,7 @@ class OverwriteFileTest extends TestCase
     public function testShouldThrowRuntimeExceptionWhenUnableToReadFile()
     {
         $this->endTestIfWindowsOs($this);
-        $this->endTestIfEnvMissing($this, ['PASSWORD']);
+        $this->endTestIfEnvMissing($this, ['SUDOER_PASSWORD']);
 
         // Expect & Given
         $this->expectException(\RuntimeException::class);
@@ -91,7 +91,7 @@ class OverwriteFileTest extends TestCase
     public function testShouldThrowRuntimeExceptionWhenTryingToWriteToReadOnlyFile()
     {
         $this->endTestIfWindowsOs($this);
-        $this->endTestIfEnvMissing($this, ['PASSWORD']);
+        $this->endTestIfEnvMissing($this, ['SUDOER_PASSWORD']);
 
         // Expect & Given
         $this->expectException(\RuntimeException::class);

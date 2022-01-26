@@ -71,7 +71,7 @@ class CreateFileIfNotExistsTest extends TestCase
     public function testShouldThrowRuntimeExceptionWhenUnableToCreateFile()
     {
         $this->endTestIfWindowsOs($this);
-        $this->endTestIfEnvMissing($this, ['PASSWORD']);
+        $this->endTestIfEnvMissing($this, ['SUDOER_PASSWORD']);
 
         // Expect & Given
         $this->expectException(\RuntimeException::class);

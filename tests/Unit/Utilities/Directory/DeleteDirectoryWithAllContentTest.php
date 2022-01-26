@@ -140,7 +140,7 @@ class DeleteDirectoryWithAllContentTest extends TestCase
     public function testShouldThrowRuntimeExceptionWhenUnableToDeleteDirectory()
     {
         $this->endTestIfWindowsOs($this);
-        $this->endTestIfEnvMissing($this, ['PASSWORD']);
+        $this->endTestIfEnvMissing($this, ['SUDOER_PASSWORD']);
 
         // Expect & Given
         $this->expectException(\RuntimeException::class);

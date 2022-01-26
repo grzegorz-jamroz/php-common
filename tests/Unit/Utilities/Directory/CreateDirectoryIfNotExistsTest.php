@@ -53,7 +53,7 @@ class CreateDirectoryIfNotExistsTest extends TestCase
     public function testShouldThrowRuntimeExceptionWhenUnableToCreateDirectory()
     {
         $this->endTestIfWindowsOs($this);
-        $this->endTestIfEnvMissing($this, ['PASSWORD']);
+        $this->endTestIfEnvMissing($this, ['SUDOER_PASSWORD']);
 
         // Expect & Given
         $this->expectException(\RuntimeException::class);
