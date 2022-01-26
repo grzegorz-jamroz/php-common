@@ -43,6 +43,12 @@ trait TestUtils
         exec(sprintf('echo %s | sudo -S chattr +i %s > /dev/null 2>&1', $_ENV['PASSWORD'], $filename));
     }
 
+    protected function createProtectedFile(string $filename): void
+    {
+        exec(sprintf('touch %s > /dev/null 2>&1', $filename));
+        exec(sprintf('echo %s | sudo -S chmod 000 %s > /dev/null 2>&1', $_ENV['PASSWORD'], $filename));
+    }
+
     protected function createReadOnlyFile(string $filename): void
     {
         exec(sprintf('touch %s > /dev/null 2>&1', $filename));

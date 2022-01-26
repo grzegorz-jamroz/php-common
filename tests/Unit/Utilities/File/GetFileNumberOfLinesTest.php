@@ -97,9 +97,8 @@ class GetFileNumberOfLinesTest extends TestCase
         (new GetFileNumberOfLines($filename))->acquire();
     }
 
-    /*
-     * protected.txt should be created with command `chmod 000 protected.txt`
-     * it probably only works on ext2/ext3/ext4 filesystems but I didn't have better idea how to test it
+    /**
+     * it probably only works on ext2/ext3/ext4 filesystems.
      */
     public function testShouldThrowRuntimeExceptionWhenUnableToReadFile()
     {
@@ -108,6 +107,7 @@ class GetFileNumberOfLinesTest extends TestCase
 
         // Expect & Given
         $filename = sprintf('%s/protected.txt', TESTS_DATA_DIRECTORY);
+        $this->createProtectedFile($filename);
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(sprintf('Unable to read file %s.', $filename));
         $this->assertFileExists($filename);
