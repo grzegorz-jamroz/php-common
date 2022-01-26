@@ -50,9 +50,8 @@ class DeleteFileTest extends TestCase
         $this->assertFileDoesNotExist($filename);
     }
 
-    /*
-     * immutable_file.txt should be created with command `sudo chattr +i immutable_file.txt`
-     * it probably only works on ext2/ext3/ext4 filesystems but I didn't have better idea how to test it
+    /**
+     * it probably only works on ext2/ext3/ext4 filesystems.
      */
     public function testShouldThrowRuntimeExceptionWhenUnableToDeleteFile()
     {

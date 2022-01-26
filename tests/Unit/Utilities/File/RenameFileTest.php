@@ -91,9 +91,8 @@ class RenameFileTest extends TestCase
         (new RenameFile($oldFilename, $newFilename))->execute();
     }
 
-    /*
-     * immutable_file.txt should be created with command `sudo chattr +i immutable_file.txt`
-     * it probably only works on ext2/ext3/ext4 filesystems but I didn't have better idea how to test it
+    /**
+     * it probably only works on ext2/ext3/ext4 filesystems.
      */
     public function testShouldThrowRuntimeExceptionWhenUnableToDeleteFile()
     {
@@ -105,6 +104,7 @@ class RenameFileTest extends TestCase
         $this->expectExceptionMessageMatches('/Unable rename file/');
         $oldFilename = sprintf('%s/immutable_file.txt', TESTS_DATA_DIRECTORY);
         $newFilename = sprintf('%s/immutable_file_new.txt', TESTS_DATA_DIRECTORY);
+        $this->createImmutableFile($oldFilename);
         $this->assertFileExists($oldFilename);
         $this->assertFileDoesNotExist($newFilename);
 

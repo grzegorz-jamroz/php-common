@@ -66,9 +66,8 @@ class OverwriteFileTest extends TestCase
         $this->assertEquals('hello', file_get_contents($filename));
     }
 
-    /*
-     * immutable_file.txt should be created with command `sudo chattr +i immutable_file.txt`
-     * it probably only works on ext2/ext3/ext4 filesystems but I didn't have better idea how to test it
+    /**
+     * it probably only works on ext2/ext3/ext4 filesystems.
      */
     public function testShouldThrowRuntimeExceptionWhenUnableToReadFile()
     {
@@ -79,6 +78,7 @@ class OverwriteFileTest extends TestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessageMatches('/Unable to overwrite file/');
         $filename = sprintf('%s/immutable_file.txt', TESTS_DATA_DIRECTORY);
+        $this->createImmutableFile($filename);
         $this->assertFileExists($filename);
 
         // When & Then
