@@ -9,11 +9,11 @@ use Ifrost\Common\Utilities\File\CreateFileIfNotExists;
 use Ifrost\Common\Utilities\File\DeleteFile;
 use Ifrost\Common\Utilities\File\RenameFile;
 use PHPUnit\Framework\TestCase;
-use Tests\Traits\PhpOsCheck;
+use Tests\Traits\TestUtils;
 
 class RenameFileTest extends TestCase
 {
-    use PhpOsCheck;
+    use TestUtils;
 
     protected function setUp(): void
     {
@@ -98,6 +98,7 @@ class RenameFileTest extends TestCase
     public function testShouldThrowRuntimeExceptionWhenUnableToDeleteFile()
     {
         $this->endTestIfWindowsOs($this);
+        $this->endTestIfEnvMissing($this, ['PASSWORD']);
 
         // Expect & Given
         $this->expectException(\RuntimeException::class);

@@ -12,11 +12,11 @@ use Ifrost\Common\Utilities\File\GetFileNumberOfLines;
 use Ifrost\Common\Utilities\File\ReadFile;
 use Ifrost\Common\Utilities\File\WriteFile;
 use PHPUnit\Framework\TestCase;
-use Tests\Traits\PhpOsCheck;
+use Tests\Traits\TestUtils;
 
 class GetFileNumberOfLinesTest extends TestCase
 {
-    use PhpOsCheck;
+    use TestUtils;
 
     protected function setUp(): void
     {
@@ -104,6 +104,7 @@ class GetFileNumberOfLinesTest extends TestCase
     public function testShouldThrowRuntimeExceptionWhenUnableToReadFile()
     {
         $this->endTestIfWindowsOs($this);
+        $this->endTestIfEnvMissing($this, ['PASSWORD']);
 
         // Expect & Given
         $filename = sprintf('%s/protected.txt', TESTS_DATA_DIRECTORY);

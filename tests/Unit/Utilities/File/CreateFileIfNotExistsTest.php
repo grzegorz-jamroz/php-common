@@ -10,11 +10,11 @@ use Ifrost\Common\Utilities\File\CreateFileIfNotExists;
 use Ifrost\Common\Utilities\File\DeleteFile;
 use Ifrost\Common\Utilities\File\Exception\FileAlreadyExists;
 use PHPUnit\Framework\TestCase;
-use Tests\Traits\PhpOsCheck;
+use Tests\Traits\TestUtils;
 
 class CreateFileIfNotExistsTest extends TestCase
 {
-    use PhpOsCheck;
+    use TestUtils;
 
     protected function setUp(): void
     {
@@ -72,6 +72,7 @@ class CreateFileIfNotExistsTest extends TestCase
     public function testShouldThrowRuntimeExceptionWhenUnableToCreateFile()
     {
         $this->endTestIfWindowsOs($this);
+        $this->endTestIfEnvMissing($this, ['PASSWORD']);
 
         // Expect & Given
         $this->expectException(\RuntimeException::class);

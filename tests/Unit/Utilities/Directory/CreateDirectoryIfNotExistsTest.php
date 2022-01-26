@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Tests\Unit\Utilities\Directory;
 
 use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
-use Ifrost\Common\Utilities\Directory\DeleteDirectoryWithAllContent;
-use Ifrost\Common\Utilities\File\CreateFileIfNotExists;
 use PHPUnit\Framework\TestCase;
-use Tests\Traits\PhpOsCheck;
+use Tests\Traits\TestUtils;
 
 class CreateDirectoryIfNotExistsTest extends TestCase
 {
-    use PhpOsCheck;
+    use TestUtils;
 
     protected function setUp(): void
     {
@@ -56,6 +54,7 @@ class CreateDirectoryIfNotExistsTest extends TestCase
     public function testShouldThrowRuntimeExceptionWhenUnableToCreateDirectory()
     {
         $this->endTestIfWindowsOs($this);
+        $this->endTestIfEnvMissing($this, ['PASSWORD']);
 
         // Expect & Given
         $this->expectException(\RuntimeException::class);

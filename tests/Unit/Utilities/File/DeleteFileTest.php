@@ -8,11 +8,11 @@ use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
 use Ifrost\Common\Utilities\File\CreateFileIfNotExists;
 use Ifrost\Common\Utilities\File\DeleteFile;
 use PHPUnit\Framework\TestCase;
-use Tests\Traits\PhpOsCheck;
+use Tests\Traits\TestUtils;
 
 class DeleteFileTest extends TestCase
 {
-    use PhpOsCheck;
+    use TestUtils;
 
     protected function setUp(): void
     {
@@ -57,11 +57,13 @@ class DeleteFileTest extends TestCase
     public function testShouldThrowRuntimeExceptionWhenUnableToDeleteFile()
     {
         $this->endTestIfWindowsOs($this);
+        $this->endTestIfEnvMissing($this, ['PASSWORD']);
 
         // Expect & Given
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessageMatches('/Unable remove file/');
         $filename = sprintf('%s/immutable_file.txt', TESTS_DATA_DIRECTORY);
+        $this->createImmutableFile($filename);
         $this->assertFileExists($filename);
 
         // When & Then
