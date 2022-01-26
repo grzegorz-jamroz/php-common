@@ -85,9 +85,8 @@ class OverwriteFileTest extends TestCase
         (new OverwriteFile($filename, 'something'))->execute();
     }
 
-    /*
-     * read-only.txt should be created with command `chmod 444 read-only.txt`
-     * it probably only works on ext2/ext3/ext4 filesystems but I didn't have better idea how to test it
+    /**
+     * it probably only works on ext2/ext3/ext4 filesystems.
      */
     public function testShouldThrowRuntimeExceptionWhenTryingToWriteToReadOnlyFile()
     {
@@ -98,6 +97,7 @@ class OverwriteFileTest extends TestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessageMatches('/Unable to overwrite file/');
         $filename = sprintf('%s/read-only.txt', TESTS_DATA_DIRECTORY);
+        $this->createReadOnlyFile($filename);
         $this->assertFileExists($filename);
 
         // When & Then

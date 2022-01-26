@@ -138,9 +138,8 @@ class WriteFileTest extends TestCase
         (new WriteFile($filename, 'new text'))->execute();
     }
 
-    /*
-     * read-only.txt should be created with command `chmod 444 read-only.txt`
-     * it probably only works on ext2/ext3/ext4 filesystems but I didn't have better idea how to test it
+    /**
+     * it probably only works on ext2/ext3/ext4 filesystems.
      */
     public function testShouldThrowRuntimeExceptionWhenTryingToWriteToReadOnlyFile()
     {
@@ -149,6 +148,7 @@ class WriteFileTest extends TestCase
 
         // Expect & Given
         $filename = sprintf('%s/read-only.txt', TESTS_DATA_DIRECTORY);
+        $this->createReadOnlyFile($filename);
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(sprintf('Unable to write to file %s.', $filename));
         $this->assertFileExists($filename);
