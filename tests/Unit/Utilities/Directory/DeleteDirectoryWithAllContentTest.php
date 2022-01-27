@@ -7,7 +7,6 @@ namespace Tests\Unit\Utilities\Directory;
 use Ifrost\Common\Utilities\Directory\CountFilesInDirectoryAndSubDirectories;
 use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
 use Ifrost\Common\Utilities\Directory\DeleteDirectoryWithAllContent;
-use Ifrost\Common\Utilities\File\CreateFileIfNotExists;
 use PHPUnit\Framework\TestCase;
 use Tests\Traits\TestUtils;
 
@@ -55,7 +54,7 @@ class DeleteDirectoryWithAllContentTest extends TestCase
         // Expect & Given
         $directoryPath = sprintf('%s/directory/delete-directory/one-file-inside', DATA_DIRECTORY);
         $filename = sprintf('%s/something.txt', $directoryPath);
-        (new CreateFileIfNotExists($filename))->execute();
+        $this->createFileIfNotExists($filename);
         $files = glob($directoryPath . '/*', GLOB_MARK);
         $this->assertEquals(1, count($files));
 
@@ -73,8 +72,8 @@ class DeleteDirectoryWithAllContentTest extends TestCase
         $directoryPath = sprintf('%s/directory/delete-directory/two-files-inside', DATA_DIRECTORY);
         $filename1 = sprintf('%s/something1.txt', $directoryPath);
         $filename2 = sprintf('%s/something2.txt', $directoryPath);
-        (new CreateFileIfNotExists($filename1))->execute();
-        (new CreateFileIfNotExists($filename2))->execute();
+        $this->createFileIfNotExists($filename1);
+        $this->createFileIfNotExists($filename2);
         $files = glob($directoryPath . '/*', GLOB_MARK);
         $this->assertEquals(2, count($files));
 
@@ -103,7 +102,7 @@ class DeleteDirectoryWithAllContentTest extends TestCase
         ];
 
         foreach ($filenames as $filename) {
-            (new CreateFileIfNotExists($filename))->execute();
+            $this->createFileIfNotExists($filename);
         }
 
         $this->assertEquals(6, (new CountFilesInDirectoryAndSubDirectories($mainDirectoryPath))->acquire());
@@ -127,7 +126,7 @@ class DeleteDirectoryWithAllContentTest extends TestCase
         // Given
         $directoryPath = sprintf('%s/directory/delete-directory/some-dir', DATA_DIRECTORY);
         $filename = sprintf('%s/test.txt', $directoryPath);
-        (new CreateFileIfNotExists($filename))->execute();
+        $this->createFileIfNotExists($filename);
         $this->assertFileExists($filename);
 
         // When

@@ -7,11 +7,13 @@ namespace Tests\Unit\Utilities\Directory;
 use Ifrost\Common\Utilities\Directory\CountFilesInDirectoryAndSubDirectories;
 use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
 use Ifrost\Common\Utilities\Directory\DeleteDirectoryWithAllContent;
-use Ifrost\Common\Utilities\File\CreateFileIfNotExists;
 use PHPUnit\Framework\TestCase;
+use Tests\Traits\TestUtils;
 
 class CountFilesInDirectoryAndSubDirectoriesTest extends TestCase
 {
+    use TestUtils;
+
     protected function setUp(): void
     {
         (new CreateDirectoryIfNotExists(DATA_DIRECTORY))->execute();
@@ -40,7 +42,7 @@ class CountFilesInDirectoryAndSubDirectoriesTest extends TestCase
         $directoryPath = sprintf('%s/directory/count-files/one-file-inside', DATA_DIRECTORY);
         $filename = sprintf('%s/something.txt', $directoryPath);
         (new DeleteDirectoryWithAllContent($directoryPath))->execute();
-        (new CreateFileIfNotExists($filename))->execute();
+        $this->createFileIfNotExists($filename);
         $files = glob($directoryPath . '/*', GLOB_MARK);
         $this->assertEquals(1, count($files));
 
@@ -57,7 +59,7 @@ class CountFilesInDirectoryAndSubDirectoriesTest extends TestCase
         $directoryPath = sprintf('%s/directory/count-files/one-file-inside-and-empty-dir', DATA_DIRECTORY);
         $subDirectoryPath = sprintf('%s/empty', $directoryPath);
         $filename = sprintf('%s/something.txt', $directoryPath);
-        (new CreateFileIfNotExists($filename))->execute();
+        $this->createFileIfNotExists($filename);
         (new CreateDirectoryIfNotExists($subDirectoryPath))->execute();
         $this->assertFileExists($filename);
         $this->assertDirectoryExists($subDirectoryPath);
@@ -85,7 +87,7 @@ class CountFilesInDirectoryAndSubDirectoriesTest extends TestCase
         ];
 
         foreach ($filenames as $filename) {
-            (new CreateFileIfNotExists($filename))->execute();
+            $this->createFileIfNotExists($filename);
         }
 
         // When
@@ -102,7 +104,7 @@ class CountFilesInDirectoryAndSubDirectoriesTest extends TestCase
         // Given
         $directoryPath = sprintf('%s/directory/count-files/some-dir', DATA_DIRECTORY);
         $filename = sprintf('%s/test.txt', $directoryPath);
-        (new CreateFileIfNotExists($filename))->execute();
+        $this->createFileIfNotExists($filename);
         $this->assertFileExists($filename);
 
         // When
