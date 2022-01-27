@@ -9,6 +9,11 @@ use PlainDataTransformer\Transform;
 
 class GetFilesFromDirectory implements Acquirable
 {
+    /**
+     * @param array $options
+     * @description options:
+     * extension => string
+     */
     public function __construct(
         private string $directoryPath,
         private array $options = [],

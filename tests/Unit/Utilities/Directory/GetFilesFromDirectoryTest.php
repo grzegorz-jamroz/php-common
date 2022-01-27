@@ -33,7 +33,7 @@ class GetFilesFromDirectoryTest extends TestCase
         $this->assertEquals([], $files);
     }
 
-    public function testShouldReturnEmptyArrayWithOneFilenameString()
+    public function testShouldReturnArrayWithOneFilenameString()
     {
         // Expect & Given
         $directoryPath = sprintf('%s/directory/get-files-from-directory/one_file_inside', DATA_DIRECTORY);
@@ -50,7 +50,7 @@ class GetFilesFromDirectoryTest extends TestCase
         $this->assertEquals([$filename], $files);
     }
 
-    public function testShouldReturnEmptyArrayWithTwoFilenamesOrderedByNameAsc()
+    public function testShouldReturnArrayWithTwoFilenamesOrderedByNameAsc()
     {
         // Expect & Given
         $directoryPath = sprintf('%s/directory/get-files-from-directory/two_files_inside', DATA_DIRECTORY);
@@ -94,6 +94,35 @@ class GetFilesFromDirectoryTest extends TestCase
 
         // Then
         $this->assertEquals([$filename2, $filename1], $files);
+    }
+
+    public function testShouldReturnArrayWithTwoJsonFilenamesOrderedByNameAsc()
+    {
+        // Expect & Given
+        $directoryPath = sprintf('%s/directory/get-files-from-directory/json_test', DATA_DIRECTORY);
+        $filenames = [
+            sprintf('%s/b_one.txt', $directoryPath),
+            sprintf('%s/c_four.json', $directoryPath),
+            sprintf('%s/c_three.txt', $directoryPath),
+            sprintf('%s/a_two.json', $directoryPath),
+        ];
+
+        (new CreateDirectoryIfNotExists($directoryPath))->execute();
+        $this->assertDirectoryExists($directoryPath);
+
+        foreach ($filenames as $filename) {
+            $this->createFileIfNotExists($filename);
+            $this->assertFileExists($filename);
+        }
+
+        // When
+        $files = (new GetFilesFromDirectory(
+            $directoryPath,
+            ['extension' => 'json']
+        ))->acquire();
+
+        // Then
+        $this->assertEquals([$filenames[3], $filenames[1]], $files);
     }
 
     public function testShouldThrowInvalidArgumentExceptionWhenDirectoryPathIsNotDirectory()
