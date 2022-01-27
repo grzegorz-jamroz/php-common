@@ -16,6 +16,10 @@ interface DirectoryInterface
 
     /**
      * @param array<string, mixed> $options
+     * @description options:
+     * extension => string
+     * recursive => bool
+     * order => string (asc or desc)
      *
      * @return array<int, string>
      */
@@ -23,16 +27,28 @@ interface DirectoryInterface
 
     /**
      * @param array<string, mixed> $options
+     * @description options:
+     * extension => string
+     * recursive => bool
+     * order => string (asc or desc)
      */
     public function countFiles(array $options = []): int;
 
     /**
      * @param array<string, mixed> $options
+     * @description options:
+     * extension => string
+     * recursive => bool
+     * order => string (asc or desc)
      */
     public function countDirectories(array $options = []): int;
 
     /**
      * @param array<string, mixed> $options
+     * @description options:
+     * extension => string
+     * recursive => bool
+     * order => string (asc or desc)
      */
     public function countFilesAndDirectories(array $options = []): int;
 }
