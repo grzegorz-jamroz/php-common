@@ -9,16 +9,24 @@ use PlainDataTransformer\Transform;
 
 class GetFilesFromDirectory implements Acquirable
 {
+    private string $order;
+    private string $extension = '';
+    private bool $isRecursive;
+
     /**
      * @param array $options
      * @description options:
      * extension => string
      * recursive => bool
+     * order => string (asc or desc)
      */
     public function __construct(
         private string $directoryPath,
         private array $options = [],
     ) {
+        $this->setExtension();
+        $this->setIsRecursive();
+        $this->setOrder();
     }
 
     /**
@@ -26,7 +34,13 @@ class GetFilesFromDirectory implements Acquirable
      */
     public function acquire(): array
     {
-        return $this->getFiles($this->directoryPath, $this->options);
+        $files = $this->getFiles($this->directoryPath, $this->options);
+
+        if ($this->order === 'desc') {
+            return array_reverse($files);
+        }
+
+        return $files;
     }
 
     private function getFiles(string $dirPath, array $options = []): array
@@ -39,10 +53,10 @@ class GetFilesFromDirectory implements Acquirable
             $dirPath .= '/';
         }
 
-        $pattern = sprintf('%s*%s', $dirPath, $this->getExtension());
+        $pattern = sprintf('%s*%s', $dirPath, $this->extension);
         $files = glob($pattern, GLOB_MARK) ?: [];
 
-        if ($this->isRecursive() === false) {
+        if ($this->isRecursive === false) {
             return array_values(array_filter($files, fn (string $file) => is_file($file)));
         }
 
@@ -63,19 +77,25 @@ class GetFilesFromDirectory implements Acquirable
         );
     }
 
-    private function getExtension(): string
+    private function setExtension(): void
     {
         $extension = Transform::toString($this->options['extension'] ?? '');
 
         if ($extension === '') {
-            return '';
+            return;
         }
 
-        return sprintf('.%s', str_replace('.', '', $extension));
+        $this->extension = sprintf('.%s', str_replace('.', '', $extension));
     }
 
-    private function isRecursive(): bool
+    private function setIsRecursive(): void
     {
-        return Transform::toBool($this->options['recursive'] ?? false);
+        $this->isRecursive = Transform::toBool($this->options['recursive'] ?? false);
+    }
+
+    private function setOrder(): void
+    {
+        $order = strtolower(Transform::toString($this->options['order'] ?? 'asc'));
+        $this->order = in_array($order, ['asc', 'desc']) ? $order : 'asc';
     }
 }

@@ -125,6 +125,58 @@ class GetFilesFromDirectoryTest extends TestCase
         $this->assertEquals([$filenames[3], $filenames[1]], $files);
     }
 
+    public function testShouldReturnFourFilenamesOrderedByNameAscWhenRecursiveOptionIsEnabled()
+    {
+        // Expect & Given
+        $directoryPath = sprintf('%s/directory/get-files-from-directory/recursive_test', DATA_DIRECTORY);
+        (new DeleteDirectoryWithAllContent($directoryPath))->execute();
+        (new CreateDirectoryIfNotExists($directoryPath))->execute();
+        $this->assertDirectoryExists($directoryPath);
+        $filenames = [
+            sprintf('%s/b_one.txt', $directoryPath),
+            sprintf('%s/a/d_four.json', $directoryPath),
+            sprintf('%s/b/a/c_three.txt', $directoryPath),
+            sprintf('%s/b/b/a_two.json', $directoryPath),
+        ];
+
+        foreach ($filenames as $filename) {
+            $this->createFileIfNotExists($filename);
+            $this->assertFileExists($filename);
+        }
+
+        // When
+        $files = (new GetFilesFromDirectory($directoryPath, ['recursive' => true]))->acquire();
+
+        // Then
+        $this->assertEquals([$filenames[1], $filenames[2], $filenames[3], $filenames[0]], $files);
+    }
+
+    public function testShouldReturnFourFilenamesOrderedByNameDescWhenRecursiveOptionIsEnabled()
+    {
+        // Expect & Given
+        $directoryPath = sprintf('%s/directory/get-files-from-directory/recursive_test', DATA_DIRECTORY);
+        (new DeleteDirectoryWithAllContent($directoryPath))->execute();
+        (new CreateDirectoryIfNotExists($directoryPath))->execute();
+        $this->assertDirectoryExists($directoryPath);
+        $filenames = [
+            sprintf('%s/b_one.txt', $directoryPath),
+            sprintf('%s/a/d_four.json', $directoryPath),
+            sprintf('%s/b/a/c_three.txt', $directoryPath),
+            sprintf('%s/b/b/a_two.json', $directoryPath),
+        ];
+
+        foreach ($filenames as $filename) {
+            $this->createFileIfNotExists($filename);
+            $this->assertFileExists($filename);
+        }
+
+        // When
+        $files = (new GetFilesFromDirectory($directoryPath, ['recursive' => true, 'order' => 'DESC']))->acquire();
+
+        // Then
+        $this->assertEquals([$filenames[0], $filenames[3], $filenames[2], $filenames[1]], $files);
+    }
+
     public function testShouldThrowInvalidArgumentExceptionWhenDirectoryPathIsNotDirectory()
     {
         // Expect && Given
