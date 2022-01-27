@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Utilities\Directory;
 
-use Ifrost\Common\Utilities\Directory\CountFilesInDirectoryAndSubDirectories;
+use Ifrost\Common\Utilities\Directory\CountFilesInDirectory;
 use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
 use Ifrost\Common\Utilities\Directory\DeleteDirectoryWithAllContent;
 use PHPUnit\Framework\TestCase;
 use Tests\Traits\TestUtils;
 
-class CountFilesInDirectoryAndSubDirectoriesTest extends TestCase
+class CountFilesInDirectoryTest extends TestCase
 {
     use TestUtils;
 
@@ -30,7 +30,7 @@ class CountFilesInDirectoryAndSubDirectoriesTest extends TestCase
         $this->assertEquals(0, count($files));
 
         // When
-        $actual = (new CountFilesInDirectoryAndSubDirectories($directoryPath))->acquire();
+        $actual = (new CountFilesInDirectory($directoryPath))->acquire();
 
         // Then
         $this->assertEquals(0, $actual);
@@ -47,7 +47,7 @@ class CountFilesInDirectoryAndSubDirectoriesTest extends TestCase
         $this->assertEquals(1, count($files));
 
         // When
-        $actual = (new CountFilesInDirectoryAndSubDirectories($directoryPath))->acquire();
+        $actual = (new CountFilesInDirectory($directoryPath))->acquire();
 
         // Then
         $this->assertEquals(1, $actual);
@@ -65,7 +65,7 @@ class CountFilesInDirectoryAndSubDirectoriesTest extends TestCase
         $this->assertDirectoryExists($subDirectoryPath);
 
         // When
-        $actual = (new CountFilesInDirectoryAndSubDirectories($directoryPath))->acquire();
+        $actual = (new CountFilesInDirectory($directoryPath))->acquire();
 
         // Then
         $this->assertEquals(1, $actual);
@@ -91,7 +91,7 @@ class CountFilesInDirectoryAndSubDirectoriesTest extends TestCase
         }
 
         // When
-        $actual = (new CountFilesInDirectoryAndSubDirectories($mainDirectoryPath))->acquire();
+        $actual = (new CountFilesInDirectory($mainDirectoryPath, ['recursive' => true]))->acquire();
 
         $this->assertEquals(6, $actual);
     }
@@ -108,6 +108,6 @@ class CountFilesInDirectoryAndSubDirectoriesTest extends TestCase
         $this->assertFileExists($filename);
 
         // When
-        (new CountFilesInDirectoryAndSubDirectories($filename))->acquire();
+        (new CountFilesInDirectory($filename))->acquire();
     }
 }

@@ -14,7 +14,7 @@ class GetFilesFromDirectory implements Acquirable
     private bool $isRecursive;
 
     /**
-     * @param array $options
+     * @param array<string, mixed> $options
      * @description options:
      * extension => string
      * recursive => bool

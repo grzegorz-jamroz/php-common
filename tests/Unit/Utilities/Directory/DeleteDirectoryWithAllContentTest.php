@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Utilities\Directory;
 
-use Ifrost\Common\Utilities\Directory\CountFilesInDirectoryAndSubDirectories;
+use Ifrost\Common\Utilities\Directory\CountFilesInDirectory;
 use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
 use Ifrost\Common\Utilities\Directory\DeleteDirectoryWithAllContent;
 use PHPUnit\Framework\TestCase;
@@ -105,7 +105,7 @@ class DeleteDirectoryWithAllContentTest extends TestCase
             $this->createFileIfNotExists($filename);
         }
 
-        $this->assertEquals(6, (new CountFilesInDirectoryAndSubDirectories($mainDirectoryPath))->acquire());
+        $this->assertEquals(6, (new CountFilesInDirectory($mainDirectoryPath, ['recursive' => true]))->acquire());
 
         // When
         (new DeleteDirectoryWithAllContent($mainDirectoryPath))->execute();

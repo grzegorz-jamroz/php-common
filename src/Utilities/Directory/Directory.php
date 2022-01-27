@@ -45,13 +45,9 @@ class Directory implements DirectoryInterface
         return (new GetFilesFromDirectory($this->path, $options))->acquire();
     }
 
-    public function getNumberOfFiles(bool $includeSubDirectories = false): int
+    public function countFiles(array $options = []): int
     {
-        if ($includeSubDirectories) {
-            return (new CountFilesInDirectoryAndSubDirectories($this->path))->acquire();
-        }
-
-        throw new \Exception('getNumberOfFiles without subDirectories is not implemented yet.');
+        return (new CountFilesInDirectory($this->path, $options))->acquire();
     }
 
     public function getNumberOfDirectories(bool $includeSubDirectories = false): int
