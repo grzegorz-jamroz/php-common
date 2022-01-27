@@ -50,12 +50,12 @@ class Directory implements DirectoryInterface
         return (new CountFilesInDirectory($this->path, $options))->acquire();
     }
 
-    public function getNumberOfDirectories(bool $includeSubDirectories = false): int
+    public function countDirectories(array $options = []): int
     {
         throw new \Exception('getNumberOfDirectories is not implemented yet.');
     }
 
-    public function getNumberOfFilesAndDirectories(bool $includeSubDirectories = false): int
+    public function countFilesAndDirectories(array $options = []): int
     {
         throw new \Exception('getNumberOfFilesAndDirectories is not implemented yet.');
     }

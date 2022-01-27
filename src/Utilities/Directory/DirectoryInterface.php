@@ -25,6 +25,14 @@ interface DirectoryInterface
      * @param array<string, mixed> $options
      */
     public function countFiles(array $options = []): int;
-    public function getNumberOfDirectories(bool $includeSubDirectories = false): int;
-    public function getNumberOfFilesAndDirectories(bool $includeSubDirectories = false): int;
+
+    /**
+     * @param array<string, mixed> $options
+     */
+    public function countDirectories(array $options = []): int;
+
+    /**
+     * @param array<string, mixed> $options
+     */
+    public function countFilesAndDirectories(array $options = []): int;
 }
