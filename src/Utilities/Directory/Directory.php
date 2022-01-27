@@ -35,6 +35,16 @@ class Directory implements DirectoryInterface
         throw new \Exception('getPath is not implemented yet.');
     }
 
+    /**
+     * @param array<string, mixed> $options
+     *
+     * @return array<int, string>
+     */
+    public function getFiles(array $options = []): array
+    {
+        return (new GetFilesFromDirectory($this->path, $options))->acquire();
+    }
+
     public function getNumberOfFiles(bool $includeSubDirectories = false): int
     {
         if ($includeSubDirectories) {

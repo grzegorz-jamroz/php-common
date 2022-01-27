@@ -16,8 +16,10 @@ interface DirectoryInterface
 
     /**
      * @param array<string, mixed> $options
+     *
+     * @return array<int, string>
      */
-    public function getFiles(array $options = []): int;
+    public function getFiles(array $options = []): array;
     public function getNumberOfFiles(bool $includeSubDirectories = false): int;
     public function getNumberOfDirectories(bool $includeSubDirectories = false): int;
     public function getNumberOfFilesAndDirectories(bool $includeSubDirectories = false): int;
