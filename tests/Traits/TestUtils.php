@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Tests\Traits;
 
+use Ifrost\Common\Utilities\File\CreateFileIfNotExists;
 use PHPUnit\Framework\TestCase;
 use PlainDataTransformer\Transform;
 
@@ -53,5 +54,13 @@ trait TestUtils
     {
         exec(sprintf('touch %s > /dev/null 2>&1', $filename));
         exec(sprintf('echo %s | sudo -S chmod 444 %s > /dev/null 2>&1', $_ENV['SUDOER_PASSWORD'], $filename));
+    }
+
+    protected function createFileIfNotExists(string $filename): void
+    {
+        try {
+            (new CreateFileIfNotExists($filename))->execute();
+        } catch(\Exception) {
+        }
     }
 }

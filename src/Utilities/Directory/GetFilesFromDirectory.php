@@ -15,6 +15,9 @@ class GetFilesFromDirectory implements Acquirable
     ) {
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function acquire(): array
     {
         return $this->getFiles($this->directoryPath, $this->options);
@@ -33,7 +36,7 @@ class GetFilesFromDirectory implements Acquirable
         $pattern = sprintf('%s*%s', $dirPath, $this->getExtension($options));
         $filenames = glob($pattern, GLOB_MARK) ?: [];
 
-        return array_filter($filenames, fn (string $filename) => is_file($filename));
+        return array_values(array_filter($filenames, fn (string $filename) => is_file($filename)));
     }
 
     private function getExtension(array $options): string
