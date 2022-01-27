@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Utilities\Directory;
 
 use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
+use Ifrost\Common\Utilities\Directory\DeleteDirectoryWithAllContent;
 use Ifrost\Common\Utilities\Directory\GetFilesFromDirectory;
 use PHPUnit\Framework\TestCase;
 use Tests\Traits\TestUtils;
@@ -16,15 +17,6 @@ class GetFilesFromDirectoryTest extends TestCase
     protected function setUp(): void
     {
         (new CreateDirectoryIfNotExists(DATA_DIRECTORY))->execute();
-    }
-
-    public function testShould()
-    {
-
-        // Expect
-        // Given
-        // When
-        // Then
     }
 
     public function testShouldReturnEmptyArrayWhenDirectoryIsEmpty()
@@ -102,5 +94,31 @@ class GetFilesFromDirectoryTest extends TestCase
 
         // Then
         $this->assertEquals([$filename2, $filename1], $files);
+    }
+
+    public function testShouldThrowInvalidArgumentExceptionWhenDirectoryPathIsNotDirectory()
+    {
+        // Expect && Given
+        $directoryPath = sprintf('%s/directory/get-files-from-directory', DATA_DIRECTORY);
+        $filename = sprintf('%s/test.txt', $directoryPath);
+        $this->createFileIfNotExists($filename);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(sprintf('%s is not directory.', $filename));
+
+        // When & Then
+        (new GetFilesFromDirectory($filename))->acquire();
+    }
+
+    public function testShouldThrowRuntimeExceptionWhenDirectoryDoesNotExist()
+    {
+        // Expect && Given
+        $directoryPath = sprintf('%s/directory/get-files-from-directory/not_exist', DATA_DIRECTORY);
+        (new DeleteDirectoryWithAllContent($directoryPath))->execute();
+        $this->assertDirectoryDoesNotExist($directoryPath);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(sprintf('%s is not directory.', $directoryPath));
+
+        // When & Then
+        (new GetFilesFromDirectory($directoryPath))->acquire();
     }
 }
