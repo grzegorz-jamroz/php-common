@@ -13,6 +13,7 @@ class GetFilesFromDirectory implements Acquirable
      * @param array $options
      * @description options:
      * extension => string
+     * recursive => bool
      */
     public function __construct(
         private string $directoryPath,
@@ -38,20 +39,43 @@ class GetFilesFromDirectory implements Acquirable
             $dirPath .= '/';
         }
 
-        $pattern = sprintf('%s*%s', $dirPath, $this->getExtension($options));
-        $filenames = glob($pattern, GLOB_MARK) ?: [];
+        $pattern = sprintf('%s*%s', $dirPath, $this->getExtension());
+        $files = glob($pattern, GLOB_MARK) ?: [];
 
-        return array_values(array_filter($filenames, fn (string $filename) => is_file($filename)));
+        if ($this->isRecursive() === false) {
+            return array_values(array_filter($files, fn (string $file) => is_file($file)));
+        }
+
+        return array_reduce(
+            $files,
+            function (array $acc, string $file) use ($options) {
+                if (is_dir($file)) {
+                    $acc = array_merge($acc, $this->getFiles($file, $options));
+                }
+
+                if (is_file($file)) {
+                    $acc[] = $file;
+                }
+
+                return $acc;
+            },
+            []
+        );
     }
 
-    private function getExtension(array $options): string
+    private function getExtension(): string
     {
-        $extension = Transform::toString($options['extension'] ?? '');
+        $extension = Transform::toString($this->options['extension'] ?? '');
 
         if ($extension === '') {
             return '';
         }
 
         return sprintf('.%s', str_replace('.', '', $extension));
+    }
+
+    private function isRecursive(): bool
+    {
+        return Transform::toBool($this->options['recursive'] ?? false);
     }
 }

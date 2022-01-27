@@ -13,6 +13,11 @@ interface DirectoryInterface
     public function delete(): void;
     public function rename(string $newFilename): void;
     public function getPath(): string;
+
+    /**
+     * @param array<string, mixed> $options
+     */
+    public function getFiles(array $options = []): int;
     public function getNumberOfFiles(bool $includeSubDirectories = false): int;
     public function getNumberOfDirectories(bool $includeSubDirectories = false): int;
     public function getNumberOfFilesAndDirectories(bool $includeSubDirectories = false): int;
