@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Utilities\File;
 
 use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
-use Ifrost\Common\Utilities\File\CreateFileIfNotExists;
 use Ifrost\Common\Utilities\File\DeleteFile;
 use Ifrost\Common\Utilities\File\ReadFile;
 use PHPUnit\Framework\TestCase;
@@ -25,7 +24,7 @@ class ReadFileTest extends TestCase
         // Expect & Given
         $filename = sprintf('%s/file/read-file/empty.txt', DATA_DIRECTORY);
         (new DeleteFile($filename))->execute();
-        (new CreateFileIfNotExists($filename))->execute();
+        $this->createFileIfNotExists($filename);
         $this->assertFileExists($filename);
 
         // When
@@ -40,7 +39,7 @@ class ReadFileTest extends TestCase
         // Expect & Given
         $filename = sprintf('%s/file/read-file/empty.txt', DATA_DIRECTORY);
         (new DeleteFile($filename))->execute();
-        (new CreateFileIfNotExists($filename, 'hello world'))->execute();
+        $this->createFileIfNotExists($filename, 'hello world');
         $this->assertFileExists($filename);
 
         // When

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Utilities\File;
 
 use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
-use Ifrost\Common\Utilities\File\CreateFileIfNotExists;
 use Ifrost\Common\Utilities\File\DeleteFile;
 use Ifrost\Common\Utilities\File\RenameFile;
 use PHPUnit\Framework\TestCase;
@@ -25,10 +24,7 @@ class RenameFileTest extends TestCase
         // Expect & Given
         $oldFilename = sprintf('%s/file/rename-file/exists_old.txt', DATA_DIRECTORY);
         $newFilename = sprintf('%s/file/rename-file/exists_new.txt', DATA_DIRECTORY);
-        try {
-            (new CreateFileIfNotExists($oldFilename))->execute();
-        } catch (\Exception) {
-        }
+        $this->createFileIfNotExists($oldFilename);
         (new DeleteFile($newFilename))->execute();
         $this->assertFileExists($oldFilename);
         $this->assertFileDoesNotExist($newFilename);
@@ -46,7 +42,7 @@ class RenameFileTest extends TestCase
         // Expect & Given
         $oldFilename = sprintf('%s/file/rename-file/exists_old.txt', DATA_DIRECTORY);
         $newFilename = sprintf('%s/file/rename-file/new_directory/exists_new.txt', DATA_DIRECTORY);
-        (new CreateFileIfNotExists($oldFilename))->execute();
+        $this->createFileIfNotExists($oldFilename);
         (new DeleteFile($newFilename))->execute();
         $this->assertFileExists($oldFilename);
         $this->assertFileDoesNotExist($newFilename);
@@ -82,8 +78,8 @@ class RenameFileTest extends TestCase
         $this->expectExceptionMessageMatches('/New file already exists./');
         $oldFilename = sprintf('%s/file/rename-file/exists_old.txt', DATA_DIRECTORY);
         $newFilename = sprintf('%s/file/rename-file/exists_new.txt', DATA_DIRECTORY);
-        (new CreateFileIfNotExists($oldFilename))->execute();
-        (new CreateFileIfNotExists($newFilename))->execute();
+        $this->createFileIfNotExists($oldFilename);
+        $this->createFileIfNotExists($newFilename);
         $this->assertFileExists($oldFilename);
         $this->assertFileExists($newFilename);
 

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Utilities\File;
 
 use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
-use Ifrost\Common\Utilities\File\CreateFileIfNotExists;
 use Ifrost\Common\Utilities\File\DeleteFile;
 use PHPUnit\Framework\TestCase;
 use Tests\Traits\TestUtils;
@@ -40,7 +39,7 @@ class DeleteFileTest extends TestCase
     {
         // Expect & Given
         $filename = sprintf('%s/file/delete-file/file.txt', DATA_DIRECTORY);
-        (new CreateFileIfNotExists($filename))->execute();
+        $this->createFileIfNotExists($filename);
         $this->assertFileExists($filename);
 
         // When

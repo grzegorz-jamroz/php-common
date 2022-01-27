@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Utilities\File;
 
 use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
-use Ifrost\Common\Utilities\File\CreateFileIfNotExists;
 use Ifrost\Common\Utilities\File\DeleteFile;
 use Ifrost\Common\Utilities\File\GetFileLine;
 use Ifrost\Common\Utilities\File\ReadFile;
@@ -26,7 +25,7 @@ class GetFileLineTest extends TestCase
         // Expect & Given
         $filename = sprintf('%s/file/get-file-number-of-lines/test.txt', DATA_DIRECTORY);
         (new DeleteFile($filename))->execute();
-        (new CreateFileIfNotExists($filename))->execute();
+        $this->createFileIfNotExists($filename);
         $this->assertFileExists($filename);
         $this->assertEquals('', (new ReadFile($filename))->acquire());
 
@@ -39,7 +38,7 @@ class GetFileLineTest extends TestCase
         // Expect & Given
         $filename = sprintf('%s/file/get-file-number-of-lines/test.txt', DATA_DIRECTORY);
         (new DeleteFile($filename))->execute();
-        (new CreateFileIfNotExists($filename, "hello\n"))->execute();
+        $this->createFileIfNotExists($filename, "hello\n");
         $this->assertFileExists($filename);
 
         // When & Then
@@ -52,7 +51,7 @@ class GetFileLineTest extends TestCase
         // Expect & Given
         $filename = sprintf('%s/file/get-file-number-of-lines/test.txt', DATA_DIRECTORY);
         (new DeleteFile($filename))->execute();
-        (new CreateFileIfNotExists($filename, "hello\n\ngood\nmorning"))->execute();
+        $this->createFileIfNotExists($filename, "hello\n\ngood\nmorning");
         $this->assertFileExists($filename);
 
         // When & Then

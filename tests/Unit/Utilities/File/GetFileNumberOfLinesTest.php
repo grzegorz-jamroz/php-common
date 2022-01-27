@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Utilities\File;
 
 use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
-use Ifrost\Common\Utilities\File\CreateFileIfNotExists;
 use Ifrost\Common\Utilities\File\DeleteFile;
 use Ifrost\Common\Utilities\File\GetFileLine;
 use Ifrost\Common\Utilities\File\GetFileNumberOfLines;
@@ -28,7 +27,7 @@ class GetFileNumberOfLinesTest extends TestCase
         // Expect & Given
         $filename = sprintf('%s/file/get-file-number-of-lines/test.txt', DATA_DIRECTORY);
         (new DeleteFile($filename))->execute();
-        (new CreateFileIfNotExists($filename))->execute();
+        $this->createFileIfNotExists($filename);
         $this->assertFileExists($filename);
         $this->assertEquals('', (new ReadFile($filename))->acquire());
 
@@ -41,7 +40,7 @@ class GetFileNumberOfLinesTest extends TestCase
         // Expect & Given
         $filename = sprintf('%s/file/get-file-number-of-lines/test.txt', DATA_DIRECTORY);
         (new DeleteFile($filename))->execute();
-        (new CreateFileIfNotExists($filename, 'hello world'))->execute();
+        $this->createFileIfNotExists($filename, 'hello world');
         $this->assertFileExists($filename);
         $this->assertEquals('hello world', (new ReadFile($filename))->acquire());
 
@@ -54,7 +53,7 @@ class GetFileNumberOfLinesTest extends TestCase
         // Expect & Given
         $filename = sprintf('%s/file/get-file-number-of-lines/test.txt', DATA_DIRECTORY);
         (new DeleteFile($filename))->execute();
-        (new CreateFileIfNotExists($filename, "\n"))->execute();
+        $this->createFileIfNotExists($filename, "\n");
         $this->assertFileExists($filename);
         (new WriteFile($filename, 'line two'))->execute();
 
@@ -69,7 +68,7 @@ class GetFileNumberOfLinesTest extends TestCase
         // Expect & Given
         $filename = sprintf('%s/file/get-file-number-of-lines/test.txt', DATA_DIRECTORY);
         (new DeleteFile($filename))->execute();
-        (new CreateFileIfNotExists($filename))->execute();
+        $this->createFileIfNotExists($filename);
         $this->assertFileExists($filename);
         (new WriteFile($filename, "line one\n"))->execute();
         (new WriteFile($filename, 'hello from'))->execute();

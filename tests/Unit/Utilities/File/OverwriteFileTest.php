@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Utilities\File;
 
 use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
-use Ifrost\Common\Utilities\File\CreateFileIfNotExists;
 use Ifrost\Common\Utilities\File\DeleteFile;
 use Ifrost\Common\Utilities\File\OverwriteFile;
 use PHPUnit\Framework\TestCase;
@@ -24,7 +23,7 @@ class OverwriteFileTest extends TestCase
     {
         // Expect & Given
         $filename = sprintf('%s/file/overwrite-file/test.txt', DATA_DIRECTORY);
-        (new CreateFileIfNotExists($filename))->execute();
+        $this->createFileIfNotExists($filename);
         file_put_contents($filename, 'something');
         $this->assertFileExists($filename);
         $this->assertEquals('something', file_get_contents($filename));
@@ -40,7 +39,7 @@ class OverwriteFileTest extends TestCase
     {
         // Expect & Given
         $filename = sprintf('%s/file/overwrite-file/test2.txt', DATA_DIRECTORY);
-        (new CreateFileIfNotExists($filename))->execute();
+        $this->createFileIfNotExists($filename);
         file_put_contents($filename, 'something2');
         $this->assertFileExists($filename);
         $this->assertEquals('something2', file_get_contents($filename));

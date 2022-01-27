@@ -56,10 +56,10 @@ trait TestUtils
         exec(sprintf('echo %s | sudo -S chmod 444 %s > /dev/null 2>&1', $_ENV['SUDOER_PASSWORD'], $filename));
     }
 
-    protected function createFileIfNotExists(string $filename): void
+    protected function createFileIfNotExists(string $filename, string $content = ''): void
     {
         try {
-            (new CreateFileIfNotExists($filename))->execute();
+            (new CreateFileIfNotExists($filename, $content))->execute();
         } catch(\Exception) {
         }
     }
