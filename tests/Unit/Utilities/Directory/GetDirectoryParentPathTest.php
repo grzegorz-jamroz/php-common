@@ -20,16 +20,16 @@ class GetDirectoryParentPathTest extends TestCase
     public function testShouldReturnParentDirectoryPathForGivenDriectoryPath()
     {
         // Given
-        $filename1 = '/';
-        $filename2 = '/a';
-        $filename3 = '/data/test/test2';
-        $filename4 = '\var\www/data/test/test2';
+        $directoryPath1 = '/';
+        $directoryPath2 = '/a';
+        $directoryPath3 = '/data/test/test2';
+        $directoryPath4 = '\var\www/data/test/test2';
 
         // When
-        $actual1 = (new GetDirectoryParentPath($filename1))->acquire();
-        $actual2 = (new GetDirectoryParentPath($filename2))->acquire();
-        $actual3 = (new GetDirectoryParentPath($filename3))->acquire();
-        $actual4 = (new GetDirectoryParentPath($filename4))->acquire();
+        $actual1 = (new GetDirectoryParentPath($directoryPath1))->acquire();
+        $actual2 = (new GetDirectoryParentPath($directoryPath2))->acquire();
+        $actual3 = (new GetDirectoryParentPath($directoryPath3))->acquire();
+        $actual4 = (new GetDirectoryParentPath($directoryPath4))->acquire();
 
         // Then
         $this->assertEquals('/', $actual1);
@@ -41,22 +41,33 @@ class GetDirectoryParentPathTest extends TestCase
     public function testShouldThrowInvalidArgumentExceptionWhenDirectoryPathLengthIsLowerThanTwoCharactersAndDirectoryPathIsNotSlash()
     {
         // Expect & Given
-        $filename = 'a';
+        $directoryPath = 'a';
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(sprintf('Directory path has to contain at least one Trailing Slash "/" or "\" character. Invalid directory path "%s".', $filename));
+        $this->expectExceptionMessage(sprintf('Directory path has to contain at least one Trailing Slash "/" or "\" character. Invalid directory path "%s".', $directoryPath));
 
         // When & Then
-        (new GetDirectoryParentPath($filename))->acquire();
+        (new GetDirectoryParentPath($directoryPath))->acquire();
     }
 
     public function testShouldThrowInvalidArgumentExceptionWhenDirectoryPathDoesNotContainAnyTrialingSlash()
     {
         // Expect & Given
-        $filename = 'somedirectory';
+        $directoryPath = 'somedirectory';
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(sprintf('Directory path has to contain at least one Trailing Slash "/" or "\" character. Invalid directory path "%s".', $filename));
+        $this->expectExceptionMessage(sprintf('Directory path has to contain at least one Trailing Slash "/" or "\" character. Invalid directory path "%s".', $directoryPath));
 
         // When & Then
-        (new GetDirectoryParentPath($filename))->acquire();
+        (new GetDirectoryParentPath($directoryPath))->acquire();
+    }
+
+    public function testShouldThrowInvalidArgumentExceptionWhenDirectoryPathDoesNotContainAnyDirectoryNameAfterLastTrialingSlash()
+    {
+        // Expect & Given
+        $directoryPath = '\data/test/';
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(sprintf('Directory path has to contain string after last Trailing Slash "/" or "\" character. Invalid directory path "%s".', $directoryPath));
+
+        // When & Then
+        (new GetDirectoryParentPath($directoryPath))->acquire();
     }
 }
