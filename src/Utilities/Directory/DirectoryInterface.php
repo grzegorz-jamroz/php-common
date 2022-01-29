@@ -11,15 +11,16 @@ interface DirectoryInterface
         bool $recursive = true
     ): void;
     public function delete(): void;
-    public function rename(string $newFilename): void;
+    public function rename(string $newDirectoryPath): void;
     public function getPath(): string;
+    public function getParentPath(): string;
 
     /**
      * @param array<string, mixed> $options
      * @description options:
-     * extension => string
-     * recursive => bool
-     * order => string (asc or desc)
+     * extension => string | default: empty string
+     * recursive => bool | default: false
+     * order => string (asc or desc) | default: asc
      *
      * @return array<int, string>
      */
@@ -28,27 +29,27 @@ interface DirectoryInterface
     /**
      * @param array<string, mixed> $options
      * @description options:
-     * extension => string
-     * recursive => bool
-     * order => string (asc or desc)
+     * extension => string | default: empty string
+     * recursive => bool | default: false
+     * order => string (asc or desc) | default: asc
      */
     public function countFiles(array $options = []): int;
 
     /**
      * @param array<string, mixed> $options
      * @description options:
-     * extension => string
-     * recursive => bool
-     * order => string (asc or desc)
+     * extension => string | default: empty string
+     * recursive => bool | default: false
+     * order => string (asc or desc) | default: asc
      */
     public function countDirectories(array $options = []): int;
 
     /**
      * @param array<string, mixed> $options
      * @description options:
-     * extension => string
-     * recursive => bool
-     * order => string (asc or desc)
+     * extension => string | default: empty string
+     * recursive => bool | default: false
+     * order => string (asc or desc) | default: asc
      */
     public function countFilesAndDirectories(array $options = []): int;
 }

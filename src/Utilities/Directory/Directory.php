@@ -7,7 +7,7 @@ namespace Ifrost\Common\Utilities\Directory;
 class Directory implements DirectoryInterface
 {
     /**
-     * @param string $filename fully path to file
+     * @param string $path fully path to directory
      */
     public function __construct(private string $path)
     {
@@ -25,14 +25,19 @@ class Directory implements DirectoryInterface
         (new DeleteDirectoryWithAllContent($this->path))->execute();
     }
 
-    public function rename(string $newFilename): void
+    public function rename(string $newDirectoryPath): void
     {
-        throw new \Exception('rename is not implemented yet.');
+        (new RenameDirectory($this->path, $newDirectoryPath))->execute();
     }
 
     public function getPath(): string
     {
         throw new \Exception('getPath is not implemented yet.');
+    }
+
+    public function getParentPath(): string
+    {
+        return (new GetDirectoryParentPath($this->path))->acquire();
     }
 
     /**

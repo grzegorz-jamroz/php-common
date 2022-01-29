@@ -16,9 +16,9 @@ class GetFilesFromDirectory implements Acquirable
     /**
      * @param array<string, mixed> $options
      * @description options:
-     * extension => string
-     * recursive => bool
-     * order => string (asc or desc)
+     * extension => string | default: empty string
+     * recursive => bool | default: false
+     * order => string (asc or desc) | default: asc
      */
     public function __construct(
         private string $directoryPath,

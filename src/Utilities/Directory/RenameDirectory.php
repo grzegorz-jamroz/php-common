@@ -22,7 +22,7 @@ class RenameDirectory implements Executable
 
     /**
      * Renames a directory if it exists.
-     * The new filename cannot exist.
+     * The new directory cannot exist.
      * The method will create the missing directories if necessary.
      */
     public function execute(): void

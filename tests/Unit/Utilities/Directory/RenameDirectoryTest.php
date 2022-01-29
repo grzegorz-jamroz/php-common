@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Utilities\Directory;
 
+use Ifrost\Common\Utilities\Directory\CountFilesInDirectory;
 use Ifrost\Common\Utilities\Directory\DeleteDirectoryWithAllContent;
 use Ifrost\Common\Utilities\Directory\Exception\DirectoryAlreadyExists;
 use Ifrost\Common\Utilities\Directory\Exception\DirectoryNotExist;
@@ -43,7 +44,7 @@ class RenameDirectoryTest extends TestCase
         // Expect & Given
         $oldDirectory = sprintf('%s/directory/rename-directory/exists_old', DATA_DIRECTORY);
         $newDirectoryLocation = sprintf('%s/directory/rename-directory/new_directory', DATA_DIRECTORY);
-        $newDirectory = sprintf('%s/directory/rename-directory/new_directory/exists_new', DATA_DIRECTORY);
+        $newDirectory = sprintf('%s/exists_new', $newDirectoryLocation);
         $this->createDirectoryIfNotExists($oldDirectory);
         (new DeleteDirectoryWithAllContent($newDirectoryLocation))->execute();
         $this->assertDirectoryExists($oldDirectory);
@@ -57,13 +58,46 @@ class RenameDirectoryTest extends TestCase
         $this->assertDirectoryExists($newDirectory);
     }
 
+    public function testShouldRenameDirectoryWhichContainsFilesInsideAndMoveToNewNotExistedDirectory()
+    {
+        // Expect & Given
+        $oldDirectory = sprintf('%s/directory/rename-directory/exists_old', DATA_DIRECTORY);
+        $filenames = [
+            sprintf('%s/directory/rename-directory/exists_old/test1.txt', DATA_DIRECTORY),
+            sprintf('%s/directory/rename-directory/exists_old/test2.txt', DATA_DIRECTORY),
+            sprintf('%s/directory/rename-directory/exists_old/nested/test3.txt', DATA_DIRECTORY),
+            sprintf('%s/directory/rename-directory/exists_old/nested2/test4.txt', DATA_DIRECTORY),
+        ];
+        $newDirectoryLocation = sprintf('%s/directory/rename-directory/new_directory', DATA_DIRECTORY);
+        $newDirectory = sprintf('%s/exists_new', $newDirectoryLocation);
+        $this->createDirectoryIfNotExists($oldDirectory);
+
+        foreach ($filenames as $filename) {
+            $this->createFileIfNotExists($filename);
+            $this->assertFileExists($oldDirectory);
+        }
+
+        (new DeleteDirectoryWithAllContent($newDirectoryLocation))->execute();
+        $this->assertDirectoryExists($oldDirectory);
+        $this->assertDirectoryDoesNotExist($newDirectory);
+
+        // When
+        (new RenameDirectory($oldDirectory, $newDirectory))->execute();
+
+        // Then
+        $this->assertDirectoryDoesNotExist($oldDirectory);
+        $this->assertDirectoryExists($newDirectory);
+        $this->assertEquals(2, (new CountFilesInDirectory($newDirectory))->acquire());
+        $this->assertEquals(4, (new CountFilesInDirectory($newDirectory, ['recursive' => true]))->acquire());
+    }
+
     public function testShouldThrowRuntimeExceptionWhenOldDirectoryDoesNotExist()
     {
         // Expect & Given
-        $oldDirectory = sprintf('%s/directory/rename-directory/exists_old.txt', DATA_DIRECTORY);
-        $newDirectory = sprintf('%s/directory/rename-directory/exists_new.txt', DATA_DIRECTORY);
+        $oldDirectory = sprintf('%s/directory/rename-directory/exists_old', DATA_DIRECTORY);
+        $newDirectory = sprintf('%s/directory/rename-directory/exists_new', DATA_DIRECTORY);
         $this->expectException(DirectoryNotExist::class);
-        $this->expectExceptionMessage(sprintf('Unable rename file "%s". Old file does not exist.', $oldDirectory));
+        $this->expectExceptionMessage(sprintf('Unable rename directory "%s". Old directory does not exist.', $oldDirectory));
         (new DeleteDirectoryWithAllContent($oldDirectory))->execute();
         (new DeleteDirectoryWithAllContent($newDirectory))->execute();
         $this->assertDirectoryDoesNotExist($oldDirectory);
@@ -76,10 +110,10 @@ class RenameDirectoryTest extends TestCase
     public function testShouldThrowRuntimeExceptionWhenNewDirectoryExists()
     {
         // Expect & Given
-        $oldDirectory = sprintf('%s/directory/rename-directory/exists_old.txt', DATA_DIRECTORY);
-        $newDirectory = sprintf('%s/directory/rename-directory/exists_new.txt', DATA_DIRECTORY);
+        $oldDirectory = sprintf('%s/directory/rename-directory/exists_old', DATA_DIRECTORY);
+        $newDirectory = sprintf('%s/directory/rename-directory/exists_new', DATA_DIRECTORY);
         $this->expectException(DirectoryAlreadyExists::class);
-        $this->expectExceptionMessage(sprintf('Unable rename file "%s". New file already exists.', $newDirectory));
+        $this->expectExceptionMessage(sprintf('Unable rename directory "%s". New directory already exists.', $newDirectory));
         $this->createDirectoryIfNotExists($oldDirectory);
         $this->createDirectoryIfNotExists($newDirectory);
         $this->assertDirectoryExists($oldDirectory);
@@ -98,10 +132,10 @@ class RenameDirectoryTest extends TestCase
         $this->endTestIfEnvMissing($this, ['SUDOER_PASSWORD']);
 
         // Expect & Given
-        $oldDirectory = sprintf('%s/immutable_file.txt', TESTS_DATA_DIRECTORY);
-        $newDirectory = sprintf('%s/immutable_file_new.txt', TESTS_DATA_DIRECTORY);
+        $oldDirectory = sprintf('%s/immutable_file', TESTS_DATA_DIRECTORY);
+        $newDirectory = sprintf('%s/immutable_file_new', TESTS_DATA_DIRECTORY);
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(sprintf('Unable rename file "%s". ', $oldDirectory));
+        $this->expectExceptionMessage(sprintf('Unable rename directory "%s". ', $oldDirectory));
         $this->createImmutableDirectory($oldDirectory);
         $this->assertDirectoryExists($oldDirectory);
         $this->assertDirectoryDoesNotExist($newDirectory);
