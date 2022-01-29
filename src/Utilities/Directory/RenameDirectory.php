@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ifrost\Common\Utilities\File;
+namespace Ifrost\Common\Utilities\Directory;
 
 use Ifrost\Common\Interfaces\Executable;
-use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
 use Ifrost\Common\Utilities\Directory\Exception\DirectoryAlreadyExists;
 use Ifrost\Common\Utilities\Directory\Exception\DirectoryNotExist;
 
@@ -23,18 +22,21 @@ class RenameDirectory implements Executable
 
     /**
      * Renames a directory if it exists.
-     * The new directory cannot exist.
+     * The new filename cannot exist.
      * The method will create the missing directories if necessary.
      */
     public function execute(): void
     {
-        if (!is_file($this->oldDirectory)) {
+        if (!is_dir($this->oldDirectory)) {
             throw new DirectoryNotExist(sprintf('Unable rename directory "%s". Old directory does not exist.', $this->oldDirectory));
         }
 
-        if (is_file($this->newDirectory)) {
-            throw new DirectoryAlreadyExists(sprintf('Unable rename directory "%s". New directory already exists.', $this->oldDirectory));
+        if (is_dir($this->newDirectory)) {
+            throw new DirectoryAlreadyExists(sprintf('Unable rename directory "%s". New directory already exists.', $this->newDirectory));
         }
+
+        $newDirectoryPath = (new GetDirectoryParentPath($this->newDirectory))->acquire();
+        (new CreateDirectoryIfNotExists($newDirectoryPath))->execute();
 
         try {
             rename($this->oldDirectory, $this->newDirectory) ?: throw new \RuntimeException();
