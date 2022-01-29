@@ -11,6 +11,7 @@ interface DirectoryInterface
         bool $recursive = true
     ): void;
     public function delete(): void;
+    public function copy(string $newDirectoryPath): void;
     public function rename(string $newDirectoryPath): void;
     public function getPath(): string;
     public function getParentPath(): string;

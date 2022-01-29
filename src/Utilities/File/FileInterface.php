@@ -7,6 +7,7 @@ namespace Ifrost\Common\Utilities\File;
 interface FileInterface
 {
     public function delete(): void;
+    public function copy(string $newFilename): void;
     public function rename(string $newFilename): void;
     public function getDirectoryPath(): string;
     public function getFilename(): string;

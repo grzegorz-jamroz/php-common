@@ -25,6 +25,11 @@ class Directory implements DirectoryInterface
         (new DeleteDirectoryWithAllContent($this->path))->execute();
     }
 
+    public function copy(string $newDirectoryPath): void
+    {
+        throw new \Exception('copy is not implemented yet.');
+    }
+
     public function rename(string $newDirectoryPath): void
     {
         (new RenameDirectory($this->path, $newDirectoryPath))->execute();
@@ -32,7 +37,7 @@ class Directory implements DirectoryInterface
 
     public function getPath(): string
     {
-        throw new \Exception('getPath is not implemented yet.');
+        return $this->path;
     }
 
     public function getParentPath(): string

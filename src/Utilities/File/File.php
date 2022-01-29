@@ -18,6 +18,11 @@ class File implements FileInterface
         (new DeleteFile($this->filename))->execute();
     }
 
+    public function copy(string $newFilename): void
+    {
+        throw new \Exception('copy is not implemented yet.');
+    }
+
     /**
      * Renames a file if it exists.
      * The new filename cannot exist.
