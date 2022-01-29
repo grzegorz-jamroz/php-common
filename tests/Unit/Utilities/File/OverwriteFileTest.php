@@ -74,9 +74,9 @@ class OverwriteFileTest extends TestCase
         $this->endTestIfEnvMissing($this, ['SUDOER_PASSWORD']);
 
         // Expect & Given
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessageMatches('/Unable to overwrite file/');
         $filename = sprintf('%s/immutable_file.txt', TESTS_DATA_DIRECTORY);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(sprintf('Unable to overwrite file "%s".', $filename));
         $this->createImmutableFile($filename);
         $this->assertFileExists($filename);
 
@@ -93,9 +93,9 @@ class OverwriteFileTest extends TestCase
         $this->endTestIfEnvMissing($this, ['SUDOER_PASSWORD']);
 
         // Expect & Given
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessageMatches('/Unable to overwrite file/');
         $filename = sprintf('%s/read-only.txt', TESTS_DATA_DIRECTORY);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(sprintf('Unable to overwrite file "%s".', $filename));
         $this->createReadOnlyFile($filename);
         $this->assertFileExists($filename);
 

@@ -38,12 +38,10 @@ class GetDirectoryPathTest extends TestCase
 
     public function testShouldThrowInvalidArgumentExceptionWhenFilenameLengthIsLowerThanTwoCharacters()
     {
-        // Expect
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageMatches('/Filename has to contain string after last Trailing Slash./');
-
-        // Given
+        // Expect & Given
         $filename = '/';
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(sprintf('Filename has to contain string after last Trailing Slash "/" character. Invalid filename "%s".', $filename));
 
         // When & Then
         (new GetDirectoryPath($filename))->acquire();
@@ -63,12 +61,10 @@ class GetDirectoryPathTest extends TestCase
 
     public function testShouldThrowInvalidArgumentExceptionWhenFilenameDoesNotContainAnyFileName()
     {
-        // Expect
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageMatches('/Filename has to contain string after last Trailing Slash/');
-
-        // Given
+        // Expect & Given
         $filename = '\data/test/';
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(sprintf('Filename has to contain string after last Trailing Slash "/" character. Invalid filename "%s".', $filename));
 
         // When & Then
         (new GetDirectoryPath($filename))->acquire();

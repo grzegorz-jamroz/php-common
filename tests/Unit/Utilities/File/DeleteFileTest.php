@@ -58,9 +58,9 @@ class DeleteFileTest extends TestCase
         $this->endTestIfEnvMissing($this, ['SUDOER_PASSWORD']);
 
         // Expect & Given
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessageMatches('/Unable remove file/');
         $filename = sprintf('%s/immutable_file.txt', TESTS_DATA_DIRECTORY);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(sprintf('Unable remove file "%s". ', $filename));
         $this->createImmutableFile($filename);
         $this->assertFileExists($filename);
 

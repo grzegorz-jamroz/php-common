@@ -6,6 +6,8 @@ namespace Tests\Unit\Utilities\File;
 
 use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
 use Ifrost\Common\Utilities\File\DeleteFile;
+use Ifrost\Common\Utilities\File\Exception\FileAlreadyExists;
+use Ifrost\Common\Utilities\File\Exception\FileNotExist;
 use Ifrost\Common\Utilities\File\RenameFile;
 use PHPUnit\Framework\TestCase;
 use Tests\Traits\TestUtils;
@@ -58,10 +60,10 @@ class RenameFileTest extends TestCase
     public function testShouldThrowRuntimeExceptionWhenOldFileDoesNotExist()
     {
         // Expect & Given
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessageMatches('/Old file does not exist./');
         $oldFilename = sprintf('%s/file/rename-file/exists_old.txt', DATA_DIRECTORY);
         $newFilename = sprintf('%s/file/rename-file/exists_new.txt', DATA_DIRECTORY);
+        $this->expectException(FileNotExist::class);
+        $this->expectExceptionMessage(sprintf('Unable rename file "%s". Old file does not exist.', $oldFilename));
         (new DeleteFile($oldFilename))->execute();
         (new DeleteFile($newFilename))->execute();
         $this->assertFileDoesNotExist($oldFilename);
@@ -74,10 +76,10 @@ class RenameFileTest extends TestCase
     public function testShouldThrowRuntimeExceptionWhenNewFileExists()
     {
         // Expect & Given
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessageMatches('/New file already exists./');
         $oldFilename = sprintf('%s/file/rename-file/exists_old.txt', DATA_DIRECTORY);
         $newFilename = sprintf('%s/file/rename-file/exists_new.txt', DATA_DIRECTORY);
+        $this->expectException(FileAlreadyExists::class);
+        $this->expectExceptionMessage(sprintf('Unable rename file "%s". New file already exists.', $newFilename));
         $this->createFileIfNotExists($oldFilename);
         $this->createFileIfNotExists($newFilename);
         $this->assertFileExists($oldFilename);
@@ -96,10 +98,10 @@ class RenameFileTest extends TestCase
         $this->endTestIfEnvMissing($this, ['SUDOER_PASSWORD']);
 
         // Expect & Given
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessageMatches('/Unable rename file/');
         $oldFilename = sprintf('%s/immutable_file.txt', TESTS_DATA_DIRECTORY);
         $newFilename = sprintf('%s/immutable_file_new.txt', TESTS_DATA_DIRECTORY);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(sprintf('Unable rename file "%s". ', $oldFilename));
         $this->createImmutableFile($oldFilename);
         $this->assertFileExists($oldFilename);
         $this->assertFileDoesNotExist($newFilename);

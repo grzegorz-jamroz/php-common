@@ -74,11 +74,11 @@ class CreateFileIfNotExistsTest extends TestCase
         $this->endTestIfEnvMissing($this, ['SUDOER_PASSWORD']);
 
         // Expect & Given
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessageMatches('/Unable to create file/');
         $directoryPath = sprintf('%s/immutable_dir', TESTS_DATA_DIRECTORY);
-        $this->createImmutableDirectory($directoryPath);
         $filename = sprintf('%s/sample_%s.txt', $directoryPath, time());
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(sprintf('Unable to create file "%s".', $filename));
+        $this->createImmutableDirectory($directoryPath);
         $this->assertDirectoryExists($directoryPath);
         $this->assertFileDoesNotExist($filename);
 

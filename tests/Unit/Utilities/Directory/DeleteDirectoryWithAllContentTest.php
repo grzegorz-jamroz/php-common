@@ -142,9 +142,9 @@ class DeleteDirectoryWithAllContentTest extends TestCase
         $this->endTestIfEnvMissing($this, ['SUDOER_PASSWORD']);
 
         // Expect & Given
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessageMatches('/Unable remove directory/');
         $directoryPath = sprintf('%s/immutable_dir', TESTS_DATA_DIRECTORY);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(sprintf('Unable remove directory "%s".', $directoryPath));
         $this->createImmutableDirectory($directoryPath);
         $this->assertDirectoryExists($directoryPath);
 

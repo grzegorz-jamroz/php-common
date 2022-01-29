@@ -50,6 +50,8 @@ class DeleteDirectoryWithAllContent implements Executable
         try {
             rmdir($dirPath) ?: throw new \RuntimeException();
         } catch (\Exception) {
+            $dirPath = strlen($dirPath) > 1 ? rtrim($dirPath, '/') : $dirPath;
+
             throw new \RuntimeException(sprintf('Unable remove directory "%s".', $dirPath));
         }
     }

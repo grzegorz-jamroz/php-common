@@ -56,10 +56,10 @@ class CreateDirectoryIfNotExistsTest extends TestCase
         $this->endTestIfEnvMissing($this, ['SUDOER_PASSWORD']);
 
         // Expect & Given
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessageMatches('/Unable to create directory/');
         $directoryPath = sprintf('%s/immutable_dir', TESTS_DATA_DIRECTORY);
         $directoryPath2 = sprintf('%s/sample_%s', $directoryPath, time());
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(sprintf('Unable to create directory "%s".', $directoryPath2));
         $this->createImmutableDirectory($directoryPath);
         $this->assertDirectoryExists($directoryPath);
         $this->assertDirectoryDoesNotExist($directoryPath2);

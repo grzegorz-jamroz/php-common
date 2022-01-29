@@ -6,6 +6,8 @@ namespace Ifrost\Common\Utilities\File;
 
 use Ifrost\Common\Interfaces\Executable;
 use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
+use Ifrost\Common\Utilities\File\Exception\FileAlreadyExists;
+use Ifrost\Common\Utilities\File\Exception\FileNotExist;
 
 class RenameFile implements Executable
 {
@@ -16,7 +18,8 @@ class RenameFile implements Executable
     public function __construct(
         private string $oldFilename,
         private string $newFilename,
-    ) {}
+    ) {
+    }
 
     /**
      * Renames a file if it exists.
@@ -26,11 +29,11 @@ class RenameFile implements Executable
     public function execute(): void
     {
         if (!is_file($this->oldFilename)) {
-            throw new \RuntimeException(sprintf('Unable rename file "%s". Old file does not exist.', $this->oldFilename));
+            throw new FileNotExist(sprintf('Unable rename file "%s". Old file does not exist.', $this->oldFilename));
         }
 
         if (is_file($this->newFilename)) {
-            throw new \RuntimeException(sprintf('Unable rename file "%s". New file already exists.', $this->oldFilename));
+            throw new FileAlreadyExists(sprintf('Unable rename file "%s". New file already exists.', $this->newFilename));
         }
 
         $directoryPath = (new GetDirectoryPath($this->newFilename))->acquire();
