@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Utilities\File;
 
-use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
 use Ifrost\Common\Utilities\File\DeleteFile;
 use Ifrost\Common\Utilities\File\GetFileLine;
 use Ifrost\Common\Utilities\File\GetFileNumberOfLines;
@@ -18,7 +17,7 @@ class WriteFileTest extends TestCase
 
     protected function setUp(): void
     {
-        (new CreateDirectoryIfNotExists(DATA_DIRECTORY))->execute();
+        $this->createDirectoryIfNotExists(DATA_DIRECTORY);
     }
 
     public function testShouldShouldLetNothingHappenWhenWriteEmptyStringsToExistedFile()

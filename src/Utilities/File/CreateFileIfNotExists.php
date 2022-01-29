@@ -23,7 +23,7 @@ class CreateFileIfNotExists implements Executable
      * Creates a new file if it does not exist.
      * The method will create the missing directories if necessary.
      *
-     * @throws \Exception when file already exists
+     * @throws FileAlreadyExists when file already exists
      */
     public function execute(): void
     {
@@ -32,7 +32,11 @@ class CreateFileIfNotExists implements Executable
         }
 
         $directoryPath = (new GetDirectoryPath($this->filename))->acquire();
-        (new CreateDirectoryIfNotExists($directoryPath))->execute();
+
+        try {
+            (new CreateDirectoryIfNotExists($directoryPath))->execute();
+        } catch (\Exception) {
+        }
 
         try {
             $file = fopen($this->filename, 'w+') ?: throw new \RuntimeException();

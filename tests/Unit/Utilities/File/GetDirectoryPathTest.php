@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Utilities\File;
 
-use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
 use Ifrost\Common\Utilities\File\GetDirectoryPath;
 use PHPUnit\Framework\TestCase;
+use Tests\Traits\TestUtils;
 
 class GetDirectoryPathTest extends TestCase
 {
+    use TestUtils;
+
     protected function setUp(): void
     {
-        (new CreateDirectoryIfNotExists(DATA_DIRECTORY))->execute();
+        $this->createDirectoryIfNotExists(DATA_DIRECTORY);
     }
 
     public function testShouldReturnDirectoryPathForGivenFilename()

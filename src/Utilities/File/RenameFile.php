@@ -6,6 +6,7 @@ namespace Ifrost\Common\Utilities\File;
 
 use Ifrost\Common\Interfaces\Executable;
 use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
+use Ifrost\Common\Utilities\Directory\Exception\DirectoryAlreadyExists;
 use Ifrost\Common\Utilities\File\Exception\FileAlreadyExists;
 use Ifrost\Common\Utilities\File\Exception\FileNotExist;
 
@@ -37,7 +38,11 @@ class RenameFile implements Executable
         }
 
         $directoryPath = (new GetDirectoryPath($this->newFilename))->acquire();
-        (new CreateDirectoryIfNotExists($directoryPath))->execute();
+
+        try {
+            (new CreateDirectoryIfNotExists($directoryPath))->execute();
+        } catch (DirectoryAlreadyExists) {
+        }
 
         try {
             rename($this->oldFilename, $this->newFilename) ?: throw new \RuntimeException();

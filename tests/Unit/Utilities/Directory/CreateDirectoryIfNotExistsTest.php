@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\Unit\Utilities\Directory;
 
 use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
+use Ifrost\Common\Utilities\Directory\DeleteDirectoryWithAllContent;
+use Ifrost\Common\Utilities\Directory\Exception\DirectoryAlreadyExists;
 use PHPUnit\Framework\TestCase;
 use Tests\Traits\TestUtils;
 
@@ -14,25 +16,7 @@ class CreateDirectoryIfNotExistsTest extends TestCase
 
     protected function setUp(): void
     {
-        (new CreateDirectoryIfNotExists(DATA_DIRECTORY))->execute();
-    }
-
-    public function testShouldLetNothingHappenWhenDirectoryExists()
-    {
-        // Expect & Given
-        $directoryPath = sprintf('%s/directory/create-directory/sample_%s', DATA_DIRECTORY, time());
-        mkdir($directoryPath, 0777, true);
-        $this->assertDirectoryExists($directoryPath);
-
-        // When
-        try {
-            (new CreateDirectoryIfNotExists($directoryPath))->execute();
-        } catch (\Exception) {
-            $this->assertEquals(1, 1);
-        }
-
-        // Then
-        $this->assertEquals(1, $this->getCount());
+        $this->createDirectoryIfNotExists(DATA_DIRECTORY);
     }
 
     public function testShouldCreateDirectoryInNotExistedDirectory()
@@ -45,6 +29,20 @@ class CreateDirectoryIfNotExistsTest extends TestCase
 
         // Then
         $this->assertDirectoryExists($directoryPath);
+    }
+
+    public function testShouldThrowDirectoryAlreadyExistsWhenDirectoryExists()
+    {
+        // Expect & Given
+        $directoryPath = sprintf('%s/directory/create-directory/already_exists', DATA_DIRECTORY);
+        (new DeleteDirectoryWithAllContent($directoryPath))->execute();
+        mkdir($directoryPath, 0777, true);
+        $this->expectException(DirectoryAlreadyExists::class);
+        $this->expectExceptionMessage(sprintf('Unable to create directory "%s". Directory already exists.', $directoryPath));
+        $this->assertDirectoryExists($directoryPath);
+
+        // When & Then
+        (new CreateDirectoryIfNotExists($directoryPath))->execute();
     }
 
     /**

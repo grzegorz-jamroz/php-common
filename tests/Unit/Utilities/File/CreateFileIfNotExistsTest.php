@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Utilities\File;
 
-use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
 use Ifrost\Common\Utilities\Directory\DeleteDirectoryWithAllContent;
 use Ifrost\Common\Utilities\File\CreateFileIfNotExists;
 use Ifrost\Common\Utilities\File\DeleteFile;
@@ -18,7 +17,7 @@ class CreateFileIfNotExistsTest extends TestCase
 
     protected function setUp(): void
     {
-        (new CreateDirectoryIfNotExists(DATA_DIRECTORY))->execute();
+        $this->createDirectoryIfNotExists(DATA_DIRECTORY);
     }
 
     public function testShouldCreateFileInNotExistedDirectory()
@@ -42,7 +41,7 @@ class CreateFileIfNotExistsTest extends TestCase
         // Expect & Given
         $directoryPath = sprintf('%s/file/create-file/dir_exists', DATA_DIRECTORY);
         $filename = sprintf('%s/test.txt', $directoryPath);
-        (new CreateDirectoryIfNotExists($directoryPath))->execute();
+        $this->createDirectoryIfNotExists($directoryPath);
         (new DeleteFile($filename))->execute();
         $this->assertDirectoryExists($directoryPath);
         $this->assertFileDoesNotExist($filename);

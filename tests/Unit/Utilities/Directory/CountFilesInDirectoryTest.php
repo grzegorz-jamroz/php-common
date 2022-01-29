@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Utilities\Directory;
 
 use Ifrost\Common\Utilities\Directory\CountFilesInDirectory;
-use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
 use Ifrost\Common\Utilities\Directory\DeleteDirectoryWithAllContent;
 use PHPUnit\Framework\TestCase;
 use Tests\Traits\TestUtils;
@@ -16,7 +15,7 @@ class CountFilesInDirectoryTest extends TestCase
 
     protected function setUp(): void
     {
-        (new CreateDirectoryIfNotExists(DATA_DIRECTORY))->execute();
+        $this->createDirectoryIfNotExists(DATA_DIRECTORY);
     }
 
     public function testShouldReturnIntegerZeroWhenDirectoryDoesNotContainAnyFiles()
@@ -24,7 +23,7 @@ class CountFilesInDirectoryTest extends TestCase
         // Expect & Given
         $directoryPath = sprintf('%s/directory/count-files/empty', DATA_DIRECTORY);
         (new DeleteDirectoryWithAllContent($directoryPath))->execute();
-        (new CreateDirectoryIfNotExists($directoryPath))->execute();
+        $this->createDirectoryIfNotExists($directoryPath);
         $this->assertDirectoryExists($directoryPath);
         $files = glob($directoryPath . '/*', GLOB_MARK);
         $this->assertEquals(0, count($files));
@@ -60,7 +59,7 @@ class CountFilesInDirectoryTest extends TestCase
         $subDirectoryPath = sprintf('%s/empty', $directoryPath);
         $filename = sprintf('%s/something.txt', $directoryPath);
         $this->createFileIfNotExists($filename);
-        (new CreateDirectoryIfNotExists($subDirectoryPath))->execute();
+        $this->createDirectoryIfNotExists($subDirectoryPath);
         $this->assertFileExists($filename);
         $this->assertDirectoryExists($subDirectoryPath);
 

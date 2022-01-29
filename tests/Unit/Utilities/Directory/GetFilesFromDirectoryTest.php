@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Utilities\Directory;
 
-use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
 use Ifrost\Common\Utilities\Directory\DeleteDirectoryWithAllContent;
 use Ifrost\Common\Utilities\Directory\GetFilesFromDirectory;
 use PHPUnit\Framework\TestCase;
@@ -16,14 +15,14 @@ class GetFilesFromDirectoryTest extends TestCase
 
     protected function setUp(): void
     {
-        (new CreateDirectoryIfNotExists(DATA_DIRECTORY))->execute();
+        $this->createDirectoryIfNotExists(DATA_DIRECTORY);
     }
 
     public function testShouldReturnEmptyArrayWhenDirectoryIsEmpty()
     {
         // Expect & Given
         $directoryPath = sprintf('%s/directory/get-files-from-directory/empty_directory', DATA_DIRECTORY);
-        (new CreateDirectoryIfNotExists($directoryPath))->execute();
+        $this->createDirectoryIfNotExists($directoryPath);
         $this->assertDirectoryExists($directoryPath);
 
         // When
@@ -39,7 +38,7 @@ class GetFilesFromDirectoryTest extends TestCase
         $directoryPath = sprintf('%s/directory/get-files-from-directory/one_file_inside', DATA_DIRECTORY);
         $filename = sprintf('%s/one.txt', $directoryPath);
         $this->createFileIfNotExists($filename);
-        (new CreateDirectoryIfNotExists($directoryPath))->execute();
+        $this->createDirectoryIfNotExists($directoryPath);
         $this->assertDirectoryExists($directoryPath);
         $this->assertFileExists($filename);
 
@@ -58,7 +57,7 @@ class GetFilesFromDirectoryTest extends TestCase
         $filename2 = sprintf('%s/a_two.txt', $directoryPath);
         $this->createFileIfNotExists($filename1);
         $this->createFileIfNotExists($filename2);
-        (new CreateDirectoryIfNotExists($directoryPath))->execute();
+        $this->createDirectoryIfNotExists($directoryPath);
         $this->assertDirectoryExists($directoryPath);
         $this->assertFileExists($filename1);
         $this->assertFileExists($filename2);
@@ -80,9 +79,9 @@ class GetFilesFromDirectoryTest extends TestCase
         $subDirectory2 = sprintf('%s/a_one', $directoryPath);
         $this->createFileIfNotExists($filename1);
         $this->createFileIfNotExists($filename2);
-        (new CreateDirectoryIfNotExists($directoryPath))->execute();
-        (new CreateDirectoryIfNotExists($subDirectory1))->execute();
-        (new CreateDirectoryIfNotExists($subDirectory2))->execute();
+        $this->createDirectoryIfNotExists($directoryPath);
+        $this->createDirectoryIfNotExists($subDirectory1);
+        $this->createDirectoryIfNotExists($subDirectory2);
         $this->assertDirectoryExists($directoryPath);
         $this->assertDirectoryExists($subDirectory1);
         $this->assertDirectoryExists($subDirectory2);
@@ -107,7 +106,7 @@ class GetFilesFromDirectoryTest extends TestCase
             sprintf('%s/a_two.json', $directoryPath),
         ];
 
-        (new CreateDirectoryIfNotExists($directoryPath))->execute();
+        $this->createDirectoryIfNotExists($directoryPath);
         $this->assertDirectoryExists($directoryPath);
 
         foreach ($filenames as $filename) {
@@ -130,7 +129,7 @@ class GetFilesFromDirectoryTest extends TestCase
         // Expect & Given
         $directoryPath = sprintf('%s/directory/get-files-from-directory/recursive_test', DATA_DIRECTORY);
         (new DeleteDirectoryWithAllContent($directoryPath))->execute();
-        (new CreateDirectoryIfNotExists($directoryPath))->execute();
+        $this->createDirectoryIfNotExists($directoryPath);
         $this->assertDirectoryExists($directoryPath);
         $filenames = [
             sprintf('%s/b_one.txt', $directoryPath),
@@ -156,7 +155,7 @@ class GetFilesFromDirectoryTest extends TestCase
         // Expect & Given
         $directoryPath = sprintf('%s/directory/get-files-from-directory/recursive_test', DATA_DIRECTORY);
         (new DeleteDirectoryWithAllContent($directoryPath))->execute();
-        (new CreateDirectoryIfNotExists($directoryPath))->execute();
+        $this->createDirectoryIfNotExists($directoryPath);
         $this->assertDirectoryExists($directoryPath);
         $filenames = [
             sprintf('%s/b_one.txt', $directoryPath),

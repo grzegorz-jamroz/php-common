@@ -36,7 +36,11 @@ class RenameDirectory implements Executable
         }
 
         $newDirectoryPath = (new GetDirectoryParentPath($this->newDirectory))->acquire();
-        (new CreateDirectoryIfNotExists($newDirectoryPath))->execute();
+
+        try {
+            (new CreateDirectoryIfNotExists($newDirectoryPath))->execute();
+        } catch (DirectoryAlreadyExists) {
+        }
 
         try {
             rename($this->oldDirectory, $this->newDirectory) ?: throw new \RuntimeException();
