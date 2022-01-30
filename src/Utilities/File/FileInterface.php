@@ -20,6 +20,6 @@ interface FileInterface
     public function getFullName(): string;
     public function getName(): string;
     public function getExtension(): string;
-    public function getNumberOfLines(): int;
+    public function countLines(): int;
     public function getLine(int $lineNumber): string;
 }

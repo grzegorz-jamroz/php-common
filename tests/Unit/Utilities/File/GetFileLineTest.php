@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Utilities\File;
 
-use Ifrost\Common\Utilities\File\DeleteFile;
+use Ifrost\Common\Utilities\File\File;
 use Ifrost\Common\Utilities\File\GetFileLine;
-use Ifrost\Common\Utilities\File\ReadFile;
+use Ifrost\Common\Utilities\File\TextFile;
 use PHPUnit\Framework\TestCase;
 use Tests\Traits\TestUtils;
 
@@ -23,10 +23,10 @@ class GetFileLineTest extends TestCase
     {
         // Expect & Given
         $filename = sprintf('%s/file/get-file-number-of-lines/test.txt', DATA_DIRECTORY);
-        (new DeleteFile($filename))->execute();
+        (new File($filename))->delete();
         $this->createFileIfNotExists($filename);
         $this->assertFileExists($filename);
-        $this->assertEquals('', (new ReadFile($filename))->acquire());
+        $this->assertEquals('', (new TextFile($filename))->read());
 
         // When & Then
         $this->assertEquals('', (new GetFileLine($filename, 1))->acquire());
@@ -36,7 +36,7 @@ class GetFileLineTest extends TestCase
     {
         // Expect & Given
         $filename = sprintf('%s/file/get-file-number-of-lines/test.txt', DATA_DIRECTORY);
-        (new DeleteFile($filename))->execute();
+        (new File($filename))->delete();
         $this->createFileIfNotExists($filename, "hello\n");
         $this->assertFileExists($filename);
 
@@ -49,7 +49,7 @@ class GetFileLineTest extends TestCase
     {
         // Expect & Given
         $filename = sprintf('%s/file/get-file-number-of-lines/test.txt', DATA_DIRECTORY);
-        (new DeleteFile($filename))->execute();
+        (new File($filename))->delete();
         $this->createFileIfNotExists($filename, "hello\n\ngood\nmorning");
         $this->assertFileExists($filename);
 
@@ -65,7 +65,7 @@ class GetFileLineTest extends TestCase
     {
         // Expect & Given
         $filename = sprintf('%s/file/get-file-line/test.txt', DATA_DIRECTORY);
-        (new DeleteFile($filename))->execute();
+        (new File($filename))->delete();
         $this->assertFileDoesNotExist($filename);
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(sprintf('Unable to read file. File %s not exist.', $filename));

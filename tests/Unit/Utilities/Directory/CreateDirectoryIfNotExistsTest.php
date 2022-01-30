@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Utilities\Directory;
 
 use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
-use Ifrost\Common\Utilities\Directory\DeleteDirectoryWithAllContent;
+use Ifrost\Common\Utilities\Directory\Directory;
 use Ifrost\Common\Utilities\Directory\Exception\DirectoryAlreadyExists;
 use PHPUnit\Framework\TestCase;
 use Tests\Traits\TestUtils;
@@ -35,7 +35,7 @@ class CreateDirectoryIfNotExistsTest extends TestCase
     {
         // Expect & Given
         $directoryPath = sprintf('%s/directory/create-directory/already_exists', DATA_DIRECTORY);
-        (new DeleteDirectoryWithAllContent($directoryPath))->execute();
+        (new Directory($directoryPath))->delete();
         mkdir($directoryPath, 0777, true);
         $this->expectException(DirectoryAlreadyExists::class);
         $this->expectExceptionMessage(sprintf('Unable to create directory "%s". Directory already exists.', $directoryPath));

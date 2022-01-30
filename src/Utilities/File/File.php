@@ -57,7 +57,7 @@ class File implements FileInterface
         return (new GetFileExtension($this->filename))->acquire();
     }
 
-    public function getNumberOfLines(): int
+    public function countLines(): int
     {
         return (new GetFileNumberOfLines($this->filename))->acquire();
     }

@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Utilities\File;
 
-use Ifrost\Common\Utilities\File\DeleteFile;
-use Ifrost\Common\Utilities\File\GetFileLine;
-use Ifrost\Common\Utilities\File\GetFileNumberOfLines;
-use Ifrost\Common\Utilities\File\ReadFile;
-use Ifrost\Common\Utilities\File\WriteFile;
+use Ifrost\Common\Utilities\File\File;
+use Ifrost\Common\Utilities\File\TextFile;
 use PHPUnit\Framework\TestCase;
 use Tests\Traits\TestUtils;
 
@@ -25,74 +22,74 @@ class GetFileNumberOfLinesTest extends TestCase
     {
         // Expect & Given
         $filename = sprintf('%s/file/get-file-number-of-lines/test.txt', DATA_DIRECTORY);
-        (new DeleteFile($filename))->execute();
+        (new File($filename))->delete();
         $this->createFileIfNotExists($filename);
         $this->assertFileExists($filename);
-        $this->assertEquals('', (new ReadFile($filename))->acquire());
+        $this->assertEquals('', (new TextFile($filename))->read());
 
         // When & Then
-        $this->assertEquals(1, (new GetFileNumberOfLines($filename))->acquire());
+        $this->assertEquals(1, (new File($filename))->countLines());
     }
 
     public function testShouldReturnIntegerOneWhenFileContainsOnlyOneLineWithString()
     {
         // Expect & Given
         $filename = sprintf('%s/file/get-file-number-of-lines/test.txt', DATA_DIRECTORY);
-        (new DeleteFile($filename))->execute();
+        (new File($filename))->delete();
         $this->createFileIfNotExists($filename, 'hello world');
         $this->assertFileExists($filename);
-        $this->assertEquals('hello world', (new ReadFile($filename))->acquire());
+        $this->assertEquals('hello world', (new TextFile($filename))->read());
 
         // When & Then
-        $this->assertEquals(1, (new GetFileNumberOfLines($filename))->acquire());
+        $this->assertEquals(1, (new File($filename))->countLines());
     }
 
     public function testShouldReturnIntegerTwoWhenFileContainsFirstLineEmptyAndSecondLineWithString()
     {
         // Expect & Given
         $filename = sprintf('%s/file/get-file-number-of-lines/test.txt', DATA_DIRECTORY);
-        (new DeleteFile($filename))->execute();
+        (new File($filename))->delete();
         $this->createFileIfNotExists($filename, "\n");
         $this->assertFileExists($filename);
-        (new WriteFile($filename, 'line two'))->execute();
+        (new TextFile($filename))->write('line two');
 
         // When & Then
-        $this->assertEquals(2, (new GetFileNumberOfLines($filename))->acquire());
-        $this->assertEquals("\n", (new GetFileLine($filename, 1))->acquire());
-        $this->assertEquals('line two', (new GetFileLine($filename, 2))->acquire());
+        $this->assertEquals(2, (new File($filename))->countLines());
+        $this->assertEquals("\n", (new File($filename))->getLine(1));
+        $this->assertEquals('line two', (new File($filename))->getLine(2));
     }
 
     public function testShouldReturnIntegerFourWhenFileContainsFourLines()
     {
         // Expect & Given
         $filename = sprintf('%s/file/get-file-number-of-lines/test.txt', DATA_DIRECTORY);
-        (new DeleteFile($filename))->execute();
+        (new File($filename))->delete();
         $this->createFileIfNotExists($filename);
         $this->assertFileExists($filename);
-        (new WriteFile($filename, "line one\n"))->execute();
-        (new WriteFile($filename, 'hello from'))->execute();
-        (new WriteFile($filename, " line two\n\n"))->execute();
-        (new WriteFile($filename, " line four"))->execute();
+        (new TextFile($filename))->write("line one\n");
+        (new TextFile($filename))->write('hello from');
+        (new TextFile($filename))->write(" line two\n\n");
+        (new TextFile($filename))->write(' line four');
 
         // When & Then
-        $this->assertEquals(4, (new GetFileNumberOfLines($filename))->acquire());
-        $this->assertEquals("line one\n", (new GetFileLine($filename, 1))->acquire());
-        $this->assertEquals("hello from line two\n", (new GetFileLine($filename, 2))->acquire());
-        $this->assertEquals("\n", (new GetFileLine($filename, 3))->acquire());
-        $this->assertEquals(' line four', (new GetFileLine($filename, 4))->acquire());
+        $this->assertEquals(4, (new File($filename))->countLines());
+        $this->assertEquals("line one\n", (new File($filename))->getLine(1));
+        $this->assertEquals("hello from line two\n", (new File($filename))->getLine(2));
+        $this->assertEquals("\n", (new File($filename))->getLine(3));
+        $this->assertEquals(' line four', (new File($filename))->getLine(4));
     }
 
     public function testShouldThrowRuntimeExceptionWhenFileDoesNotExists()
     {
         // Expect & Given
         $filename = sprintf('%s/file/get-file-number-of-lines/test.txt', DATA_DIRECTORY);
-        (new DeleteFile($filename))->execute();
+        (new File($filename))->delete();
         $this->assertFileDoesNotExist($filename);
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(sprintf('Unable to read file. File %s not exist.', $filename));
 
         // When & Then
-        (new GetFileNumberOfLines($filename))->acquire();
+        (new File($filename))->countLines();
     }
 
     /**
@@ -111,6 +108,6 @@ class GetFileNumberOfLinesTest extends TestCase
         $this->assertFileExists($filename);
 
         // When & Then
-        (new GetFileNumberOfLines($filename))->acquire();
+        (new File($filename))->countLines();
     }
 }
