@@ -74,7 +74,7 @@ class Directory implements DirectoryInterface
      */
     public function countDirectories(array $options = []): int
     {
-        throw new \Exception('countDirectories is not implemented yet.');
+        return (new CountSubDirectoriesInDirectory($this->path, $options))->acquire();
     }
 
     /**

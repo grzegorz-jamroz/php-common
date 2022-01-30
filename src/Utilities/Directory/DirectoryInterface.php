@@ -48,7 +48,6 @@ interface DirectoryInterface
     /**
      * @param array<string, mixed> $options
      * @description options:
-     * extension => string | default: empty string
      * recursive => bool | default: false
      * order => string (asc or desc) | default: asc
      */
