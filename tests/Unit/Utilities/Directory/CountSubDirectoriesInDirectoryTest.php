@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Utilities\Directory;
 
-use Ifrost\Common\Utilities\Directory\CountSubDirectoriesInDirectory;
 use Ifrost\Common\Utilities\Directory\DeleteDirectoryWithAllContent;
 use Ifrost\Common\Utilities\Directory\Directory;
 use PHPUnit\Framework\TestCase;
