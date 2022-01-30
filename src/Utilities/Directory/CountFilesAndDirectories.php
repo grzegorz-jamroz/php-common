@@ -10,7 +10,7 @@ class CountFilesAndDirectories implements Acquirable
 {
     /**
      * @param array<string, mixed> $options
-     * @GetFilesFromDirectory - the same options
+     * @GetSubDirectoriesFromDirectory - the same options
      */
     public function __construct(
         private string $directoryPath,
@@ -20,9 +20,6 @@ class CountFilesAndDirectories implements Acquirable
 
     public function acquire(): int
     {
-        $numberOfFiles = (new CountFilesInDirectory($this->directoryPath, $this->options))->acquire();
-        $numberOfSubDirectories = (new CountSubDirectoriesInDirectory($this->directoryPath, $this->options))->acquire();
-
-        return $numberOfFiles + $numberOfSubDirectories;
+        return count((new GetFilesAndSubDirectoriesFromDirectory($this->directoryPath, $this->options))->acquire());
     }
 }
