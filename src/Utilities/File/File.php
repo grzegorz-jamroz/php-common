@@ -20,7 +20,7 @@ class File implements FileInterface
 
     public function copy(string $newFilename): void
     {
-        throw new \Exception('copy is not implemented yet.');
+        (new CopyFile($this->filename, $newFilename))->execute();
     }
 
     /**

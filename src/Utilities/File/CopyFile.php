@@ -10,7 +10,7 @@ use Ifrost\Common\Utilities\Directory\Exception\DirectoryAlreadyExists;
 use Ifrost\Common\Utilities\File\Exception\FileAlreadyExists;
 use Ifrost\Common\Utilities\File\Exception\FileNotExist;
 
-class RenameFile implements Executable
+class CopyFile implements Executable
 {
     /**
      * @param string $oldFilename fully path to file
@@ -23,7 +23,7 @@ class RenameFile implements Executable
     }
 
     /**
-     * Renames a file if it exists.
+     * Makes a copy of the file if it exists.
      * The new file cannot exist.
      * The method will create the missing directories if necessary.
      *
@@ -33,11 +33,11 @@ class RenameFile implements Executable
     public function execute(): void
     {
         if (!is_file($this->oldFilename)) {
-            throw new FileNotExist(sprintf('Unable rename file "%s". Old file does not exist.', $this->oldFilename));
+            throw new FileNotExist(sprintf('Unable copy file "%s". Old file does not exist.', $this->oldFilename));
         }
 
         if (is_file($this->newFilename)) {
-            throw new FileAlreadyExists(sprintf('Unable rename file "%s". New file already exists.', $this->newFilename));
+            throw new FileAlreadyExists(sprintf('Unable copy file "%s". New file already exists.', $this->newFilename));
         }
 
         $directoryPath = (new GetDirectoryPath($this->newFilename))->acquire();
@@ -48,9 +48,9 @@ class RenameFile implements Executable
         }
 
         try {
-            rename($this->oldFilename, $this->newFilename) ?: throw new \RuntimeException();
+            copy($this->oldFilename, $this->newFilename) ?: throw new \RuntimeException();
         } catch (\Exception) {
-            throw new \RuntimeException(sprintf('Unable rename file "%s". ', $this->oldFilename));
+            throw new \RuntimeException(sprintf('Unable copy file "%s". ', $this->oldFilename));
         }
     }
 }

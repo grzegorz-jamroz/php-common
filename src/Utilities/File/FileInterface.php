@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Ifrost\Common\Utilities\File;
 
+use Ifrost\Common\Utilities\File\Exception\FileAlreadyExists;
+use Ifrost\Common\Utilities\File\Exception\FileNotExist;
+
 interface FileInterface
 {
     /**
@@ -13,14 +16,22 @@ interface FileInterface
     public function delete(): void;
 
     /**
-     * Makes a copy of the file.
+     * Makes a copy of the file if it exists.
+     * The new file cannot exist.
+     * The method will create the missing directories if necessary.
+     *
+     * @throws FileNotExist      when the old file does not exist
+     * @throws FileAlreadyExists when the new file already exists
      */
     public function copy(string $newFilename): void;
 
     /**
      * Renames a file if it exists.
-     * The new filename cannot exist.
+     * The new file cannot exist.
      * The method will create the missing directories if necessary.
+     *
+     * @throws FileNotExist      when the old file does not exist
+     * @throws FileAlreadyExists when the new file already exists
      */
     public function rename(string $newFilename): void;
 

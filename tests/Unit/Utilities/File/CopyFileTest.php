@@ -60,7 +60,7 @@ class CopyFileTest extends TestCase
         $this->assertEquals('dog has four paths', (new TextFile($newFilename))->read());
     }
 
-    public function testShouldThrowRuntimeExceptionWhenOldFileDoesNotExist()
+    public function testShouldThrowFileNotExistWhenOldFileDoesNotExist()
     {
         // Expect & Given
         $oldFilename = sprintf('%s/file/copy-file/exists_old.txt', DATA_DIRECTORY);
@@ -76,7 +76,7 @@ class CopyFileTest extends TestCase
         (new File($oldFilename))->copy($newFilename);
     }
 
-    public function testShouldThrowRuntimeExceptionWhenNewFileExists()
+    public function testShouldThrowFileAlreadyExistsWhenNewFileExists()
     {
         // Expect & Given
         $oldFilename = sprintf('%s/file/copy-file/exists_old.txt', DATA_DIRECTORY);
@@ -87,27 +87,6 @@ class CopyFileTest extends TestCase
         $this->createFileIfNotExists($newFilename);
         $this->assertFileExists($oldFilename);
         $this->assertFileExists($newFilename);
-
-        // When & Then
-        (new File($oldFilename))->copy($newFilename);
-    }
-
-    /**
-     * it probably only works on ext2/ext3/ext4 filesystems.
-     */
-    public function testShouldThrowRuntimeExceptionWhenUnableToDeleteFile()
-    {
-        $this->endTestIfWindowsOs($this);
-        $this->endTestIfEnvMissing($this, ['SUDOER_PASSWORD']);
-
-        // Expect & Given
-        $oldFilename = sprintf('%s/immutable_file.txt', TESTS_DATA_DIRECTORY);
-        $newFilename = sprintf('%s/immutable_file_new.txt', TESTS_DATA_DIRECTORY);
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(sprintf('Unable copy file "%s". ', $oldFilename));
-        $this->createImmutableFile($oldFilename);
-        $this->assertFileExists($oldFilename);
-        $this->assertFileDoesNotExist($newFilename);
 
         // When & Then
         (new File($oldFilename))->copy($newFilename);

@@ -90,7 +90,7 @@ class RenameFileTest extends TestCase
     /**
      * it probably only works on ext2/ext3/ext4 filesystems.
      */
-    public function testShouldThrowRuntimeExceptionWhenUnableToDeleteFile()
+    public function testShouldThrowRuntimeExceptionWhenUnableToRenameFile()
     {
         $this->endTestIfWindowsOs($this);
         $this->endTestIfEnvMissing($this, ['SUDOER_PASSWORD']);
@@ -100,6 +100,7 @@ class RenameFileTest extends TestCase
         $newFilename = sprintf('%s/immutable_file_new.txt', TESTS_DATA_DIRECTORY);
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(sprintf('Unable rename file "%s". ', $oldFilename));
+        (new File($newFilename))->delete();
         $this->createImmutableFile($oldFilename);
         $this->assertFileExists($oldFilename);
         $this->assertFileDoesNotExist($newFilename);
