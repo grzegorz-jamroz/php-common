@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Utilities\File;
 
-use Ifrost\Common\Utilities\File\DeleteFile;
+use Ifrost\Common\Utilities\File\File;
 use PHPUnit\Framework\TestCase;
 use Tests\Traits\TestUtils;
 
@@ -25,7 +25,7 @@ class DeleteFileTest extends TestCase
 
         // When
         try {
-            (new DeleteFile($filename))->execute();
+            (new File($filename))->delete();
         } catch(\Exception) {
             $this->assertEquals(1, 1);
         }
@@ -42,7 +42,7 @@ class DeleteFileTest extends TestCase
         $this->assertFileExists($filename);
 
         // When
-        (new DeleteFile($filename))->execute();
+        (new File($filename))->delete();
 
         // Then
         $this->assertFileDoesNotExist($filename);
@@ -64,6 +64,6 @@ class DeleteFileTest extends TestCase
         $this->assertFileExists($filename);
 
         // When & Then
-        (new DeleteFile($filename))->execute();
+        (new File($filename))->delete();
     }
 }

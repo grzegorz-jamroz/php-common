@@ -29,7 +29,7 @@ class GetFileLineTest extends TestCase
         $this->assertEquals('', (new TextFile($filename))->read());
 
         // When & Then
-        $this->assertEquals('', (new GetFileLine($filename, 1))->acquire());
+        $this->assertEquals('', (new File($filename))->getLine(1));
     }
 
     public function testShouldReturnStringForFirstLine()
@@ -42,7 +42,7 @@ class GetFileLineTest extends TestCase
 
         // When & Then
         $this->assertEquals("hello\n", (new GetFileLine($filename, 1))->acquire());
-        $this->assertEquals('', (new GetFileLine($filename, 2))->acquire());
+        $this->assertEquals('', (new File($filename))->getLine(2));
     }
 
     public function testShouldReturnProperStringsForEachLine()
@@ -54,10 +54,10 @@ class GetFileLineTest extends TestCase
         $this->assertFileExists($filename);
 
         // When & Then
-        $this->assertEquals("hello\n", (new GetFileLine($filename, 1))->acquire());
-        $this->assertEquals("\n", (new GetFileLine($filename, 2))->acquire());
-        $this->assertEquals("good\n", (new GetFileLine($filename, 3))->acquire());
-        $this->assertEquals('morning', (new GetFileLine($filename, 4))->acquire());
+        $this->assertEquals("hello\n", (new File($filename))->getLine(1));
+        $this->assertEquals("\n", (new File($filename))->getLine(2));
+        $this->assertEquals("good\n", (new File($filename))->getLine(3));
+        $this->assertEquals('morning', (new File($filename))->getLine(4));
     }
 
 
@@ -71,7 +71,7 @@ class GetFileLineTest extends TestCase
         $this->expectExceptionMessage(sprintf('Unable to read file. File %s not exist.', $filename));
 
         // When & Then
-        (new GetFileLine($filename, 1))->acquire();
+        (new File($filename))->getLine(1);
     }
 
     /**
@@ -90,6 +90,6 @@ class GetFileLineTest extends TestCase
         $this->assertFileExists($filename);
 
         // When & Then
-        (new GetFileLine($filename, 1))->acquire();
+        (new File($filename))->getLine(1);
     }
 }

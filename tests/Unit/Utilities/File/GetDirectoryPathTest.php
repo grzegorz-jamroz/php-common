@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Utilities\File;
 
-use Ifrost\Common\Utilities\File\GetDirectoryPath;
+use Ifrost\Common\Utilities\File\File;
 use PHPUnit\Framework\TestCase;
 use Tests\Traits\TestUtils;
 
@@ -26,10 +26,10 @@ class GetDirectoryPathTest extends TestCase
         $filename4 = '\var\www/data/test/text.txt';
 
         // When
-        $actual1 = (new GetDirectoryPath($filename1))->acquire();
-        $actual2 = (new GetDirectoryPath($filename2))->acquire();
-        $actual3 = (new GetDirectoryPath($filename3))->acquire();
-        $actual4 = (new GetDirectoryPath($filename4))->acquire();
+        $actual1 = (new File($filename1))->getDirectoryPath();
+        $actual2 = (new File($filename2))->getDirectoryPath();
+        $actual3 = (new File($filename3))->getDirectoryPath();
+        $actual4 = (new File($filename4))->getDirectoryPath();
 
         // Then
         $this->assertEquals('/', $actual1);
@@ -46,7 +46,7 @@ class GetDirectoryPathTest extends TestCase
         $this->expectExceptionMessage(sprintf('Filename has to contain string after last Trailing Slash "/" character. Invalid filename "%s".', $filename));
 
         // When & Then
-        (new GetDirectoryPath($filename))->acquire();
+        (new File($filename))->getDirectoryPath();
     }
 
     public function testShouldThrowInvalidArgumentExceptionWhenFilenameDoesNotContainAnyTrailingSlashes()
@@ -58,7 +58,7 @@ class GetDirectoryPathTest extends TestCase
         $filename = 'text.txt';
 
         // When & Then
-        (new GetDirectoryPath($filename))->acquire();
+        (new File($filename))->getDirectoryPath();
     }
 
     public function testShouldThrowInvalidArgumentExceptionWhenFilenameDoesNotContainAnyFileName()
@@ -69,6 +69,6 @@ class GetDirectoryPathTest extends TestCase
         $this->expectExceptionMessage(sprintf('Filename has to contain string after last Trailing Slash "/" character. Invalid filename "%s".', $filename));
 
         // When & Then
-        (new GetDirectoryPath($filename))->acquire();
+        (new File($filename))->getDirectoryPath();
     }
 }

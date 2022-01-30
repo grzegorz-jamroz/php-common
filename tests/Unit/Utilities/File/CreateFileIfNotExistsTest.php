@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Tests\Unit\Utilities\File;
 
 use Ifrost\Common\Utilities\Directory\Directory;
-use Ifrost\Common\Utilities\File\CreateFileIfNotExists;
 use Ifrost\Common\Utilities\File\Exception\FileAlreadyExists;
 use Ifrost\Common\Utilities\File\File;
+use Ifrost\Common\Utilities\File\TextFile;
 use PHPUnit\Framework\TestCase;
 use Tests\Traits\TestUtils;
 
@@ -30,7 +30,7 @@ class CreateFileIfNotExistsTest extends TestCase
         $this->assertFileDoesNotExist($filename);
 
         // When
-        (new CreateFileIfNotExists($filename))->execute();
+        (new TextFile($filename))->create();
 
         // Then
         $this->assertFileExists($filename);
@@ -47,7 +47,7 @@ class CreateFileIfNotExistsTest extends TestCase
         $this->assertFileDoesNotExist($filename);
 
         // When
-        (new CreateFileIfNotExists($filename))->execute();
+        (new TextFile($filename))->create();
 
         // Then
         $this->assertFileExists($filename);
@@ -61,7 +61,7 @@ class CreateFileIfNotExistsTest extends TestCase
         $this->assertFileExists($filename);
 
         // When & Then
-        (new CreateFileIfNotExists($filename))->execute();
+        (new TextFile($filename))->create();
     }
 
     /**
@@ -82,6 +82,6 @@ class CreateFileIfNotExistsTest extends TestCase
         $this->assertFileDoesNotExist($filename);
 
         // When & Then
-        (new CreateFileIfNotExists($filename))->execute();
+        (new TextFile($filename))->create();
     }
 }

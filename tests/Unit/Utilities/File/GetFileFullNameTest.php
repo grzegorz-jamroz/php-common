@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Utilities\File;
 
+use Ifrost\Common\Utilities\File\File;
 use Ifrost\Common\Utilities\File\GetFileFullName;
 use PHPUnit\Framework\TestCase;
 use Tests\Traits\TestUtils;
@@ -26,10 +27,10 @@ class GetFileFullNameTest extends TestCase
         $filename4 = '\var\www/data/test/four.txt';
 
         // When
-        $actual1 = (new GetFileFullName($filename1))->acquire();
-        $actual2 = (new GetFileFullName($filename2))->acquire();
-        $actual3 = (new GetFileFullName($filename3))->acquire();
-        $actual4 = (new GetFileFullName($filename4))->acquire();
+        $actual1 = (new File($filename1))->getFullName();
+        $actual2 = (new File($filename2))->getFullName();
+        $actual3 = (new File($filename3))->getFullName();
+        $actual4 = (new File($filename4))->getFullName();
 
         // Then
         $this->assertEquals('one.txt', $actual1);
@@ -47,7 +48,7 @@ class GetFileFullNameTest extends TestCase
         $filename = '/';
 
         // When & Then
-        (new GetFileFullName($filename))->acquire();
+        (new File($filename))->getFullName();
     }
 
     public function testShouldThrowInvalidArgumentExceptionWhenFilenameDoesNotContainAnyTrailingSlashes()
@@ -59,6 +60,6 @@ class GetFileFullNameTest extends TestCase
         $filename = 'text.txt';
 
         // When & Then
-        (new GetFileFullName($filename))->acquire();
+        (new File($filename))->getFullName();
     }
 }

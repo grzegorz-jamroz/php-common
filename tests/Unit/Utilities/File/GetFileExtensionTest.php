@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Utilities\File;
 
-use Ifrost\Common\Utilities\File\GetFileExtension;
+use Ifrost\Common\Utilities\File\File;
 use PHPUnit\Framework\TestCase;
 use Tests\Traits\TestUtils;
 
@@ -26,10 +26,10 @@ class GetFileExtensionTest extends TestCase
         $filename4 = '\var\www/data/test/ab_c.docx';
 
         // When
-        $actual1 = (new GetFileExtension($filename1))->acquire();
-        $actual2 = (new GetFileExtension($filename2))->acquire();
-        $actual3 = (new GetFileExtension($filename3))->acquire();
-        $actual4 = (new GetFileExtension($filename4))->acquire();
+        $actual1 = (new File($filename1))->getExtension();
+        $actual2 = (new File($filename2))->getExtension();
+        $actual3 = (new File($filename3))->getExtension();
+        $actual4 = (new File($filename4))->getExtension();
 
         // Then
         $this->assertEquals('txt', $actual1);
@@ -47,7 +47,7 @@ class GetFileExtensionTest extends TestCase
         $filename = '/';
 
         // When & Then
-        (new GetFileExtension($filename))->acquire();
+        (new File($filename))->getExtension();
     }
 
     public function testShouldThrowInvalidArgumentExceptionWhenFilenameDoesNotContainAnyTrailingSlashes()
@@ -59,7 +59,7 @@ class GetFileExtensionTest extends TestCase
         $filename = 'text.txt';
 
         // When & Then
-        (new GetFileExtension($filename))->acquire();
+        (new File($filename))->getExtension();
     }
 
     public function testShouldThrowInvalidArgumentExceptionWhenFilenameDoesNotContainAnyFileName()
@@ -71,6 +71,6 @@ class GetFileExtensionTest extends TestCase
         $filename = '\data/test/';
 
         // When & Then
-        (new GetFileExtension($filename))->acquire();
+        (new File($filename))->getExtension();
     }
 }
