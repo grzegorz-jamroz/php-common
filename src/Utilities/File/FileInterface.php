@@ -8,6 +8,12 @@ interface FileInterface
 {
     public function delete(): void;
     public function copy(string $newFilename): void;
+
+    /**
+     * Renames a file if it exists.
+     * The new filename cannot exist.
+     * The method will create the missing directories if necessary.
+     */
     public function rename(string $newFilename): void;
     public function getDirectoryPath(): string;
     public function getFilename(): string;

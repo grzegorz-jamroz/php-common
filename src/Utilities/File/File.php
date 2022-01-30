@@ -24,9 +24,7 @@ class File implements FileInterface
     }
 
     /**
-     * Renames a file if it exists.
-     * The new filename cannot exist.
-     * The method will create the missing directories if necessary.
+     * {@inheritDoc}
      */
     public function rename(string $newFilename): void
     {
