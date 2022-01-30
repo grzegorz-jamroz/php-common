@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Utilities\Directory;
 
-use Ifrost\Common\Utilities\Directory\DeleteDirectoryWithAllContent;
 use Ifrost\Common\Utilities\Directory\Directory;
 use PHPUnit\Framework\TestCase;
 use Tests\Traits\TestUtils;
@@ -22,7 +21,7 @@ class CountSubDirectoriesInDirectoryTest extends TestCase
     {
         // Expect & Given
         $directoryPath = sprintf('%s/directory/count-directories/empty', DATA_DIRECTORY);
-        (new DeleteDirectoryWithAllContent($directoryPath))->execute();
+        (new Directory($directoryPath))->delete();
         $this->createDirectoryIfNotExists($directoryPath);
         $this->assertDirectoryExists($directoryPath);
 
@@ -38,7 +37,7 @@ class CountSubDirectoriesInDirectoryTest extends TestCase
         // Expect & Given
         $directoryPath = sprintf('%s/directory/count-directories/one-dir-inside', DATA_DIRECTORY);
         $subDirectoryPath = sprintf('%s/something', $directoryPath);
-        (new DeleteDirectoryWithAllContent($directoryPath))->execute();
+        (new Directory($directoryPath))->delete();
         $this->createDirectoryIfNotExists($subDirectoryPath);
 
         // When

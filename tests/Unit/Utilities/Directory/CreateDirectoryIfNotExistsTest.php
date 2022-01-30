@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Utilities\Directory;
 
-use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
 use Ifrost\Common\Utilities\Directory\Directory;
 use Ifrost\Common\Utilities\Directory\Exception\DirectoryAlreadyExists;
 use PHPUnit\Framework\TestCase;
@@ -25,7 +24,7 @@ class CreateDirectoryIfNotExistsTest extends TestCase
         $directoryPath = sprintf('%s/directory/create-directory/sample_%s/test', DATA_DIRECTORY, time());
 
         // When
-        (new CreateDirectoryIfNotExists($directoryPath))->execute();
+        (new Directory($directoryPath))->create();
 
         // Then
         $this->assertDirectoryExists($directoryPath);
@@ -42,7 +41,7 @@ class CreateDirectoryIfNotExistsTest extends TestCase
         $this->assertDirectoryExists($directoryPath);
 
         // When & Then
-        (new CreateDirectoryIfNotExists($directoryPath))->execute();
+        (new Directory($directoryPath))->create();
     }
 
     /**
@@ -63,6 +62,6 @@ class CreateDirectoryIfNotExistsTest extends TestCase
         $this->assertDirectoryDoesNotExist($directoryPath2);
 
         // When & Then
-        (new CreateDirectoryIfNotExists($directoryPath2))->execute();
+        (new Directory($directoryPath2))->create();
     }
 }

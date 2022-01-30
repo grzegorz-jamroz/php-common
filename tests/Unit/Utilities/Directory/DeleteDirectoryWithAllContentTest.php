@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Utilities\Directory;
 
-use Ifrost\Common\Utilities\Directory\CountFilesInDirectory;
-use Ifrost\Common\Utilities\Directory\DeleteDirectoryWithAllContent;
+use Ifrost\Common\Utilities\Directory\Directory;
 use PHPUnit\Framework\TestCase;
 use Tests\Traits\TestUtils;
 
@@ -26,7 +25,7 @@ class DeleteDirectoryWithAllContentTest extends TestCase
 
         // When
         try {
-            (new DeleteDirectoryWithAllContent($directoryPath))->execute();
+            (new Directory($directoryPath))->delete();
         } catch (\Exception) {
             $this->assertEquals(1, 1);
         }
@@ -42,7 +41,7 @@ class DeleteDirectoryWithAllContentTest extends TestCase
         $this->createDirectoryIfNotExists($directoryPath);
 
         // When
-        (new DeleteDirectoryWithAllContent($directoryPath))->execute();
+        (new Directory($directoryPath))->delete();
 
         // Then
         $this->assertEquals(false, file_exists($directoryPath));
@@ -58,7 +57,7 @@ class DeleteDirectoryWithAllContentTest extends TestCase
         $this->assertEquals(1, count($files));
 
         // When
-        (new DeleteDirectoryWithAllContent($directoryPath))->execute();
+        (new Directory($directoryPath))->delete();
 
         // Then
         $this->assertDirectoryDoesNotExist($directoryPath);
@@ -77,7 +76,7 @@ class DeleteDirectoryWithAllContentTest extends TestCase
         $this->assertEquals(2, count($files));
 
         // When
-        (new DeleteDirectoryWithAllContent($directoryPath))->execute();
+        (new Directory($directoryPath))->delete();
 
         // Then
         $this->assertDirectoryDoesNotExist($directoryPath);
@@ -104,10 +103,10 @@ class DeleteDirectoryWithAllContentTest extends TestCase
             $this->createFileIfNotExists($filename);
         }
 
-        $this->assertEquals(6, (new CountFilesInDirectory($mainDirectoryPath, ['recursive' => true]))->acquire());
+        $this->assertEquals(6, (new Directory($mainDirectoryPath))->countFiles(['recursive' => true]));
 
         // When
-        (new DeleteDirectoryWithAllContent($mainDirectoryPath))->execute();
+        (new Directory($mainDirectoryPath))->delete();
 
         // Then
         foreach ($filenames as $filename) {
@@ -129,7 +128,7 @@ class DeleteDirectoryWithAllContentTest extends TestCase
         $this->assertFileExists($filename);
 
         // When
-        (new DeleteDirectoryWithAllContent($filename))->execute();
+        (new Directory($filename))->delete();
     }
 
     /**
@@ -148,6 +147,6 @@ class DeleteDirectoryWithAllContentTest extends TestCase
         $this->assertDirectoryExists($directoryPath);
 
         // When & Then
-        (new DeleteDirectoryWithAllContent($directoryPath))->execute();
+        (new Directory($directoryPath))->delete();
     }
 }
