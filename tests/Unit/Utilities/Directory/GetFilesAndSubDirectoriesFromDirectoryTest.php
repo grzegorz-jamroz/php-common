@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Utilities\Directory;
 
-use Ifrost\Common\Utilities\Directory\DeleteDirectoryWithAllContent;
-use Ifrost\Common\Utilities\Directory\GetFilesAndSubDirectoriesFromDirectory;
+use Ifrost\Common\Utilities\Directory\Directory;
 use PHPUnit\Framework\TestCase;
 use Tests\Traits\TestUtils;
 
@@ -26,7 +25,7 @@ class GetFilesAndSubDirectoriesFromDirectoryTest extends TestCase
         $this->assertDirectoryExists($directoryPath);
 
         // When
-        $files = (new GetFilesAndSubDirectoriesFromDirectory($directoryPath))->acquire();
+        $files = (new Directory($directoryPath))->getFilesAndDirectories();
 
         // Then
         $this->assertEquals([], $files);
@@ -43,7 +42,7 @@ class GetFilesAndSubDirectoriesFromDirectoryTest extends TestCase
         $this->assertFileExists($filename);
 
         // When
-        $files = (new GetFilesAndSubDirectoriesFromDirectory($directoryPath))->acquire();
+        $files = (new Directory($directoryPath))->getFilesAndDirectories();
 
         // Then
         $this->assertEquals([$filename], $files);
@@ -63,7 +62,7 @@ class GetFilesAndSubDirectoriesFromDirectoryTest extends TestCase
         $this->assertFileExists($filename2);
 
         // When
-        $files = (new GetFilesAndSubDirectoriesFromDirectory($directoryPath))->acquire();
+        $files = (new Directory($directoryPath))->getFilesAndDirectories();
 
         // Then
         $this->assertEquals([$filename2, $filename1], $files);
@@ -78,7 +77,7 @@ class GetFilesAndSubDirectoriesFromDirectoryTest extends TestCase
         $this->assertDirectoryExists($subDirectoryPath);
 
         // When
-        $files = (new GetFilesAndSubDirectoriesFromDirectory($directoryPath))->acquire();
+        $files = (new Directory($directoryPath))->getFilesAndDirectories();
 
         // Then
         $this->assertEquals([sprintf('%s/', $subDirectoryPath)], $files);
@@ -98,7 +97,7 @@ class GetFilesAndSubDirectoriesFromDirectoryTest extends TestCase
         $this->assertDirectoryExists($directoryPath2);
 
         // When
-        $files = (new GetFilesAndSubDirectoriesFromDirectory($directoryPath))->acquire();
+        $files = (new Directory($directoryPath))->getFilesAndDirectories();
 
         // Then
         $this->assertEquals([
@@ -111,7 +110,7 @@ class GetFilesAndSubDirectoriesFromDirectoryTest extends TestCase
     {
         // Expect & Given
         $directoryPath = sprintf('%s/directory/get-files-and-sub-dirs/recursive_test', DATA_DIRECTORY);
-        (new DeleteDirectoryWithAllContent($directoryPath))->execute();
+        (new Directory($directoryPath))->delete();
         $this->createDirectoryIfNotExists($directoryPath);
         $this->assertDirectoryExists($directoryPath);
         $paths = [
@@ -139,7 +138,7 @@ class GetFilesAndSubDirectoriesFromDirectoryTest extends TestCase
         }
 
         // When
-        $files = (new GetFilesAndSubDirectoriesFromDirectory($directoryPath, ['recursive' => true]))->acquire();
+        $files = (new Directory($directoryPath))->getFilesAndDirectories(['recursive' => true]);
 
         // Then
         $expect = [
@@ -182,7 +181,7 @@ class GetFilesAndSubDirectoriesFromDirectoryTest extends TestCase
         }
 
         // When
-        $files = (new GetFilesAndSubDirectoriesFromDirectory($directoryPath, ['order' => 'DESC']))->acquire();
+        $files = (new Directory($directoryPath))->getFilesAndDirectories(['order' => 'DESC']);
 
         // Then
         $expect = [
@@ -205,19 +204,19 @@ class GetFilesAndSubDirectoriesFromDirectoryTest extends TestCase
         $this->expectExceptionMessage(sprintf('%s is not directory.', $filename));
 
         // When & Then
-        (new GetFilesAndSubDirectoriesFromDirectory($filename))->acquire();
+        (new Directory($filename))->getFilesAndDirectories();
     }
 
     public function testShouldThrowRuntimeExceptionWhenDirectoryDoesNotExist()
     {
         // Expect && Given
         $directoryPath = sprintf('%s/directory/get-files-and-sub-dirs/not_exist', DATA_DIRECTORY);
-        (new DeleteDirectoryWithAllContent($directoryPath))->execute();
+        (new Directory($directoryPath))->delete();
         $this->assertDirectoryDoesNotExist($directoryPath);
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(sprintf('%s is not directory.', $directoryPath));
 
         // When & Then
-        (new GetFilesAndSubDirectoriesFromDirectory($directoryPath))->acquire();
+        (new Directory($directoryPath))->getFilesAndDirectories();
     }
 }

@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Utilities\Directory;
 
-use Ifrost\Common\Utilities\Directory\CountFilesInDirectory;
-use Ifrost\Common\Utilities\Directory\DeleteDirectoryWithAllContent;
+use Ifrost\Common\Utilities\Directory\Directory;
 use Ifrost\Common\Utilities\Directory\Exception\DirectoryAlreadyExists;
 use Ifrost\Common\Utilities\Directory\Exception\DirectoryNotExist;
-use Ifrost\Common\Utilities\Directory\RenameDirectory;
 use PHPUnit\Framework\TestCase;
 use Tests\Traits\TestUtils;
 
@@ -27,12 +25,12 @@ class RenameDirectoryTest extends TestCase
         $oldDirectory = sprintf('%s/directory/rename-directory/exists_old', DATA_DIRECTORY);
         $newDirectory = sprintf('%s/directory/rename-directory/exists_new', DATA_DIRECTORY);
         $this->createDirectoryIfNotExists($oldDirectory);
-        (new DeleteDirectoryWithAllContent($newDirectory))->execute();
+        (new Directory($newDirectory))->delete();
         $this->assertDirectoryExists($oldDirectory);
         $this->assertDirectoryDoesNotExist($newDirectory);
 
         // When
-        (new RenameDirectory($oldDirectory, $newDirectory))->execute();
+        (new Directory($oldDirectory))->rename($newDirectory);
 
         // Then
         $this->assertDirectoryDoesNotExist($oldDirectory);
@@ -46,12 +44,12 @@ class RenameDirectoryTest extends TestCase
         $newDirectoryLocation = sprintf('%s/directory/rename-directory/new_directory', DATA_DIRECTORY);
         $newDirectory = sprintf('%s/exists_new', $newDirectoryLocation);
         $this->createDirectoryIfNotExists($oldDirectory);
-        (new DeleteDirectoryWithAllContent($newDirectoryLocation))->execute();
+        (new Directory($newDirectoryLocation))->delete();
         $this->assertDirectoryExists($oldDirectory);
         $this->assertDirectoryDoesNotExist($newDirectory);
 
         // When
-        (new RenameDirectory($oldDirectory, $newDirectory))->execute();
+        (new Directory($oldDirectory))->rename($newDirectory);
 
         // Then
         $this->assertDirectoryDoesNotExist($oldDirectory);
@@ -77,18 +75,18 @@ class RenameDirectoryTest extends TestCase
             $this->assertFileExists($oldDirectory);
         }
 
-        (new DeleteDirectoryWithAllContent($newDirectoryLocation))->execute();
+        (new Directory($newDirectoryLocation))->delete();
         $this->assertDirectoryExists($oldDirectory);
         $this->assertDirectoryDoesNotExist($newDirectory);
 
         // When
-        (new RenameDirectory($oldDirectory, $newDirectory))->execute();
+        (new Directory($oldDirectory))->rename($newDirectory);
 
         // Then
         $this->assertDirectoryDoesNotExist($oldDirectory);
         $this->assertDirectoryExists($newDirectory);
-        $this->assertEquals(2, (new CountFilesInDirectory($newDirectory))->acquire());
-        $this->assertEquals(4, (new CountFilesInDirectory($newDirectory, ['recursive' => true]))->acquire());
+        $this->assertEquals(2, (new Directory($newDirectory))->countFiles());
+        $this->assertEquals(4, (new Directory($newDirectory))->countFiles(['recursive' => true]));
     }
 
     public function testShouldThrowRuntimeExceptionWhenOldDirectoryDoesNotExist()
@@ -98,13 +96,13 @@ class RenameDirectoryTest extends TestCase
         $newDirectory = sprintf('%s/directory/rename-directory/exists_new', DATA_DIRECTORY);
         $this->expectException(DirectoryNotExist::class);
         $this->expectExceptionMessage(sprintf('Unable rename directory "%s". Old directory does not exist.', $oldDirectory));
-        (new DeleteDirectoryWithAllContent($oldDirectory))->execute();
-        (new DeleteDirectoryWithAllContent($newDirectory))->execute();
+        (new Directory($oldDirectory))->delete();
+        (new Directory($newDirectory))->delete();
         $this->assertDirectoryDoesNotExist($oldDirectory);
         $this->assertDirectoryDoesNotExist($newDirectory);
 
         // When & Then
-        (new RenameDirectory($oldDirectory, $newDirectory))->execute();
+        (new Directory($oldDirectory))->rename($newDirectory);
     }
 
     public function testShouldThrowRuntimeExceptionWhenNewDirectoryExists()
@@ -120,7 +118,7 @@ class RenameDirectoryTest extends TestCase
         $this->assertDirectoryExists($newDirectory);
 
         // When & Then
-        (new RenameDirectory($oldDirectory, $newDirectory))->execute();
+        (new Directory($oldDirectory))->rename($newDirectory);
     }
 
     /**
@@ -141,6 +139,6 @@ class RenameDirectoryTest extends TestCase
         $this->assertDirectoryDoesNotExist($newDirectory);
 
         // When & Then
-        (new RenameDirectory($oldDirectory, $newDirectory))->execute();
+        (new Directory($oldDirectory))->rename($newDirectory);
     }
 }

@@ -67,6 +67,14 @@ class Directory implements DirectoryInterface
     /**
      * {@inheritDoc}
      */
+    public function getFilesAndDirectories(array $options = []): array
+    {
+        return (new GetFilesAndSubDirectoriesFromDirectory($this->path, $options))->acquire();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function countFiles(array $options = []): int
     {
         return (new CountFilesInDirectory($this->path, $options))->acquire();

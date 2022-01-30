@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Utilities\Directory;
 
-use Ifrost\Common\Utilities\Directory\GetDirectoryParentPath;
+use Ifrost\Common\Utilities\Directory\Directory;
 use PHPUnit\Framework\TestCase;
 use Tests\Traits\TestUtils;
 
@@ -26,10 +26,10 @@ class GetDirectoryParentPathTest extends TestCase
         $directoryPath4 = '\var\www/data/test/test2';
 
         // When
-        $actual1 = (new GetDirectoryParentPath($directoryPath1))->acquire();
-        $actual2 = (new GetDirectoryParentPath($directoryPath2))->acquire();
-        $actual3 = (new GetDirectoryParentPath($directoryPath3))->acquire();
-        $actual4 = (new GetDirectoryParentPath($directoryPath4))->acquire();
+        $actual1 = (new Directory($directoryPath1))->getParentPath();
+        $actual2 = (new Directory($directoryPath2))->getParentPath();
+        $actual3 = (new Directory($directoryPath3))->getParentPath();
+        $actual4 = (new Directory($directoryPath4))->getParentPath();
 
         // Then
         $this->assertEquals('/', $actual1);
@@ -46,7 +46,7 @@ class GetDirectoryParentPathTest extends TestCase
         $this->expectExceptionMessage(sprintf('Directory path has to contain at least one Trailing Slash "/" or "\" character. Invalid directory path "%s".', $directoryPath));
 
         // When & Then
-        (new GetDirectoryParentPath($directoryPath))->acquire();
+        (new Directory($directoryPath))->getParentPath();
     }
 
     public function testShouldThrowInvalidArgumentExceptionWhenDirectoryPathDoesNotContainAnyTrialingSlash()
@@ -57,7 +57,7 @@ class GetDirectoryParentPathTest extends TestCase
         $this->expectExceptionMessage(sprintf('Directory path has to contain at least one Trailing Slash "/" or "\" character. Invalid directory path "%s".', $directoryPath));
 
         // When & Then
-        (new GetDirectoryParentPath($directoryPath))->acquire();
+        (new Directory($directoryPath))->getParentPath();
     }
 
     public function testShouldThrowInvalidArgumentExceptionWhenDirectoryPathDoesNotContainAnyDirectoryNameAfterLastTrialingSlash()
@@ -68,6 +68,6 @@ class GetDirectoryParentPathTest extends TestCase
         $this->expectExceptionMessage(sprintf('Directory path has to contain string after last Trailing Slash "/" or "\" character. Invalid directory path "%s".', $directoryPath));
 
         // When & Then
-        (new GetDirectoryParentPath($directoryPath))->acquire();
+        (new Directory($directoryPath))->getParentPath();
     }
 }

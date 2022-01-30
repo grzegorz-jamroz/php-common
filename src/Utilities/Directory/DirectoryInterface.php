@@ -50,6 +50,16 @@ interface DirectoryInterface
      * @description options:
      * recursive => bool | default: false
      * order => string (asc or desc) | default: asc
+     *
+     * @return array<int, string>
+     */
+    public function getFilesAndDirectories(array $options = []): array;
+
+    /**
+     * @param array<string, mixed> $options
+     * @description options:
+     * recursive => bool | default: false
+     * order => string (asc or desc) | default: asc
      */
     public function countFiles(array $options = []): int;
 
