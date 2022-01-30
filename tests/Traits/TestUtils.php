@@ -38,7 +38,7 @@ trait TestUtils
 
     protected function createImmutableFile(string $filename): void
     {
-        exec(sprintf('touch %s > /dev/null 2>&1', $filename));
+        $this->createProtectedFile($filename);
         exec(sprintf('echo %s | sudo -S chattr +i %s > /dev/null 2>&1', $_ENV['SUDOER_PASSWORD'], $filename));
     }
 

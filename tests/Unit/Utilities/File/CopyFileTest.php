@@ -91,4 +91,27 @@ class CopyFileTest extends TestCase
         // When & Then
         (new File($oldFilename))->copy($newFilename);
     }
+
+    /**
+     * it probably only works on ext2/ext3/ext4 filesystems.
+     */
+    public function testShouldThrowRuntimeExceptionWhenUnableToCopyFile()
+    {
+        $this->endTestIfWindowsOs($this);
+        $this->endTestIfEnvMissing($this, ['SUDOER_PASSWORD']);
+
+        // Expect & Given
+        $oldFilename = sprintf('%s/immutable_file.txt', TESTS_DATA_DIRECTORY);
+        $newFilename = sprintf('%s/immutable_file_new.txt', TESTS_DATA_DIRECTORY);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(sprintf('Unable copy file "%s". ', $oldFilename));
+        (new File($newFilename))->delete();
+        $this->createProtectedFile($oldFilename);
+        $this->createImmutableFile($oldFilename);
+        $this->assertFileExists($oldFilename);
+        $this->assertFileDoesNotExist($newFilename);
+
+        // When & Then
+        (new File($oldFilename))->copy($newFilename);
+    }
 }
