@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Utilities\File;
 
 use Ifrost\Common\Utilities\File\File;
-use Ifrost\Common\Utilities\File\GetFileFullName;
 use PHPUnit\Framework\TestCase;
 use Tests\Traits\TestUtils;
 

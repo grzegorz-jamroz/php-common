@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Utilities\File;
 
-use Ifrost\Common\Utilities\File\DeleteFile;
-use Ifrost\Common\Utilities\File\GetFileLine;
-use Ifrost\Common\Utilities\File\GetFileNumberOfLines;
+use Ifrost\Common\Utilities\File\File;
 use Ifrost\Common\Utilities\File\TextFile;
 use PHPUnit\Framework\TestCase;
 use Tests\Traits\TestUtils;
@@ -24,7 +22,7 @@ class WriteFileTest extends TestCase
     {
         // Expect & Given
         $filename = sprintf('%s/file/write-file/test.txt', DATA_DIRECTORY);
-        (new DeleteFile($filename))->execute();
+        (new File($filename))->delete();
         $this->createFileIfNotExists($filename, 'something');
         $this->assertFileExists($filename);
         $this->assertEquals('something', file_get_contents($filename));
@@ -40,7 +38,7 @@ class WriteFileTest extends TestCase
     {
         // Expect & Given
         $filename = sprintf('%s/file/write-file/test.txt', DATA_DIRECTORY);
-        (new DeleteFile($filename))->execute();
+        (new File($filename))->delete();
         $this->createFileIfNotExists($filename, 'something');
         $this->assertFileExists($filename);
         $this->assertEquals('something', file_get_contents($filename));
@@ -56,7 +54,7 @@ class WriteFileTest extends TestCase
     {
         // Expect & Given
         $filename = sprintf('%s/file/write-file/test.txt', DATA_DIRECTORY);
-        (new DeleteFile($filename))->execute();
+        (new File($filename))->delete();
         $this->assertFileDoesNotExist($filename);
 
         // When
@@ -65,15 +63,15 @@ class WriteFileTest extends TestCase
         (new TextFile($filename))->write('line three');
 
         // Then
-        $this->assertEquals(3, (new GetFileNumberOfLines($filename))->acquire());
-        $this->assertEquals('line three', (new GetFileLine($filename, 3))->acquire());
+        $this->assertEquals(3, (new File($filename))->countLines());
+        $this->assertEquals('line three', (new File($filename))->getLine(3));
     }
 
     public function testShouldCreateFileWhichContainsThreeLinesAndLastLineIsEmpty()
     {
         // Expect & Given
         $filename = sprintf('%s/file/write-file/test.txt', DATA_DIRECTORY);
-        (new DeleteFile($filename))->execute();
+        (new File($filename))->delete();
         $this->assertFileDoesNotExist($filename);
 
         // When
@@ -82,15 +80,15 @@ class WriteFileTest extends TestCase
         (new TextFile($filename))->write("line three\n");
 
         // Then
-        $this->assertEquals(4, (new GetFileNumberOfLines($filename))->acquire());
-        $this->assertEquals('', (new GetFileLine($filename, 4))->acquire());
+        $this->assertEquals(4, (new File($filename))->countLines());
+        $this->assertEquals('', (new File($filename))->getLine(4));
     }
 
     public function testShouldAddTwoNewStringsToExistedFile()
     {
         // Expect & Given
         $filename = sprintf('%s/file/write-file/test.txt', DATA_DIRECTORY);
-        (new DeleteFile($filename))->execute();
+        (new File($filename))->delete();
         $this->createFileIfNotExists($filename, 'something');
         $this->assertFileExists($filename);
         $this->assertEquals('something', file_get_contents($filename));
@@ -107,7 +105,7 @@ class WriteFileTest extends TestCase
     {
         // Expect & Given
         $filename = sprintf('%s/file/write-file/test.txt', DATA_DIRECTORY);
-        (new DeleteFile($filename))->execute();
+        (new File($filename))->delete();
         $this->assertFileDoesNotExist($filename);
 
         // When

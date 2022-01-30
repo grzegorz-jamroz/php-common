@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Utilities\File;
 
 use Ifrost\Common\Utilities\File\DeleteFile;
-use Ifrost\Common\Utilities\File\ReadFile;
+use Ifrost\Common\Utilities\File\TextFile;
 use PHPUnit\Framework\TestCase;
 use Tests\Traits\TestUtils;
 
@@ -27,7 +27,7 @@ class ReadFileTest extends TestCase
         $this->assertFileExists($filename);
 
         // When
-        $content = (new ReadFile($filename))->acquire();
+        $content = (new TextFile($filename))->read();
 
         //Then
         $this->assertEquals('', $content);
@@ -42,7 +42,7 @@ class ReadFileTest extends TestCase
         $this->assertFileExists($filename);
 
         // When
-        $content = (new ReadFile($filename))->acquire();
+        $content = (new TextFile($filename))->read();
 
         //Then
         $this->assertEquals('hello world', $content);
@@ -57,7 +57,7 @@ class ReadFileTest extends TestCase
         $this->assertFileDoesNotExist($filename);
 
         // When & Then
-        (new ReadFile($filename))->acquire();
+        (new TextFile($filename))->read();
     }
 
     /**
@@ -76,6 +76,6 @@ class ReadFileTest extends TestCase
         $this->assertFileExists($filename);
 
         // When & Then
-        (new ReadFile($filename))->acquire();
+        (new TextFile($filename))->read();
     }
 }

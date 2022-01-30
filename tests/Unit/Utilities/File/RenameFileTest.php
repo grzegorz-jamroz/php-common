@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Utilities\File;
 
-use Ifrost\Common\Utilities\File\DeleteFile;
 use Ifrost\Common\Utilities\File\Exception\FileAlreadyExists;
 use Ifrost\Common\Utilities\File\Exception\FileNotExist;
-use Ifrost\Common\Utilities\File\RenameFile;
+use Ifrost\Common\Utilities\File\File;
 use PHPUnit\Framework\TestCase;
 use Tests\Traits\TestUtils;
 
@@ -26,12 +25,12 @@ class RenameFileTest extends TestCase
         $oldFilename = sprintf('%s/file/rename-file/exists_old.txt', DATA_DIRECTORY);
         $newFilename = sprintf('%s/file/rename-file/exists_new.txt', DATA_DIRECTORY);
         $this->createFileIfNotExists($oldFilename);
-        (new DeleteFile($newFilename))->execute();
+        (new File($newFilename))->delete();
         $this->assertFileExists($oldFilename);
         $this->assertFileDoesNotExist($newFilename);
 
         // When
-        (new RenameFile($oldFilename, $newFilename))->execute();
+        (new File($oldFilename))->rename($newFilename);
 
         // Then
         $this->assertFileDoesNotExist($oldFilename);
@@ -44,12 +43,12 @@ class RenameFileTest extends TestCase
         $oldFilename = sprintf('%s/file/rename-file/exists_old.txt', DATA_DIRECTORY);
         $newFilename = sprintf('%s/file/rename-file/new_directory/exists_new.txt', DATA_DIRECTORY);
         $this->createFileIfNotExists($oldFilename);
-        (new DeleteFile($newFilename))->execute();
+        (new File($newFilename))->delete();
         $this->assertFileExists($oldFilename);
         $this->assertFileDoesNotExist($newFilename);
 
         // When
-        (new RenameFile($oldFilename, $newFilename))->execute();
+        (new File($oldFilename))->rename($newFilename);
 
         // Then
         $this->assertFileDoesNotExist($oldFilename);
@@ -63,13 +62,13 @@ class RenameFileTest extends TestCase
         $newFilename = sprintf('%s/file/rename-file/exists_new.txt', DATA_DIRECTORY);
         $this->expectException(FileNotExist::class);
         $this->expectExceptionMessage(sprintf('Unable rename file "%s". Old file does not exist.', $oldFilename));
-        (new DeleteFile($oldFilename))->execute();
-        (new DeleteFile($newFilename))->execute();
+        (new File($oldFilename))->delete();
+        (new File($newFilename))->delete();
         $this->assertFileDoesNotExist($oldFilename);
         $this->assertFileDoesNotExist($newFilename);
 
         // When & Then
-        (new RenameFile($oldFilename, $newFilename))->execute();
+        (new File($oldFilename))->rename($newFilename);
     }
 
     public function testShouldThrowRuntimeExceptionWhenNewFileExists()
@@ -85,7 +84,7 @@ class RenameFileTest extends TestCase
         $this->assertFileExists($newFilename);
 
         // When & Then
-        (new RenameFile($oldFilename, $newFilename))->execute();
+        (new File($oldFilename))->rename($newFilename);
     }
 
     /**
@@ -106,6 +105,6 @@ class RenameFileTest extends TestCase
         $this->assertFileDoesNotExist($newFilename);
 
         // When & Then
-        (new RenameFile($oldFilename, $newFilename))->execute();
+        (new File($oldFilename))->rename($newFilename);
     }
 }

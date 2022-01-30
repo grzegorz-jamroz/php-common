@@ -6,6 +6,7 @@ namespace Tests\Unit\Utilities\File;
 
 use Ifrost\Common\Utilities\File\DeleteFile;
 use Ifrost\Common\Utilities\File\OverwriteFile;
+use Ifrost\Common\Utilities\File\TextFile;
 use PHPUnit\Framework\TestCase;
 use Tests\Traits\TestUtils;
 
@@ -28,7 +29,7 @@ class OverwriteFileTest extends TestCase
         $this->assertEquals('something', file_get_contents($filename));
 
         // When
-        (new OverwriteFile($filename, ''))->execute();
+        (new TextFile($filename))->overwrite('');
 
         // Then
         $this->assertEquals('', file_get_contents($filename));
@@ -44,7 +45,7 @@ class OverwriteFileTest extends TestCase
         $this->assertEquals('something2', file_get_contents($filename));
 
         // When
-        (new OverwriteFile($filename, 'foo'))->execute();
+        (new TextFile($filename))->overwrite('foo');
 
         // Then
         $this->assertEquals('foo', file_get_contents($filename));
@@ -58,7 +59,7 @@ class OverwriteFileTest extends TestCase
         $this->assertFileDoesNotExist($filename);
 
         // When
-        (new OverwriteFile($filename, 'hello'))->execute();
+        (new TextFile($filename))->overwrite('hello');
 
         // Then
         $this->assertEquals('hello', file_get_contents($filename));
@@ -80,7 +81,7 @@ class OverwriteFileTest extends TestCase
         $this->assertFileExists($filename);
 
         // When & Then
-        (new OverwriteFile($filename, 'something'))->execute();
+        (new TextFile($filename))->overwrite('something');
     }
 
     /**
@@ -99,6 +100,6 @@ class OverwriteFileTest extends TestCase
         $this->assertFileExists($filename);
 
         // When & Then
-        (new OverwriteFile($filename, 'something'))->execute();
+        (new TextFile($filename))->overwrite('something');
     }
 }
