@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Utilities\Directory;
 
 use Ifrost\Common\Utilities\Directory\DeleteDirectoryWithAllContent;
-use Ifrost\Common\Utilities\Directory\GetFilesFromDirectory;
 use Ifrost\Common\Utilities\Directory\GetSubDirectoriesFromDirectory;
 use PHPUnit\Framework\TestCase;
 use Tests\Traits\TestUtils;
@@ -130,7 +129,7 @@ class GetSubDirectoriesFromDirectoryTest extends TestCase
         $this->assertEquals($expect, $files);
     }
 
-    public function testShouldReturnFourDirectoryPathsWhenRecursiveOptionIsEnabled()
+    public function testShouldReturnEightDirectoryPathsWhenRecursiveOptionIsEnabled()
     {
         // Expect & Given
         $directoryPath = sprintf('%s/directory/get-sub-directories-from-directory/recursive_test', DATA_DIRECTORY);
