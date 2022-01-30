@@ -85,6 +85,9 @@ class Directory implements DirectoryInterface
      */
     public function countFilesAndDirectories(array $options = []): int
     {
-        throw new \Exception('countFilesAndDirectories is not implemented yet.');
+        $numberOfFiles = (new CountFilesInDirectory($this->path, $options))->acquire();
+        $numberOfSubDirectories = (new CountSubDirectoriesInDirectory($this->path, $options))->acquire();
+
+        return $numberOfFiles + $numberOfSubDirectories;
     }
 }
