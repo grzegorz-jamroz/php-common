@@ -13,6 +13,9 @@ class Directory implements DirectoryInterface
     {
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function create(
         int $permissions = 0777,
         bool $recursive = true

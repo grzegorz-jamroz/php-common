@@ -6,6 +6,7 @@ namespace Tests\Unit\Utilities\Directory;
 
 use Ifrost\Common\Utilities\Directory\CountSubDirectoriesInDirectory;
 use Ifrost\Common\Utilities\Directory\DeleteDirectoryWithAllContent;
+use Ifrost\Common\Utilities\Directory\Directory;
 use PHPUnit\Framework\TestCase;
 use Tests\Traits\TestUtils;
 
@@ -27,7 +28,7 @@ class CountSubDirectoriesInDirectoryTest extends TestCase
         $this->assertDirectoryExists($directoryPath);
 
         // When
-        $actual = (new CountSubDirectoriesInDirectory($directoryPath))->acquire();
+        $actual = (new Directory($directoryPath))->countDirectories();
 
         // Then
         $this->assertEquals(0, $actual);
@@ -42,7 +43,7 @@ class CountSubDirectoriesInDirectoryTest extends TestCase
         $this->createDirectoryIfNotExists($subDirectoryPath);
 
         // When
-        $actual = (new CountSubDirectoriesInDirectory($directoryPath))->acquire();
+        $actual = (new Directory($directoryPath))->countDirectories();
 
         // Then
         $this->assertEquals(1, $actual);
@@ -60,7 +61,7 @@ class CountSubDirectoriesInDirectoryTest extends TestCase
         $this->assertDirectoryExists($subDirectoryPath);
 
         // When
-        $actual = (new CountSubDirectoriesInDirectory($directoryPath))->acquire();
+        $actual = (new Directory($directoryPath))->countDirectories();
 
         // Then
         $this->assertEquals(1, $actual);
@@ -88,7 +89,7 @@ class CountSubDirectoriesInDirectoryTest extends TestCase
         }
 
         // When
-        $actual = (new CountSubDirectoriesInDirectory($mainDirectoryPath, ['recursive' => true]))->acquire();
+        $actual = (new Directory($mainDirectoryPath))->countDirectories(['recursive' => true]);
 
         $this->assertEquals(4, $actual);
     }
@@ -105,6 +106,6 @@ class CountSubDirectoriesInDirectoryTest extends TestCase
         $this->assertFileExists($filename);
 
         // When
-        (new CountSubDirectoriesInDirectory($filename))->acquire();
+        (new Directory($filename))->countDirectories();
     }
 }

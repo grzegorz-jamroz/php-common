@@ -1,10 +1,13 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Traits;
 
-use Ifrost\Common\Utilities\Directory\CreateDirectoryIfNotExists;
+use Ifrost\Common\Utilities\Directory\Directory;
+use Ifrost\Common\Utilities\Directory\Exception\DirectoryAlreadyExists;
 use Ifrost\Common\Utilities\File\CreateFileIfNotExists;
+use Ifrost\Common\Utilities\File\Exception\FileAlreadyExists;
 use PHPUnit\Framework\TestCase;
 use PlainDataTransformer\Transform;
 
@@ -61,18 +64,18 @@ trait TestUtils
     {
         try {
             (new CreateFileIfNotExists($filename, $content))->execute();
-        } catch(\Exception) {
+        } catch (FileAlreadyExists) {
         }
     }
 
     protected function createDirectoryIfNotExists(
-        string $filename,
+        string $directoryPath,
         int $permissions = 0777,
         bool $recursive = true
     ): void {
         try {
-            (new CreateDirectoryIfNotExists($filename, $permissions, $recursive))->execute();
-        } catch(\Exception) {
+            (new Directory($directoryPath))->create($permissions, $recursive);
+        } catch (DirectoryAlreadyExists) {
         }
     }
 }

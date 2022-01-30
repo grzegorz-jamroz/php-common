@@ -4,8 +4,16 @@ declare(strict_types=1);
 
 namespace Ifrost\Common\Utilities\Directory;
 
+use Ifrost\Common\Utilities\Directory\Exception\DirectoryAlreadyExists;
+
 interface DirectoryInterface
 {
+    /**
+     * Creates a new directory if it does not exist.
+     * The method will create the missing directories if necessary.
+     *
+     * @throws DirectoryAlreadyExists when directory already exists
+     */
     public function create(
         int $permissions = 0777,
         bool $recursive = true

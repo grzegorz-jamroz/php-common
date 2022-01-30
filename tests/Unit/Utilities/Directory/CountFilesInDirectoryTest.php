@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Utilities\Directory;
 
-use Ifrost\Common\Utilities\Directory\CountFilesInDirectory;
-use Ifrost\Common\Utilities\Directory\DeleteDirectoryWithAllContent;
+use Ifrost\Common\Utilities\Directory\Directory;
 use PHPUnit\Framework\TestCase;
 use Tests\Traits\TestUtils;
 
@@ -22,14 +21,14 @@ class CountFilesInDirectoryTest extends TestCase
     {
         // Expect & Given
         $directoryPath = sprintf('%s/directory/count-files/empty', DATA_DIRECTORY);
-        (new DeleteDirectoryWithAllContent($directoryPath))->execute();
+        (new Directory($directoryPath))->delete();
         $this->createDirectoryIfNotExists($directoryPath);
         $this->assertDirectoryExists($directoryPath);
         $files = glob($directoryPath . '/*', GLOB_MARK);
         $this->assertEquals(0, count($files));
 
         // When
-        $actual = (new CountFilesInDirectory($directoryPath))->acquire();
+        $actual = (new Directory($directoryPath))->countFiles();
 
         // Then
         $this->assertEquals(0, $actual);
@@ -40,13 +39,13 @@ class CountFilesInDirectoryTest extends TestCase
         // Expect & Given
         $directoryPath = sprintf('%s/directory/count-files/one-file-inside', DATA_DIRECTORY);
         $filename = sprintf('%s/something.txt', $directoryPath);
-        (new DeleteDirectoryWithAllContent($directoryPath))->execute();
+        (new Directory($directoryPath))->delete();
         $this->createFileIfNotExists($filename);
         $files = glob($directoryPath . '/*', GLOB_MARK);
         $this->assertEquals(1, count($files));
 
         // When
-        $actual = (new CountFilesInDirectory($directoryPath))->acquire();
+        $actual = (new Directory($directoryPath))->countFiles();
 
         // Then
         $this->assertEquals(1, $actual);
@@ -64,7 +63,7 @@ class CountFilesInDirectoryTest extends TestCase
         $this->assertDirectoryExists($subDirectoryPath);
 
         // When
-        $actual = (new CountFilesInDirectory($directoryPath))->acquire();
+        $actual = (new Directory($directoryPath))->countFiles();
 
         // Then
         $this->assertEquals(1, $actual);
@@ -90,7 +89,7 @@ class CountFilesInDirectoryTest extends TestCase
         }
 
         // When
-        $actual = (new CountFilesInDirectory($mainDirectoryPath, ['recursive' => true]))->acquire();
+        $actual = (new Directory($mainDirectoryPath))->countFiles(['recursive' => true]);
 
         $this->assertEquals(6, $actual);
     }
@@ -107,6 +106,6 @@ class CountFilesInDirectoryTest extends TestCase
         $this->assertFileExists($filename);
 
         // When
-        (new CountFilesInDirectory($filename))->acquire();
+        (new Directory($filename))->countFiles();
     }
 }
