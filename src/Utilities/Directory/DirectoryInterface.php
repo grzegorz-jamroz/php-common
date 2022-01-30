@@ -30,7 +30,16 @@ interface DirectoryInterface
     /**
      * @param array<string, mixed> $options
      * @description options:
-     * extension => string | default: empty string
+     * recursive => bool | default: false
+     * order => string (asc or desc) | default: asc
+     *
+     * @return array<int, string>
+     */
+    public function getDirectories(array $options = []): array;
+
+    /**
+     * @param array<string, mixed> $options
+     * @description options:
      * recursive => bool | default: false
      * order => string (asc or desc) | default: asc
      */

@@ -46,27 +46,42 @@ class Directory implements DirectoryInterface
     }
 
     /**
-     * @param array<string, mixed> $options
-     *
-     * @return array<int, string>
+     * {@inheritDoc}
      */
     public function getFiles(array $options = []): array
     {
         return (new GetFilesFromDirectory($this->path, $options))->acquire();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getDirectories(array $options = []): array
+    {
+        return (new GetSubDirectoriesFromDirectory($this->path, $options))->acquire();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function countFiles(array $options = []): int
     {
         return (new CountFilesInDirectory($this->path, $options))->acquire();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function countDirectories(array $options = []): int
     {
-        throw new \Exception('getNumberOfDirectories is not implemented yet.');
+        throw new \Exception('countDirectories is not implemented yet.');
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function countFilesAndDirectories(array $options = []): int
     {
-        throw new \Exception('getNumberOfFilesAndDirectories is not implemented yet.');
+        throw new \Exception('countFilesAndDirectories is not implemented yet.');
     }
 }
