@@ -7,7 +7,7 @@ namespace Tests\Unit\Utilities\File;
 use Ifrost\Common\Utilities\File\DeleteFile;
 use Ifrost\Common\Utilities\File\GetFileLine;
 use Ifrost\Common\Utilities\File\GetFileNumberOfLines;
-use Ifrost\Common\Utilities\File\WriteFile;
+use Ifrost\Common\Utilities\File\TextFile;
 use PHPUnit\Framework\TestCase;
 use Tests\Traits\TestUtils;
 
@@ -30,7 +30,7 @@ class WriteFileTest extends TestCase
         $this->assertEquals('something', file_get_contents($filename));
 
         // When
-        (new WriteFile($filename, ''))->execute();
+        (new TextFile($filename))->write('');
 
         // Then
         $this->assertEquals('something', file_get_contents($filename));
@@ -46,7 +46,7 @@ class WriteFileTest extends TestCase
         $this->assertEquals('something', file_get_contents($filename));
 
         // When
-        (new WriteFile($filename, ' '))->execute();
+        (new TextFile($filename))->write(' ');
 
         // Then
         $this->assertEquals('something ', file_get_contents($filename));
@@ -60,9 +60,9 @@ class WriteFileTest extends TestCase
         $this->assertFileDoesNotExist($filename);
 
         // When
-        (new WriteFile($filename, "line one\n"))->execute();
-        (new WriteFile($filename, "line two\n"))->execute();
-        (new WriteFile($filename, 'line three'))->execute();
+        (new TextFile($filename))->write("line one\n");
+        (new TextFile($filename))->write("line two\n");
+        (new TextFile($filename))->write('line three');
 
         // Then
         $this->assertEquals(3, (new GetFileNumberOfLines($filename))->acquire());
@@ -77,9 +77,9 @@ class WriteFileTest extends TestCase
         $this->assertFileDoesNotExist($filename);
 
         // When
-        (new WriteFile($filename, "line one\n"))->execute();
-        (new WriteFile($filename, "line two\n"))->execute();
-        (new WriteFile($filename, "line three\n"))->execute();
+        (new TextFile($filename))->write("line one\n");
+        (new TextFile($filename))->write("line two\n");
+        (new TextFile($filename))->write("line three\n");
 
         // Then
         $this->assertEquals(4, (new GetFileNumberOfLines($filename))->acquire());
@@ -96,8 +96,8 @@ class WriteFileTest extends TestCase
         $this->assertEquals('something', file_get_contents($filename));
 
         // When
-        (new WriteFile($filename, 'new text 1'))->execute();
-        (new WriteFile($filename, 'new text 2'))->execute();
+        (new TextFile($filename))->write('new text 1');
+        (new TextFile($filename))->write('new text 2');
 
         // Then
         $this->assertEquals('somethingnew text 1new text 2', file_get_contents($filename));
@@ -111,7 +111,7 @@ class WriteFileTest extends TestCase
         $this->assertFileDoesNotExist($filename);
 
         // When
-        (new WriteFile($filename, 'hello'))->execute();
+        (new TextFile($filename))->write('hello');
 
         // Then
         $this->assertEquals('hello', file_get_contents($filename));
@@ -133,7 +133,7 @@ class WriteFileTest extends TestCase
         $this->assertFileExists($filename);
 
         // When & Then
-        (new WriteFile($filename, 'new text'))->execute();
+        (new TextFile($filename))->write('new text');
     }
 
     /**
@@ -152,6 +152,6 @@ class WriteFileTest extends TestCase
         $this->assertFileExists($filename);
 
         // When & Then
-        (new WriteFile($filename, 'new text'))->execute();
+        (new TextFile($filename))->write('new text');
     }
 }
