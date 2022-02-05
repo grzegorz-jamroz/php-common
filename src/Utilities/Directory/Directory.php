@@ -30,7 +30,7 @@ class Directory implements DirectoryInterface
 
     public function copy(string $newDirectoryPath): void
     {
-        throw new \Exception('copy is not implemented yet.');
+        (new CopyDirectory($this->path, $newDirectoryPath))->execute();
     }
 
     public function rename(string $newDirectoryPath): void
