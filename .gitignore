@@ -9,7 +9,3 @@ composer.phar
 vendor
 data
 !tests/data
-tests/data/immutable_dir
-tests/data/immutable_file.txt
-tests/data/protected.txt
-tests/data/read-only.txt
